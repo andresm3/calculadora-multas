@@ -84,4 +84,7 @@ public class ClsTipoAfectacionBean implements Serializable {
     public double getNuFactorG() {
         return nuFactorG;
     }
+    public String getVcValorNivelClasif() {
+        return getVcClasificacion()!=null?getVcClasificacion():getVcNivelAfectacion()!=null?getVcNivelAfectacion():getVcClasificacionBarrera()!=null?getVcClasificacionBarrera():null;
+    }
 }

@@ -56,7 +56,7 @@ public class ClsCalculoMultaServlet extends HttpServlet implements Serializable 
         //jgapps = "000";      //xxx  PS0
         //jgapps = "000";      //yyy  CPC
 
-        //jgapps="214e534a4746384f1924100d791c0a";
+        jgapps="235e5a51494c38494e241041711c0a071d";
 
 
         ClsCripto ClsCripto = new ClsCripto();

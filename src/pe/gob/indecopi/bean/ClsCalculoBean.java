@@ -279,6 +279,8 @@ public class ClsCalculoBean implements Serializable {
     private boolean isBlMultaBaseVentas;
     private boolean isBlMultaBaseAdhoc;
     private boolean isBlMultaBaseFirma;
+
+    private boolean isBlLstAfectacion;
     
     public ClsCalculoBean() {
         super();
@@ -2100,5 +2102,13 @@ public class ClsCalculoBean implements Serializable {
 
     public int getNuIdTamEmpresa() {
         return nuIdTamEmpresa;
+    }
+    
+    public void setIsBlLstAfectacion(boolean isBlLstAfectacion) {
+        this.isBlLstAfectacion = isBlLstAfectacion;
+    }
+
+    public boolean isIsBlLstAfectacion() {
+        return isBlLstAfectacion;
     }
 }
