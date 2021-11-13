@@ -1,0 +1,750 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+        <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="../js/jsMain.js"></script>
+        <link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/main.css"/>
+        <link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/notificacionMarca.css?v=0004"/>
+        <link rel="shortcut icon" href="../imagenes/favicon.ico"/>
+        <title>CONFIR - Generación de Documentos</title>
+        <script type="text/javascript">
+            //<![CDATA[
+                function fn_verificarEstado(){
+                    document.getElementById('frmRenovacionMarca:btnVerificarFirma').click();
+                }
+                
+                function fn_detener() {
+                    clearTimeout(myVar);
+                }
+        
+                function fn_seleccionarTablaResultados(nuIdAplicacion) {
+                    if(nuIdAplicacion == 1){
+                        document.getElementById('frmRenovacionMarca:bt_conversion_res_filtro_buscar').click();}
+                    if(nuIdAplicacion == 2){
+                        document.getElementById('frmRenovacionMarca:bt_conversion_cer_filtro_buscar').click();}
+                    if(nuIdAplicacion == 3){
+                        document.getElementById('frmRenovacionMarca:bt_conversion_not_filtro_buscar').click();}
+                    if(nuIdAplicacion == 4){
+                        document.getElementById('frmRenovacionMarca:bt_conversion_res_filtro_buscar').click();}
+                }
+        
+                function fn_iniciarFirma() {
+                    document.getElementById('frmRenovacionMarca:btnIniciar').click();
+                }
+                  
+                function seleccionarTodo(source) {
+                    checkboxes = document.getElementsByTagName('input');
+                    for (i = 0;i < checkboxes.length;i++){
+                        if (checkboxes[i].type == "checkbox" && checkboxes[i].id != "frmGeneracion:dtb_conversion_res_resultados:cbxSelTodosDoc"){
+                            checkboxes[i].checked = source.checked;}
+                        if (checkboxes[i].type == "checkbox" && checkboxes[i].id != "frmGeneracion:dtb_conversion_cer_resultados:cbxSelTodosDoc"){
+                            checkboxes[i].checked = source.checked;}
+                        if (checkboxes[i].type == "checkbox" && checkboxes[i].id != "frmGeneracion:dtb_conversion_not_resultados:cbxSelTodosDoc"){
+                            checkboxes[i].checked = source.checked;}
+                    }
+                }
+                
+                function fn_seleccionarTablaConversion(nuIdAplicacion) {
+                    alert(nuIdAplicacion);
+                    if(nuIdAplicacion == 1){
+                        document.getElementById('frmRenovacionMarca:dtb_conversion_res_resultados');}
+                    if(nuIdAplicacion == 2){
+                        document.getElementById('frmRenovacionMarca:dtb_conversion_cer_resultados');}
+                    if(nuIdAplicacion == 3){
+                        document.getElementById('frmRenovacionMarca:dtb_conversion_not_resultados');}
+                    if(nuIdAplicacion == 4){
+                        document.getElementById('frmRenovacionMarca:dtb_conversion_res_resultados');}
+                }
+                  
+                function checkAllCheckboxesInTable(state,nuIdAplicacion){
+                    
+                    var tableElement =null;
+                    //var inputs = tableElement.getElementsByTagName('input');
+                    if(nuIdAplicacion == 1){
+                        tableElement = document.getElementById('frmRenovacionMarca:dtb_conversion_res_resultados');}
+                    if(nuIdAplicacion == 2){
+                        tableElement = document.getElementById('frmRenovacionMarca:dtb_conversion_cer_resultados');}
+                    if(nuIdAplicacion == 3){
+                        tableElement = document.getElementById('frmRenovacionMarca:dtb_conversion_not_resultados');}
+                    if(nuIdAplicacion == 4){
+                        tableElement = document.getElementById('frmRenovacionMarca:dtb_conversion_res_resultados');}
+                        
+                    var inputs = tableElement.getElementsByTagName('input');
+                    
+                    for (var i = 0; i <= inputs.length; i++){
+                        var input = inputs[i];
+                        if (input != undefined) {
+                            if( input.getAttribute('type') == 'checkbox' && input.className == "cbInd"){
+                                if (state.checked){
+                                    console.log('objeto true: '+input);
+                                    input.setAttribute('checked', state.checked);
+                                }else{
+                                    console.log('objeto false: '+input);
+                                    input.setAttribute('checked', false);
+                                    input.removeAttribute('checked');
+                                }
+                            }
+                        }
+                    }
+                }
+                document.oncontextmenu = function(){return false}
+            //]]>
+        </script>
+       
+    </head>
+    <body onload="document.getElementById('frmRenovacionMarca:btn_procesar_documentos').click();"  >
+    
+        <h:form id="frmAuxiliar" >
+                 <h:commandButton id="btn_descargar_archivo_modal" 
+                                   style="display:none;"
+                                   action="#{clsRegistroObrasSrv.doDescargarModalAuxiliar}" >
+                </h:commandButton>
+                
+                 <h:commandButton id="btn_descargar_word_zip" 
+                                   style="display:none;"
+                                   action="#{clsRegistroObrasSrv.doDescargarDoc}">
+                </h:commandButton>
+
+       </h:form>
+       <h:form id="frmAuxiliarTarget" target="_black" >
+         <h:commandButton id="btn_descargar_esquela_temporal" 
+                                   style="display:none;"
+                                   action="#{clsRegistroObrasSrv.doVerEsquelaTemporalModal}" >
+         </h:commandButton> 
+       </h:form>
+        <rich:panel>
+            
+           <rich:panel>
+           <f:facet name="header" styleClass="header-css-indecopi">
+                    <h:outputText value="Registro de Obras"  />
+           </f:facet>
+                        <a4j:form id="frmRenovacionMarca" ajaxsubmit="true">
+                   <h:panelGrid id="pg_cconversion_refresh" columns="2" >
+                 <h:outputText value="#{msgs['ot.conversion.not.filtro.generar']}"
+                style="font-size: 12px;"/>
+                <a4j:commandLink  >
+                           <h:graphicImage url="/imagenes/icoRefresh.svg" alt="Procesar documentos" width="16" 
+                           onclick="document.getElementById('frmRenovacionMarca:btn_procesar_documentos').click()" 
+                           />
+                </a4j:commandLink>
+               
+                </h:panelGrid>     
+                <a4j:commandButton id="btn_procesar_documentos" 
+                                    style="display:none;"
+                                   value="Generar"
+                                   >
+                               <a4j:support         event="onclick"
+                                                     action="#{clsRegistroObrasSrv.doProcesarDocumentos}"
+                                                     onsubmit="#{rich:component('panGenerandoDocumentos')}.show();"
+                                                     oncomplete="#{rich:component('panGenerandoDocumentos')}.hide();">
+                               </a4j:support>
+                </a4j:commandButton>  
+                <a4j:commandButton id="btn_procesar_documentos2" 
+                                   style="display:none;" >
+                               <a4j:support         event="onclick"
+                                                     action="#{clsRegistroObrasSrv.doProcesarDocumentos}"
+                                                     onsubmit="#{rich:component('panGenerandoDocumentos')}.show();"
+                                                     oncomplete="#{rich:component('panGenerandoDocumentos')}.hide();document.getElementById('frmRenovacionMarca:bt_conversion_not_filtro_buscar').click()">
+                               </a4j:support>
+                </a4j:commandButton>         
+                            <!-- conversion filtros -->
+                            <h:panelGrid id="pgConversion_filtros">
+
+                                <!-- conversion filtros resolucion -->
+                                <!-- conversion filtros certificado -->
+                                <!-- conversion filtros notificacion -->
+                                <h:panelGrid id="pgConversion_filtro_not" columns="6" >
+                                    
+                                    <h:outputText id="ot_conversion_not_filtro_fechaInicio" value="#{msgs['ot.conversion.not.filtro.fechaInicio']}" style="font-size: 12px;"/>
+                                    <rich:calendar id="cl_conversion_not_filtro_fechaInicio" value="#{clsRegistroObrasSrv.objFiltroBean.dtFechaInicio}"
+                                                   locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" cellHeight="22px" inputStyle="width:65px">
+                                    </rich:calendar>
+                                    <h:panelGrid columns="2">
+                                    <h:outputText id="ot_conversion_not_filtro_nroExpediente" value="#{msgs['ot.conversion.not.filtro.nroExpediente']}" style="font-size: 12px;"/>
+                                    <h:inputText id="it_conversion_not_filtro_nroExpediente" 
+                                    value="#{clsRegistroObrasSrv.objFiltroBean.vcNroExpediente}"
+                                    onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;"
+                                    maxlength="8"
+                                    style="width:60px;"
+                                    />
+                                    </h:panelGrid>
+                                    <h:inputText id="it_conversion_not_filtro_anio_expediente" 
+                                    value="#{clsRegistroObrasSrv.objFiltroBean.vcAnioExpediente}"
+                                    onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;"
+                                    maxlength="4"
+                                    style="width:40px; margin-left:-10px;"
+                                    />  
+                                     <h:outputText id="ot_conversion_not_filtro_estado_documento" value="#{msgs['ot.conversion.not.resultado.estado']}" style="font-size: 12px;"/>
+                                        <h:selectOneMenu id="cb_conversion_not_filtro_estado_documento" required="true" width="200" value="#{clsRegistroObrasSrv.objFiltroBean.nuEstadoNotificacion}">
+                                        <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                        <f:selectItems value="#{clsRegistroObrasSrv.objFiltroBean.lstEstadoNotificacion}"/>
+                                    </h:selectOneMenu>
+                                    
+                                    <h:outputText id="ot_conversion_not_filtro_fechaFin" value="#{msgs['ot.conversion.not.filtro.fechaFin']}" style="font-size: 12px;" />
+                                    <rich:calendar id="cl_conversion_not_filtro_fechaFin" value="#{clsRegistroObrasSrv.objFiltroBean.dtFechaFin}"
+                                                   locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" cellHeight="22px" inputStyle="width:65px">
+                                    </rich:calendar>
+                                     
+                                                          
+                                </h:panelGrid>
+                                
+                            </h:panelGrid>
+                            <h:panelGrid columns="3">
+                               <a4j:commandButton id="bt_conversion_not_filtro_buscar" 
+                                                       value="#{msgs['bt.conversion.not.filtro.buscar']}"
+                                                      rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioBuscarDDAROB}"
+                                                      >
+                                                       
+                                        <a4j:support event="onclick"
+                                                     action="#{clsRegistroObrasSrv.doBuscarDocumentosProcesados}"
+                                                     reRender="dtb_conversion_not_resultados, ds_conversion_not_resultados"
+                                                     onsubmit="#{rich:component('panProcesando')}.show();"
+                                                     oncomplete="#{rich:component('panProcesando')}.hide();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                             <a4j:commandButton id="bt_conversion_not_filtro_limpiar" 
+                                                action="#{clsRegistroObrasSrv.doLimpiar}" 
+                                                oncomplete="#{rich:component('panProcesando')}.hide();"
+                                                value="Limpiar"
+                                                reRender="frmRenovacionMarca"
+                                                rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioBuscarDDAROB}"
+                                                >
+                                                       
+                                        <a4j:support event="onclick"
+                                                     onsubmit="#{rich:component('panProcesando')}.show();"
+                                                     >
+                                        </a4j:support>
+                                        
+                             </a4j:commandButton>
+                             <a4j:commandButton style="display:none" id="bt_conversion_not_filtro_enviar" 
+                                                       value="Enviar a casilla">
+                                                       
+                                        <a4j:support event="onclick"
+                                                     action="#{clsRegistroObrasSrv.doEnviarNotificacion}"
+                                                     >
+                                        </a4j:support>
+                                        
+                             </a4j:commandButton>
+                             </h:panelGrid>
+                            <rich:separator></rich:separator>
+                            <h:panelGrid id="pgConversion_acciones_not2" columns="6" 
+                            >
+                                
+                                <a4j:commandButton id="bt_conversion_not_accion_cargarWord2" 
+                                                   value="#{msgs['bt.conversion.not.accion.cargarWord']}"
+                                                   rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioCargarWorPdfDDAROB}"
+                                                   >
+                                                   
+                                    <a4j:support event="onclick"
+                                                 onsubmit="#{rich:component('panCargaDocumentos')}.show();">
+                                    </a4j:support>
+                                    
+                                </a4j:commandButton>
+                                
+                                
+                                <a4j:commandButton id="bt_conversion_not_accion_firmarDigitalmente2" 
+                                                   value="#{msgs['bt.conversion.not.accion.firmarDigitalmente']}"
+                                                   action="#{clsRegistroObrasSrv.doCrearNotificacion}"
+                                                   oncomplete="if(#{clsRegistroObrasSrv.doValidarCantArchFirma()}){
+                                                   document.getElementById('link').click();
+                                                   }else{
+                                                   #{rich:component('modMsgFirmaDigital')}.show();
+                                                   #{rich:component('panProcesando')}.hide();
+                                                   }
+                                                   "
+                                                    rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioFirmarDigitalmenteDDAROB}"
+                                                   >
+                                                   
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"  >
+                                    </a4j:support> 
+
+                                </a4j:commandButton>
+                                                                                       
+                                <a4j:commandButton id="bt_conversion_not_accion_notificarDocumentos2" 
+                                                   value="#{msgs['bt.conversion.not.accion.notificarDocumentos']}" 
+                                                   action="#{clsRegistroObrasSrv.doSeleccionarNotificables}"
+                                                   oncomplete="Richfaces.showModalPanel('modEnviarCasilla');#{rich:component('panProcesando')}.hide();"
+                                                   reRender="frmEnviarCasilla"
+                                                  rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioEnviarCasillaDDAROB}"
+                                                   >
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"
+                                                 >
+                                    </a4j:support>
+                                    
+                                </a4j:commandButton>
+                                <a4j:commandButton id="bt_conversion_not_accion_reiniar_proceso2"
+                                                   action="#{clsRegistroObrasSrv.doValidaReiniciable}"
+                                                   value="#{msgs['bt.conversion.not.accion.reiniciar.proceso']}" 
+                                                   oncomplete="#{rich:component('panReiniciarProceso')}.show();#{rich:component('panProcesando')}.hide()"
+                                                   reRender="frmReiniciarProceso"
+                                                   rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioReiniciarProcesoDDAROB}"
+                                                   >
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show()"
+                                                 >
+                                    </a4j:support>
+                                    
+                                </a4j:commandButton>
+                            </h:panelGrid>
+                            
+                            <!-- conversion resultados -->
+                            <h:panelGrid id="pgConversion_resultados">
+                               <center><h:outputText id="msg_carga_word" value="#{clsRegistroObrasSrv.vcMensajeCargaWord}" 
+                                  style="font-size: 12px; color:red;" rendered="#{clsRegistroObrasSrv.blMensajeCargaWord}"/> </center>
+                                <rich:dataTable id="dtb_conversion_not_resultados"
+                                            value="#{clsRegistroObrasSrv.lstExpedienteNotificable}" var="result"
+                                            width="100%" rows="50" rowKeyVar="row"
+                                            onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                                            onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+                                            >
+                                    <!--CABECERA INICIO-->
+                                    <f:facet name="header">
+                                    <rich:columnGroup>
+                                    <rich:column colspan="17" >
+                                     <h:outputText
+                                     style="font-size:9px" value="Seguimientos encontrados: #{clsRegistroObrasSrv.lstExpedienteNotificable.size()}"/>
+                                    </rich:column>
+                                    <rich:column breakBefore="true" >
+                                     <h:panelGrid columns="2"  >
+                                            <h:outputText id="ot_conversion_not_resultado_nro" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.nro']}"/>
+                                      <h:selectBooleanCheckbox id="cbxSelTodosDoc"
+                                                               value="#{clsRegistroObrasSrv.blCheckTable}"
+                                                               reRender="pgConversion_resultados"          
+                                                                         >
+                                                    <a4j:support event="onchange"
+                                                                 action="#{clsRegistroObrasSrv.doSeleccionarTodos}"
+                                                                 onsubmit="#{rich:component('panProcesando')}.show();"
+                                                                 oncomplete="#{rich:component('panProcesando')}.hide()"
+                                                                 reRender="dtb_conversion_not_resultados">
+                                                    </a4j:support>
+                                                     
+                                      </h:selectBooleanCheckbox>
+                                     </h:panelGrid>
+                                    </rich:column>
+                                    <rich:column>
+                                            <h:outputText id="ot_conversion_not_resultado_expediente" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.expediente']}"/>
+                                    </rich:column>
+                                    <rich:column>
+                                     
+                                            <h:outputText id="ot_conversion_not_resultado_anio" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.anio.expediente']}"/>
+                                      
+                                    </rich:column>
+                                    <rich:column style="width:40px;">
+                                    
+                                            <h:outputText id="ot_conversion_not_resultado_solicitante" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.area.expediente']}"/>
+                                     
+                                    </rich:column>
+                                    <rich:column style="width:40px;">
+                                    
+                                            <h:outputText id="ot_conversion_not_resultado_nro_resolucion" style="font-size:9px" value="Nro. Resolución"/>
+                                     
+                                    </rich:column>
+                                     <rich:column style="width:40px;">
+                                    
+                                            <h:outputText id="ot_conversion_not_resultado_sentido" style="font-size:9px" value="Sentido"/>
+                                     
+                                    </rich:column>
+                                    <rich:column  style="width:100px;">
+                                    
+                                            <h:outputText id="ot_conversion_not_resultado_tipoNotificacion" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.notificar.a']}"/>
+                                   
+                                    </rich:column>
+                                   
+                                    <rich:column style="width:100px;">
+                                     
+                                            <h:outputText id="ot_conversion_not_resultado_notificador" style="font-size:9px" value="Casilla Electrónica"/>
+                                        
+                                    </rich:column>
+                                    <rich:column style="width:200px;">
+                                     
+                                            <h:outputText id="ot_conversion_not_resultado_representante" style="font-size:9px" value="Título de obra"/>
+                                        
+                                    </rich:column>
+                                    
+                                    
+                                    <rich:column>
+                                       
+                                        <h:outputText id="ot_conversion_not_resultado_indice" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.indice']}"/>  
+                                      
+                                    </rich:column>
+                                    
+                                    <rich:column>
+                                       
+                                        <h:outputText id="ot_conversion_not_resultado_documento" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.documento']}"/>  
+                                      
+                                    </rich:column>
+                                    
+                                    <rich:column>
+                                    <h:panelGrid columns="1">
+                                    <h:outputText id="ot_conversion_not_resultado_imprimir" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.word']}"/>  
+                                   <a4j:commandLink
+                                                 action="#{clsRegistroObrasSrv.doDescargarWordZip}"
+                                                 oncomplete="#{rich:component('panProcesando')}.hide();document.getElementById('frmAuxiliar:btn_descargar_word_zip').click();"
+                                                 reRender="frmAuxiliar"
+                                                 >
+                                                  <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"
+                                                 >
+                                                  </a4j:support> 
+                                                    <h:graphicImage url="/imagenes/icoZipDescargar.svg" alt="Descargar word .zip" width="24"/>
+                                        </a4j:commandLink>
+                                     </h:panelGrid>   
+                                    </rich:column>
+                                    <rich:column>
+                                    <h:panelGrid columns="1">
+                                        <h:outputText id="ot_conversion_not_resultado_firmar" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.pdf']}"/>
+                                     <a4j:commandLink
+                                                 action="#{clsRegistroObrasSrv.doDescargarPDFSFZip}"
+                                                 oncomplete="#{rich:component('panProcesando')}.hide();document.getElementById('frmAuxiliar:btn_descargar_word_zip').click();"
+                                                 reRender="frmAuxiliar"
+                                                 >
+                                                  <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"
+                                                 >
+                                                  </a4j:support> 
+                                                    <h:graphicImage url="/imagenes/icoZipDescargar.svg" alt="Descargar word .zip" width="24"/>
+                                        </a4j:commandLink>
+                                        </h:panelGrid>
+                                    </rich:column>
+                                    <rich:column>
+                                       <h:panelGrid columns="1">
+                                        <h:outputText id="ot_conversion_not_resultado_firmado" style="font-size:9px; font-weight: 700;" value="#{msgs['ot.conversion.not.resultado.pdf.firmado']}"/>
+                                      <a4j:commandLink
+                                                 action="#{clsRegistroObrasSrv.doDescargarPDFFZip}"
+                                                 oncomplete="#{rich:component('panProcesando')}.hide();document.getElementById('frmAuxiliar:btn_descargar_word_zip').click();"
+                                                 reRender="frmAuxiliar"
+                                                 >
+                                                  <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"
+                                                 >
+                                                  </a4j:support> 
+                                                    <h:graphicImage url="/imagenes/icoZipDescargar.svg" alt="Descargar word .zip" width="24"/>
+                                        </a4j:commandLink>
+                                        </h:panelGrid>
+                                    </rich:column>
+                                    
+                                    <rich:column >
+                                    
+                                            <h:outputText id="ot_conversion_not_resultado_estado" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.estado']}"/>
+                                    
+                                    </rich:column>
+                                    
+                                    <rich:column >
+                                    
+                                            <h:outputText id="ot_conversion_not_resultado_respuesta" style="font-size:9px" value="#{msgs['ot.conversion.not.resultado.respuesta']}"/>
+                                    
+                                    </rich:column>
+                                    
+                                    </rich:columnGroup>
+                                    </f:facet>
+                                    <!--CABECERA FIN-->
+                                    <!--SUB TABLE INICIO --> 
+                                    
+                                     <rich:subTable var="record2"  style="width: 100%;"
+                                                        value="#{result.lstArchivoPorExpedienteNotificable}" rowKeyVar="row2" id="dtb_sub_conversion_not_resultados">
+                                       <!--col_1-->
+                                    <rich:column rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                    <h:panelGrid columns="3"  >
+                                        <h:outputText value="#{row + 1}"/>
+                                        <h:selectBooleanCheckbox class="cbInd" value="#{result.blIndSeleccion}"
+                                        reRender="dtb_conversion_not_resultados"
+                                        >
+                                        <a4j:support event="onchange"
+                                        action="#{clsRegistroObrasSrv.doSeleccionarItem(result)}"
+                                         />
+                                        </h:selectBooleanCheckbox>
+                                       <h:graphicImage url="/imagenes/img_item.png"/> 
+                                    </h:panelGrid>
+                                    </rich:column>
+                                    <!--col_3-->
+                                     <rich:column rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                        <h:outputText value="#{result.nuIdExpediente}"/>
+                                    </rich:column>
+                                    <!--col_4-->
+                                    <rich:column rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                        <h:outputText value="#{result.nuAnioExpediente}"/>
+                                    </rich:column>
+                                    <!--col_5-->
+                                    <rich:column rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                        <h:outputText value="#{result.vcAreaExpediente}"/>
+                                    </rich:column>
+                                    
+                                    <rich:column rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                        <h:outputText value="#{result.vcNroResolucion}"/>
+                                    </rich:column>
+                                    
+                                    <rich:column  rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                        <h:outputText value="#{result.vcDescSentido}"/>
+                                    </rich:column>
+                                    <!--col_6-->
+                                    <rich:column  rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                        <h:outputText value="#{result.vcSolicitantes}"/> 
+                                    </rich:column>
+                                    
+                                    <!--col_8-->
+                                    <rich:column  rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                        <h:outputText style="font-size:9px" value="#{result.vcCasillaElectronica}" />
+                                    </rich:column>
+                                    
+                                    <rich:column  rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                        <h:outputText style="font-size:9px" value="#{result.vcTituloObra}" />
+                                    </rich:column>
+                                    <!--DOCUMENTOS WORD Y PDF INICIO-->
+                                    <rich:column style="text-align:center; font-weight: 700; #{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}" >
+                                     <h:outputText style="font-size:9px" value="#{row2 + 1}"  />
+                                     </rich:column>
+                                     
+                                     <rich:column style="text-align:center; #{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}" >
+                                     <h:outputText style="font-size:9px" value="#{record2.vcDesTipoDocumento}"/>
+                                     </rich:column>
+                                     
+                                     <rich:column style="text-align:center; #{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}" >
+                                     
+                                     <h:commandLink disabled="#{result.nuEstadoNotificacion==4 or result.nuEstadoNotificacion==5 ? 'true':'false'}" 
+                                     rendered="#{record2.nuIdTipoDocumento==10}"
+                                     action="#{clsRegistroObrasSrv.doDescargarArchivo(record2.vcRutaWord,record2.vcNombreWord, record2.vcExtensionWord, record2.vcNombreExterno)}"
+                                                 >
+                                      <h:graphicImage url="#{record2.nuIdTipoDocumento!=10  ?  '/imagenes/btn_word_disable.png' : record2.nuIndWord == 1?'/imagenes/btn_word.png': (record2.nuIndWord == 2?'/imagenes/btn_word_m.png':(record2.nuIndWord == 3?'/imagenes/btn_word_disable.png':''))}"/>
+                                     </h:commandLink>
+                                     
+                                     </rich:column>
+                                     
+                                      <rich:column style="text-align:center; #{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}" >
+                                      <!--otros documentos-->
+                                      <h:commandLink  disabled="#{record2.nuIndPDF == 1}" 
+                                      action="#{clsRegistroObrasSrv.doDescargarArchivo(record2.vcRutaPdfSf,record2.vcNombrePdfSf, record2.vcExtensionPdfSf, record2.vcNombreExterno)}"
+                                      rendered="#{record2.nuIdTipoDocumento!=7}"
+                                      >
+                                            <h:graphicImage url="#{record2.nuIndPDF != 1 ?'/imagenes/icoPdfSf.svg':'/imagenes/icoPdfSfDesable.svg'}"/>
+                                      </h:commandLink>
+                                      
+                                      <!--sola para esquela-->
+                                      <h:commandLink disabled="#{record2.nuIndPDF == 1}" 
+                                      action="#{clsRegistroObrasSrv.doVerEsquelaTemporal(row)}" target="ESQUELA" rendered="#{record2.nuIdTipoDocumento==7}" >
+                                            <h:graphicImage url="#{record2.nuIndPDF != 1 ?'/imagenes/icoPdfSf.svg':'/imagenes/icoPdfSfDesable.svg'}"/>
+                                           
+                                      </h:commandLink>
+                                      
+                                      </rich:column>
+                                      <rich:column style="text-align:center; #{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                    <!--tener en cuenta para la esquela-->
+                                     <h:commandLink action="#{clsRegistroObrasSrv.doDescargarArchivo(record2.vcRutaPdfF,record2.vcNombrePdfF, record2.vcExtensionPdfF, record2.vcNombreExterno)}"
+                                     >
+                                            <h:graphicImage url="#{record2.nuIndPDF == 1?'/imagenes/icoPdfF.svg':''}"/>
+                                     </h:commandLink>
+                            
+                                      </rich:column>
+                                    <!--DOCUMENTOS WORD Y PDF FIN-->
+                                     <rich:column rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" 
+                                     style="text-align:center; #{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}"> 
+                                         <h:panelGrid columns="2" >
+                                        <h:graphicImage url="#{result.nuEstadoNotificacion == -1?'/imagenes/img_status_0.svg':result.nuEstadoNotificacion == 2 ?'/imagenes/img_status_25.svg':result.nuEstadoNotificacion == 4?'/imagenes/img_status_100.svg':result.nuEstadoNotificacion == 5?'/imagenes/img_status_enviado.svg':''}"/>
+                                         
+                                         <a4j:commandLink action="#{clsRegistroObrasSrv.doMostrarDetalleNotificacion}"
+                                                 oncomplete="Richfaces.showModalPanel('modDetalleNotificacion');#{rich:component('panProcesando')}.hide();"
+                                                 reRender="frmDetalleNotificacion"
+                                                 >
+                                                    <f:setPropertyActionListener  
+                                                    value="#{result.vcNroAccion}"
+                                                    target="#{clsRegistroObrasSrv.vcNroAccion}" 
+                                                    immediate="true"
+                                                    oncomplete="#{rich:component('panProcesando')}.hide();"
+                                                    onclick="#{rich:component('panProcesando')}.show();"
+                                                    />
+                                                    <h:graphicImage url="#{result.lstAnexosExpediteNotificable.size()==0? '/imagenes/icoInfo_1_32.svg' : result.lstAnexosExpediteNotificable.size()>0 ? '/imagenes/icoInfo_2_32.svg' : '/imagenes/icoInfo_1_32.png' }" alt="Detalle de notificacion" width="24"/>
+                                        </a4j:commandLink>
+                                         </h:panelGrid>
+                                    </rich:column>
+                                    
+                                    <rich:column  rowspan="#{result.lstArchivoPorExpedienteNotificable.size()}" rendered="#{row2 eq 0}" style="#{result.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                                       <center>
+                                       <a4j:commandLink action="#{clsRegistroObrasSrv.doRespuestaNotificacion}"
+                                                 oncomplete="Richfaces.showModalPanel('modRespuestaNotificacion');#{rich:component('panProcesando')}.hide();"
+                                                 reRender="frmRespuestaNotificacion, frmRenovacionMarca"
+                                                 rendered="#{result.nuIdRespuestaNotf!=0 ? 'true': 'false'}"
+                                                 >
+                                                    <f:setPropertyActionListener  
+                                                    value="#{result.vcNroNotificacion}"
+                                                    target="#{clsRegistroObrasSrv.objRespuestaNotBean.vcNumNotificacion}" 
+                                                    immediate="true"
+                                                    onclick="#{rich:component('panProcesando')}.show();"
+                                                    />
+                                                    <f:setPropertyActionListener  
+                                                    value="#{result.nuIdRespuestaNotf}"
+                                                    target="#{clsRegistroObrasSrv.objRespuestaNotBean.nuIdRespuestaNotf}" 
+                                                    immediate="true"
+                                                    onclick="#{rich:component('panProcesando')}.show();"
+                                                    />
+                                                    <f:setPropertyActionListener  
+                                                    value="#{result.nuEstadoRecepcion}"
+                                                    target="#{clsRegistroObrasSrv.objRespuestaNotBean.nuEstadoRecepcion}" 
+                                                    immediate="true"
+                                                    onclick="#{rich:component('panProcesando')}.show();"
+                                                    />
+                                                    <h:graphicImage url="#{result.nuEstadoRecepcion==4? '/imagenes/icoRecepcionado.svg': '/imagenes/icoRecepcionar.svg' }" 
+                                                    alt="Respuesta de notificación" width="24"/>
+                                        </a4j:commandLink>
+                                        </center>
+                                    </rich:column>
+                                    </rich:subTable>
+                                    
+                                    
+                                   
+                                    <!--SUB TABLE FIN -->
+                                </rich:dataTable>
+                             <f:facet name="footer">
+                                    <rich:datascroller id="ds_conversion_not_resultados" for="dtb_conversion_not_resultados" maxPages="20" width="100%" rendered="true"/>
+                              </f:facet>
+                           
+                            </h:panelGrid>
+                            
+                            <rich:separator></rich:separator>
+                            <!-- conversion acciones -->
+                            <h:panelGrid id="pgConversion_acciones">
+                                <!-- conversion acciones resoluciones -->
+                                <!-- conversion acciones certificados -->
+                                <!-- conversion acciones notificaciones -->
+                                    <h:panelGrid id="pgConversion_acciones_not1" columns="6" >
+                                
+                                <a4j:commandButton id="bt_conversion_not_accion_cargarWord1" 
+                                                   value="#{msgs['bt.conversion.not.accion.cargarWord']}"
+                                                   rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioCargarWorPdfDDAROB}"
+                                                  >
+                                                   
+                                    <a4j:support event="onclick"
+                                                 onsubmit="#{rich:component('panCargaDocumentos')}.show();">
+                                    </a4j:support>
+                                    
+                                </a4j:commandButton>
+                                
+                                
+                                  <a4j:commandButton id="bt_conversion_not_accion_firmarDigitalmente1" 
+                                                   value="#{msgs['bt.conversion.not.accion.firmarDigitalmente']}"
+                                                   action="#{clsRegistroObrasSrv.doCrearNotificacion}"
+                                                   oncomplete="if(#{clsRegistroObrasSrv.doValidarCantArchFirma()}){
+                                                   document.getElementById('link').click();
+                                                   }else{
+                                                   #{rich:component('modMsgFirmaDigital')}.show();
+                                                   #{rich:component('panProcesando')}.hide();
+                                                   }
+                                                   "
+                                                   rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioFirmarDigitalmenteDDAROB}"
+                                                   >
+                                                   
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"  >
+                                    </a4j:support> 
+
+                                </a4j:commandButton>
+                                                                                       
+                                <a4j:commandButton id="bt_conversion_not_accion_notificarDocumentos1" 
+                                                   value="#{msgs['bt.conversion.not.accion.notificarDocumentos']}" 
+                                                   action="#{clsRegistroObrasSrv.doSeleccionarNotificables}"
+                                                   oncomplete="Richfaces.showModalPanel('modEnviarCasilla');#{rich:component('panProcesando')}.hide();"
+                                                   reRender="frmEnviarCasilla"
+                                                  rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioEnviarCasillaDDAROB}"
+                                                   >
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"
+                                                 >
+                                    </a4j:support>
+                                    
+                                </a4j:commandButton>
+                                <a4j:commandButton id="bt_conversion_not_accion_reiniar_proceso1"
+                                                   action="#{clsRegistroObrasSrv.doValidaReiniciable}"
+                                                   value="#{msgs['bt.conversion.not.accion.reiniciar.proceso']}" 
+                                                   oncomplete="#{rich:component('panReiniciarProceso')}.show();#{rich:component('panProcesando')}.hide()"
+                                                   reRender="frmReiniciarProceso"
+                                                   rendered="#{clsRegistroObrasSrv.objPermiso.blPrivilegioReiniciarProcesoDDAROB}"
+                                                   >
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show()"
+                                                 >
+                                    </a4j:support>
+                                    
+                                </a4j:commandButton>
+                            </h:panelGrid>
+                          
+                                <!-- conversion acciones general -->
+                                <h:panelGrid id="pgConversion_acciones_general">
+                                
+                                    <a4j:commandButton id="btnIniciar" 
+                                                       style="display:none;" 
+                                                       value="Iniciar"
+                                                       onclick="myVar = setInterval(fn_verificarEstado, 5000);javaScript:Richfaces.showModalPanel('panProcesando');">
+                                                       
+                                    </a4j:commandButton>
+                                    
+                                    <a4j:commandButton id="btnDetener" 
+                                                       style="display:none;"
+                                                       value="Detener"
+                                                       onclick="clearTimeout(myVar);
+                                                                javaScript:Richfaces.hideModalPanel('panProcesando');
+                                                                alert('Se concluyó el proceso de firma.');
+                                                                fn_seleccionarTablaResultados(#{clsRegistroObrasSrv.objFiltroBean.nuIDTipoAplicacion});
+                                                                "
+                                                        oncomplete="document.getElementById('frmRenovacionMarca:bt_conversion_not_filtro_buscar').click();"
+                                                                >
+                                    </a4j:commandButton>
+                                   
+                                    <a4j:commandButton id="btnVerificarFirma"
+                                                       style="display:none;"
+                                                       value="Verificar Ahora!"
+                                                       action="#{clsRegistroObrasSrv.objFirmaDigital.doVerificarProcesoFirma(clsRegistroObrasSrv.objFiltroBean)}">
+                                                       
+                                        <a4j:support event="onclick" 
+                                                     oncomplete="if(#{clsRegistroObrasSrv.objFirmaDigital.nuEstadoTicket != 1}){javaScript:document.getElementById('frmRenovacionMarca:btnDetener').click();}">
+                                                     
+                                        </a4j:support>
+                                        
+                                    </a4j:commandButton>
+                                        
+                                    <a4j:commandButton id="btnDescargarPDF" 
+                                                       style="display:none;"
+                                                       image="/imagenes/descargarPDF.png">
+                                                       
+                                        <a4j:support event="onclick" action="#{clsRegistroObrasSrv.doDecargarPDFcm}"
+                                                     onsubmit="#{rich:component('panProcesando')}.show();"
+                                                     oncomplete="#{rich:component('panProcesando')}.hide();">
+                                        </a4j:support>
+                                        
+                                    </a4j:commandButton>
+                                    <h:commandLink id="cml_conversion_exportarExcel"
+                                                   style="margin-right:20px;display:none"
+                                                   action="#{clsRegistroObrasSrv.doExportarExcel}">
+                                        <h:graphicImage url="/imagenes/icoExcel.PNG" style="margin-right:20px;"/>
+                                    </h:commandLink>
+                                    <a id="link" style="display:none;"
+                                           href="${facesContext.externalContext.requestContextPath}/procesarFirmaRegObraDDA"
+                                           target="IFRAMECARGAFIRMA">Modo redireccion a Servlet&nbsp;&nbsp;</a>
+                                </h:panelGrid>
+                                
+                            </h:panelGrid>
+                            
+                        </a4j:form>
+           </rich:panel>             
+            <iframe src="" id="IFRAMECARGAFIRMA" name="IFRAMECARGAFIRMA" style="display:none;"></iframe>
+        </rich:panel>
+        
+        <!--los modales se encuentra en /modal/ del proyecto-->
+            <ui:include src="modal/registro_obras/pgw_modalLoadProcesando.xhtml"/>  
+            <ui:include src="modal/registro_obras/pgw_modalLoadGenerandoDocumentos.xhtml"/>  
+            <ui:include src="modal/registro_obras/pgw_modalCargarDocumentos.xhtml"/>    
+            <ui:include src="modal/registro_obras/pgw_modalDetalleNotificacion.xhtml"/>    
+            <ui:include src="modal/registro_obras/pgw_modalVistaPrevia.xhtml"/>    
+            <ui:include src="modal/registro_obras/pgw_modalEnviarCasilla.xhtml"/>    
+            <ui:include src="modal/registro_obras/pgw_modalMsgFirmaDigital.xhtml"/>
+            <ui:include src="modal/registro_obras/pgw_modalRespuestaNot.xhtml"/>
+            <ui:include src="modal/registro_obras/pgw_modalConfirmarReiniciar.xhtml"/>
+            <ui:include src="modal/registro_obras/pgw_modalVolverGenerar.xhtml"/>
+    </body>
+</ui:composition>

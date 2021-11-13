@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+  <rich:modalPanel id="modAtenuantesAgravantes" autosized="true" width="500">
+            <f:facet name="controls">
+                <h:panelGroup>
+                    <h:graphicImage id="hidePanelModAtenuantesAgravantes" value="/imagenes/btnCerrar.png"/>
+                    <rich:componentControl for="modAtenuantesAgravantes" attachTo="hidePanelModAtenuantesAgravantes" operation="hide"
+                                           event="onclick"/>
+                </h:panelGroup>
+            </f:facet>
+            <f:facet name="header">
+                <h:outputText value="Determinación de la Multa - Atenuantes y Agravantes (F)"/>
+            </f:facet>
+            <a4j:form id="frmEnviarCasilla" ajaxSubmit="true">
+                <h:panelGrid id="pgBusqueda_filtros" columns="3" cellpadding="1">
+                    <h:outputText id="ot_cal_mbase_agravantes" style="font-weight: 700; font-size:12px;" width="200"
+                            value="#{msgs['ot.aten_agrav.agravantes']}"/>
+                    <h:outputText value=""/>
+                    <h:outputText value=""/>
+
+                    <h:outputText id="ot_cal_mbase_agrav_f1" style="font-size:12px; display:block; width:300px;"
+                    value="#{msgs['ot.aten_agrav.agrav.f1']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_agrav_f1" 
+                                    required="true" 
+                                    style="display:block;width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF1Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF1}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f1_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="300"
+                        id="ot_cal_mbase_agrav_f1_val"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF1Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF1Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_agrav_f2" style="font-size:12px; display:block; width:300px;"
+                    value="#{msgs['ot.aten_agrav.agrav.f2']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_agrav_f2" 
+                                    required="true" 
+                                    style="display:block;width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF2Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF2}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f2_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="300"
+                        id="ot_cal_mbase_agrav_f2_val"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF2Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF2Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_agrav_f3" style="font-size:12px; display:block; width:300px;"
+                    value="#{msgs['ot.aten_agrav.agrav.f3']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_agrav_f3" 
+                                    required="true" 
+                                    style="display:block;width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF3Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF3}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f3_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="300"
+                        id="ot_cal_mbase_agrav_f3_val"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF3Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF3Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_agrav_f4" style="font-size:12px; display:block; width:300px;"
+                    value="#{msgs['ot.aten_agrav.agrav.f4']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_agrav_f4" 
+                                    required="true" 
+                                    style="display:block;width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF4Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF4}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f4_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="300"
+                        id="ot_cal_mbase_agrav_f4_val"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF4Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF4Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_agrav_f5" style="font-size:12px; display:block; width:300px;"
+                    value="#{msgs['ot.aten_agrav.agrav.f5']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_agrav_f5" 
+                                    required="true" 
+                                    style="display:block;width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF5Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF5}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f5_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="300"
+                        id="ot_cal_mbase_agrav_f5_val"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF5Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF5Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_agrav_f6" style="font-size:12px; display:block; width:300px;"
+                    value="#{msgs['ot.aten_agrav.agrav.f6']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_agrav_f6" 
+                                    required="true" 
+                                    style="display:block;width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF6Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF6}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f6_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="300"
+                        id="ot_cal_mbase_agrav_f6_val"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF6Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF6Val}" columnClasses="input-width-50"/>
+                    
+                </h:panelGrid>
+                    <h:panelGrid id="pgBusqueda_filtrosag" columns="4" cellpadding="1">
+                        <h:outputText id="ot_cal_mbase_agrav_f01" style="font-size:12px;" width="200"
+                            value="#{msgs['ot.aten_agrav.agrav.f01']}"/>
+                        <h:inputText 
+                            style="display:block;width:600px"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF01Criterio}" 
+                            columnClasses="input-width-150"
+                            id="it_cal_mbase_agrav_f01_val"/>
+                        <h:selectOneMenu id="cb_cal_mbase_agrav_f01" 
+                                        required="true" 
+                                        style="display:block;width:100px"
+                                        autoWidth="false"
+                                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF01Val}">
+                            <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                            <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF01}"/>
+                            <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide()"
+                            reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f01_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                        </h:selectOneMenu>
+                        <h:outputText 
+                            width="300"
+                            id="ot_cal_mbase_agrav_f01_val"
+                            readonly="true"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF01Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF01Val}" columnClasses="input-width-50"/>
+                        
+
+                        <h:outputText id="ot_cal_mbase_agrav_f02" style="font-size:12px;" width="200"
+                            value="#{msgs['ot.aten_agrav.agrav.f02']}"/>
+                        <h:inputText 
+                            style="display:block;width:600px"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF02Criterio}" 
+                            columnClasses="input-width-150"
+                            id="it_cal_mbase_agrav_f02_val"/>
+                        <h:selectOneMenu id="cb_cal_mbase_agrav_f02" 
+                                        required="true" 
+                                        style="display:block;width:100px"
+                                        autoWidth="false"
+                                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF02Val}">
+                            <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                            <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF02}"/>
+                            <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide()"
+                            reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f02_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                        </h:selectOneMenu>
+                        <h:outputText 
+                            width="300"
+                            id="ot_cal_mbase_agrav_f02_val"
+                            readonly="true"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF02Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF02Val}" columnClasses="input-width-50"/>
+                        
+
+                        <h:outputText id="ot_cal_mbase_agrav_f03" style="font-size:12px;" width="200"
+                            value="#{msgs['ot.aten_agrav.agrav.f03']}"/>
+                        <h:inputText 
+                            style="display:block;width:600px"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF03Criterio}" 
+                            columnClasses="input-width-150" 
+                            id="it_cal_mbase_agrav_f03_val"/>
+                        <h:selectOneMenu id="cb_cal_mbase_agrav_f03" 
+                                        required="true" 
+                                        style="display:block;width:100px"
+                                        autoWidth="false"
+                                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF03Val}">
+                            <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                            <f:selectItems value="#{clsCalculoMultaSrv.lstAgravF03}"/>
+                            <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide()"
+                            reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f03_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                        </h:selectOneMenu>
+                        <h:outputText 
+                            width="300"
+                            id="ot_cal_mbase_agrav_f03_val"
+                            readonly="true"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF03Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF03Val}" columnClasses="input-width-50"/>
+                        
+                </h:panelGrid>
+                <h:panelGrid id="pgBusqueda_filtrosat1" columns="3" cellpadding="1">
+                    <h:outputText id="ot_cal_mbase_atenuantes" style="font-weight: 700; font-size:12px;" width="200"
+                            value="#{msgs['ot.aten_agrav.atenuantes']}"/>
+                    <h:outputText value=""/>
+                    <h:outputText value=""/>
+
+                    <h:outputText id="ot_cal_mbase_aten_f7" 
+                    style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF7}; width:300px;"
+                    value="#{msgs['ot.aten_agrav.aten.f7']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_aten_f7" 
+                                    required="true" 
+                                    style="display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF7};width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF7Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAtenF7}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f7_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="50"
+                        id="ot_cal_mbase_agrav_f7_val"
+                        readonly="true"
+                        style="display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF7}"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF7Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF7Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_aten_f8" 
+                    style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF8}; width:300px;"
+                    value="#{msgs['ot.aten_agrav.aten.f8']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_aten_f8" 
+                                    required="true" 
+                                    style="display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF8};width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF8Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAtenF8}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f8_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="50"
+                        id="ot_cal_mbase_agrav_f8_val"
+                        readonly="true"
+                        style="display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF8}"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF8Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF8Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_aten_f9" style="font-size:12px; display:block; width:300px;"
+                    value="#{msgs['ot.aten_agrav.aten.f9']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_aten_f9" 
+                                    required="true" 
+                                    style="display:block;width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF9Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAtenF9}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f9_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="50"
+                        id="ot_cal_mbase_agrav_f9_val"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF9Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF9Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_aten_f10" 
+                    style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF10}; width:300px;"
+                    value="#{msgs['ot.aten_agrav.aten.f10']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_aten_f10" 
+                                    required="true" 
+                                    style="display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF10};width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF10Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAtenF10}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f10_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="50"
+                        id="ot_cal_mbase_agrav_f10_val"
+                        readonly="true"
+                        style="display:#{clsCalculoMultaSrv.vcMuestraAtenuanteF10}"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF10Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF10Val}" columnClasses="input-width-50"/>
+                    
+
+                    <h:outputText id="ot_cal_mbase_aten_f11" style="font-size:12px; display:block; width:300px;"
+                    value="#{msgs['ot.aten_agrav.aten.f11']}"/>
+                    <h:selectOneMenu id="cb_cal_mbase_aten_f11" 
+                                    required="true" 
+                                    style="display:block;width:430px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcF11Val}">
+                        <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstAtenF11}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmEnviarCasilla, ot_cal_mbase_agrav_f11_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                    </h:selectOneMenu>
+                    <h:outputText 
+                        width="50"
+                        id="ot_cal_mbase_agrav_f11_val"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF11Val == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF11Val}" columnClasses="input-width-50"/>
+                    
+
+                </h:panelGrid>
+                    <h:panelGrid id="pgBusqueda_filtrosat" columns="4" cellpadding="1">
+                        <h:outputText id="ot_cal_mbase_aten_f01" style="font-size:12px;" width="200"
+                            value="#{msgs['ot.aten_agrav.aten.f01']}"/>
+                        <h:inputText 
+                            style="display:block;width:600px"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF01DctoCriterio}" 
+                            columnClasses="input-width-50"
+                            id="it_cal_mbase_aten_f01_val"/>
+                        <h:selectOneMenu id="cb_cal_mbase_aten_f01" 
+                                        required="true" 
+                                        style="display:block;width:100px"
+                                        autoWidth="false"
+                                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF01DctoVal}">
+                            <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                            <f:selectItems value="#{clsCalculoMultaSrv.lstAtenF01}"/>
+                            <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide()"
+                            reRender="frmEnviarCasilla, ot_cal_mbase_aten_f01_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                        </h:selectOneMenu>
+                        <h:outputText 
+                            style="display:block;width:20px"
+                            id="ot_cal_mbase_aten_f01_val"
+                            readonly="true"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF01DctoVal == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF01DctoVal}" columnClasses="input-width-50"/>
+
+
+                        <h:outputText id="ot_cal_mbase_aten_f02" style="font-size:12px;" width="200"
+                            value="#{msgs['ot.aten_agrav.aten.f02']}"/>
+                        <h:inputText 
+                            style="display:block;width:600px"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF02DctoCriterio}" 
+                            columnClasses="input-width-50" 
+                            id="it_cal_mbase_aten_f02_val"/>
+                        <h:selectOneMenu id="cb_cal_mbase_aten_f02" 
+                                        required="true" 
+                                        style="display:block;width:100px"
+                                        autoWidth="false"
+                                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF02DctoVal}">
+                            <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                            <f:selectItems value="#{clsCalculoMultaSrv.lstAtenF02}"/>
+                            <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide()"
+                            reRender="frmEnviarCasilla, ot_cal_mbase_aten_f02_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                        </h:selectOneMenu>
+                        <h:outputText 
+                            width="50"
+                            id="ot_cal_mbase_aten_f02_val"
+                            readonly="true"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF02DctoVal == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF02DctoVal}" columnClasses="input-width-50"/>
+
+
+                        <h:outputText id="ot_cal_mbase_aten_f03" style="font-size:12px;" width="200"
+                            value="#{msgs['ot.aten_agrav.aten.f03']}"/>
+                        <h:inputText 
+                            style="display:block;width:600px"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF03DctoCriterio}" 
+                            columnClasses="input-width-50"
+                            id="it_cal_mbase_aten_f03_val"/>
+                        <h:selectOneMenu id="cb_cal_mbase_aten_f03" 
+                                        required="true" 
+                                        style="display:block;width:100px"
+                                        autoWidth="false"
+                                        value="#{clsCalculoMultaSrv.objFiltroBean.vcF03DctoVal}">
+                            <f:selectItem itemValue="No" itemLabel="Seleccionar sólo si aplica"/>
+                            <f:selectItems value="#{clsCalculoMultaSrv.lstAtenF03}"/>
+                            <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doSeleccionarF()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide()"
+                            reRender="frmEnviarCasilla, ot_cal_mbase_aten_f03_val, it_cal_mbase_valincrementos, it_cal_mbase_valdescuentos, it_cal_mbase_valfactorAA" />
+                        </h:selectOneMenu>
+                        <h:outputText 
+                            width="50"
+                            id="ot_cal_mbase_aten_f03_val"
+                            readonly="true"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.vcF03DctoVal == 'No'? 0 : clsCalculoMultaSrv.objFiltroBean.vcF03DctoVal}" columnClasses="input-width-50"/>
+                    </h:panelGrid>
+
+                
+                <rich:separator height="2" style="margin-top:8px;margin-bottom:8px;"></rich:separator>
+
+                <h:panelGrid id="pgBusqueda_filtros2" columns="2" cellpading="1">  
+                    <h:outputText id="ot_cal_mbase_incrementos" style="font-size:12px; display:block; width:300px;"
+                                    value="#{msgs['ot.aten_agrav.calculos.incrementos']}"/>        
+                    <h:inputText 
+                        width="300"
+                        id="it_cal_mbase_valincrementos"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuValorIncrementoAA}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mbase_mbase_descuentos" style="font-size:12px;"
+                                    value="#{msgs['ot.aten_agrav.calculos.descuentos']}"/>        
+                    <h:inputText 
+                        width="300"
+                        id="it_cal_mbase_valdescuentos"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuValorDescuentoAA}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mbase_mbase_factorAA" style="font-size:12px;"
+                                    value="#{msgs['ot.aten_agrav.calculos.factores']}"/>        
+                    <h:inputText 
+                        width="300"
+                        id="it_cal_mbase_valfactorAA"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuValorFactorAA}" columnClasses="input-width-50"/>
+
+                    <h:outputText value=""/>
+                    <a4j:commandButton id="bt_cal_mpre" 
+                        value="#{msgs['bt.aten_agrav.calculos.calcmb']}" 
+                        action="#{clsCalculoMultaSrv.doCalcularMpreliminar}"
+                        oncomplete="Richfaces.showModalPanel('modMPreliminar');#{rich:component('panProcesando')}.hide();"
+                        reRender="frmMultaPreliminar">
+                            <a4j:support event="onclick" 
+                                        onsubmit="#{rich:component('panProcesando')}.show();">
+                            </a4j:support>
+                    </a4j:commandButton>
+                </h:panelGrid>
+
+            </a4j:form>
+        </rich:modalPanel>
+         
+    </body>
+</html>

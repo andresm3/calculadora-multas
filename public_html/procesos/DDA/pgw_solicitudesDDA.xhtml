@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+        <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jsMain.js"></script>
+        <link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/main.css"/>
+        <link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/notificacionMarca.css?v=0004"/>
+        <title>CONFIR - Generación de Documentos</title>
+<script type='text/javascript'>
+	document.oncontextmenu = function(){return false}
+</script>
+    </head>
+    <body   >
+            <h:form id="frmAuxiliar" >
+                 <h:commandButton id="btn_descargar_archivo_modal" 
+                                   style="display:none;"
+                                   action="#{clsSolicitudesDDASrv.doDescargar}" >
+                </h:commandButton>
+       </h:form>
+        <rich:panel>
+        <rich:panel>
+        <f:facet name="header" styleClass="header-css-indecopi">
+                    <h:outputText value="Filtros"  />
+        </f:facet>
+        <a4j:form id="frm_filtros_solicitudes" ajaxsubmit="true">
+        <h:panelGrid id="pg_filtros" columns="1" >
+        <h:panelGrid id="pg_filtros_campos" columns="6" >
+        <h:outputText id="ot_fecha_inicio" value="Fecha de Inicio" style="font-size: 12px;"/>
+        <rich:calendar id="cl_fecha_inicio" value="#{clsSolicitudesDDASrv.objFiltroSolicitudes.dtFechaInicio}"
+                       locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" cellHeight="22px" inputStyle="width:65px">
+        </rich:calendar>
+        
+        <h:outputText id="ot_fecha_fin" value="Fecha de fin" style="font-size: 12px;"/>
+        <rich:calendar id="cl_fecha_fin" value="#{clsSolicitudesDDASrv.objFiltroSolicitudes.dtFechaFin}"
+                       locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" cellHeight="22px" inputStyle="width:65px">
+        </rich:calendar>
+        <h:panelGrid columns="2">
+        <h:outputText id="ot_nro_expediente" 
+        value="Nro. Expediente: " style="font-size: 12px;"/>
+        <h:inputText id="it_nro_expediente" 
+        value="#{clsSolicitudesDDASrv.objFiltroSolicitudes.vcNroExpediente}"
+        onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;"
+        maxlength="8"
+        style="width:60px;"
+        />
+        </h:panelGrid>
+        <h:inputText id="it_conversion_not_filtro_anio_expediente" 
+                                    value="#{clsSolicitudesDDASrv.objFiltroSolicitudes.vcAnioExpediente}"
+                                    onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;"
+                                    maxlength="4"
+                                    style="width:40px; margin-left:-12px;"
+                                    />      
+        </h:panelGrid>                             
+        <h:panelGrid id="pg_filtros_acciones" columns="2" >
+
+        </h:panelGrid>
+        </h:panelGrid>
+        <center>
+                <a4j:commandButton id="bt_buscar_solicitud" 
+                               value="Buscar"
+                               >
+                               <a4j:support event="onclick"
+                                            reRender="frm_resultados, dtb_solicitudes"
+                                            action="#{clsSolicitudesDDASrv.doBuscarSolicitud}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();">
+                               </a4j:support>
+       </a4j:commandButton>
+       <a4j:commandButton id="bt_limpiar_busqueda" 
+                             value="Limpiar" style="margin-left:10px;">
+                             <a4j:support event="onclick"
+                                            reRender="frm_resultados, dtb_solicitudes"
+                                            action="#{clsSolicitudesDDASrv.doInializar}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();"
+                                            >
+                               </a4j:support>
+       </a4j:commandButton>
+        </center>
+        </a4j:form>
+        </rich:panel>
+        <br></br>
+        <rich:panel>
+        <a4j:form id="frm_resultados" ajaxsubmit="true">
+        <center>
+        <h:outputText id="sol_mensaje_error" value="#{clsSolicitudesDDASrv.vcMensajeError}" 
+                                  style="font-size: 12px; color:red;" rendered="#{clsSolicitudesDDASrv.blMensaje}"/> </center>
+         <rich:dataTable id="dtb_solicitudes"
+                                            value="#{clsSolicitudesDDASrv.lstSolicitudes}" 
+                                            var="record"
+                                            width="100%" rows="20" rowKeyVar="row"
+                                            onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                                            onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+                                            >
+                <f:facet name="header">
+                <rich:columnGroup>
+               
+                <rich:column >
+                <h:outputText value="#"/>   
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Expediente"/>   
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Solicitante"/>   
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Tipo de obra"/>   
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Titulo Obra"/> 
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Doc. de Identidad"/> 
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Correo"/> 
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Fecha y Hora Presentacion"/> 
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Fecha vencimiento"/> 
+                </rich:column>
+                 <rich:column >
+                <h:outputText value="Detalle Solicitud"/> 
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Ver Solicitud"/> 
+                </rich:column>
+                </rich:columnGroup>
+                </f:facet>
+                
+                <rich:column  >
+                <h:outputText style="font-size:9px" value="#{row + 1}"  />
+                </rich:column>
+                <rich:column  >
+                <h:outputText  value="#{record.vcIdExpediente}"  />
+                </rich:column>
+                <rich:column  >
+                <h:outputText value="#{record.vcNomApe}"  />
+                </rich:column>
+                 <rich:column  >
+                <h:outputText  value="#{record.vcTipoDesSolcitud}"  />
+                </rich:column>
+                <rich:column  >
+                <h:outputText  value="#{record.vcTituloObra}"  />
+                </rich:column>
+                <rich:column  >
+                <h:outputText value="#{record.vcDocIdentidad}"  />
+                </rich:column>
+                <rich:column  >
+                <h:outputText  value="#{record.vcCorreo}"  />
+                </rich:column>
+                <rich:column >
+                <h:outputText  value="#{record.vcFechaPresentacion} #{record.vcHoraPresentacion}"  />
+                </rich:column>
+                <rich:column >
+                <h:outputText  value="#{record.vcFechaVencimiento}"  />
+                </rich:column>
+                <rich:column style="text-align:center" >
+                 <a4j:commandLink action="#{clsSolicitudesDDASrv.doDetalleSolicitud(record)}"
+                                                 oncomplete="Richfaces.showModalPanel('mod_detalle_solicitud');#{rich:component('panProcesando')}.hide();"
+                                                 onclick="#{rich:component('panProcesando')}.show();"
+                                                 reRender="frm_detalle_solicitud, sol_mensaje_error"
+                                                 >
+                 <h:graphicImage url="/imagenes/icoExaminar.png" alt="Detalle de notificacion" width="24"/>
+                 </a4j:commandLink>
+
+                </rich:column>
+                <rich:column style="text-align:center" >
+                 <h:commandLink action="#{clsSolicitudesDDASrv.doGenerarSolicitud(record)}" target="ESQUELA">
+                 <h:graphicImage url="/imagenes/icoPdfSf.svg"/>
+                 </h:commandLink>
+                </rich:column>
+                 <f:facet name="footer">
+                <rich:datascroller id="pag_solicitates" for="dtb_solicitudes" maxPages="20" width="100%" rendered="true"/>
+                </f:facet>
+                </rich:dataTable>
+                </a4j:form>
+        </rich:panel>
+        </rich:panel>
+        
+        
+        <ui:include src="modal/pgw_modalLoadProcesando.xhtml"/>
+        <ui:include src="modal/pgw_modalDetalleSolicitud.xhtml"/>  
+    </body>
+</ui:composition>

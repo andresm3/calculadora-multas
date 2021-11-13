@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+   </head>
+    <body>
+        <rich:modalPanel id="modMsgFirmaDigital"  autosized="true" width="450"   styleClass="modal-form" >
+            <f:facet name="controls">
+                <h:panelGroup>
+                    <h:graphicImage id="hidePanelModMsgFirmaDigital" value="/imagenes/btnCerrar.png"/>
+                    <rich:componentControl for="modMsgFirmaDigital" attachTo="hidePanelModMsgFirmaDigital" operation="hide"
+                                           event="onclick"/>
+                </h:panelGroup>
+            </f:facet>
+            <f:facet name="header" style="background: #455a64; border: 4px solid #000;">
+            
+            <h:panelGrid  columns="2" >
+            <!--h:graphicImage url="/imagenes/icoLogoPreview.svg"/-->  
+            <h:outputText value="Mensaje Firma"></h:outputText>
+            </h:panelGrid>
+            </f:facet>
+            <a4j:form id="frmModMsgFirmaDigital" ajaxSubmit="true">
+                <center>
+                <h:outputText id="lblMensajeNotificacion1" style="color: red; font-size: 12px;" value="No se han encontrado procesos que se puedan firmar. Puede deberse a: " rendered="#{clsRegistroObrasSrv.lstExpedientesNotificar.size()==0 ? true : false}" />
+                <h:outputText id="lblMensajeNotificacion2" style="color: red; font-size: 12px;" value="- Ya fue firmado." rendered="#{clsRegistroObrasSrv.lstExpedientesNotificar.size()==0 ? true : false}" />
+                <h:outputText id="lblMensajeNotificacion3" style="color: red; font-size: 12px;" value="- Ya fue enviado." rendered="#{clsRegistroObrasSrv.lstExpedientesNotificar.size()==0 ? true : false}" />
+                <h:outputText id="lblMensajeNotificacion4" style="color: red; font-size: 12px;" value="- Falta un documento adjunto." rendered="#{clsRegistroObrasSrv.lstExpedientesNotificar.size()==0 ? true : false}" />
+                <br/>
+                <br/>
+                <h:graphicImage value="/imagenes/icoNoFound_64.svg" rendered="#{clsRegistroObrasSrv.lstExpedientesNotificar.size()==0 ? true : false}" />
+                </center>  
+
+            </a4j:form>
+        </rich:modalPanel>
+        
+    </body>
+</html>

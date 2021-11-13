@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+  <rich:modalPanel id="modEnviarCasilla" autosized="true" width="700">
+            <f:facet name="controls">
+                <h:panelGroup>
+                    <h:graphicImage id="hidePanelModEnviarCasilla" value="/imagenes/btnCerrar.png"/>
+                    <rich:componentControl for="modEnviarCasilla" attachTo="hidePanelModEnviarCasilla" operation="hide"
+                                           event="onclick"/>
+                </h:panelGroup>
+            </f:facet>
+            <f:facet name="header">
+                <h:outputText value="Enviar a casilla electrónica"/>
+            </f:facet>
+            <a4j:form id="frmEnviarCasilla" ajaxSubmit="true">
+                <center>
+                <h:outputText id="lblMensajeNotificacion" style="color: red; font-size: 12px;" value="No hay nada que notificar" rendered="#{clsNotificacionRCSrv.lstExpedientesNotificar.size()==0 ? true : false}" />
+                <br/>
+                <br/>
+                <h:graphicImage value="/imagenes/icoNoFound_64.svg" rendered="#{clsNotificacionRCSrv.lstExpedientesNotificar.size()==0 ? true : false}" />
+                </center>  
+                <h:panelGrid columns="2" border="0" cellpadding="3" cellspacing="3" rendered="#{clsNotificacionRCSrv.lstExpedientesNotificar.size()>0 ? true : false}"
+                             columnClasses="tipo_colNumero01,tipo_colNumero02,tipo_colNumero03,tipo_colNumero04">
+                   
+                    <h:outputText id="lblTipoNotificacion" value="Tipo notificación: "/>
+                    <h:selectOneMenu id="cboTipoNotificacion" 
+                    value="#{clsNotificacionRCSrv.objFiltroBean.nuIdTipoNotificacion}" 
+                    style="width:150px;" styleClass="combo-style"
+                    reRender="frmEnviarCasilla:lblMensajeNotificacion"
+                    disabled="true"
+                    >
+                        <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                        <f:selectItems value="#{clsNotificacionRCSrv.objFiltroBean.lstTipoNot}"/>
+                        <a4j:support event="onchange" action="#{clsNotificacionRCSrv.click_selecciona_tipo_notificacion}" 
+                        oncomplete="" />
+                    </h:selectOneMenu>
+                   
+                </h:panelGrid>
+    
+                <h:panelGrid>
+                 <h:outputText id="lblFlagMensajeSelec" style="color:red;" value="Por favor seleccione los combos..." rendered="#{clsNotificacionRCSrv.objFiltroBean.blFlagSelecCboEnvio}"/>
+                </h:panelGrid>
+                
+                <h:panelGrid>
+                 <h:outputText id="lblFlagMensajeHorario" style="color:red; font-size: 13px; font-weight: 600;" value="#{clsNotificacionRCSrv.objFiltroBean.vcMensajeHorario}" rendered="#{clsNotificacionRCSrv.objFiltroBean.blFlagMensajeHorario}"/>
+                </h:panelGrid>
+                
+                <center>
+                <h:panelGrid columns="2" rendered="#{clsNotificacionRCSrv.lstExpedientesNotificar.size()>0 ? true : false}" >
+                <a4j:commandButton id="bt_conversion_not_accion_enviar_casilla" 
+                                                   value="Enviar a casilla"
+                                                   action="#{clsNotificacionRCSrv.doEnviarNotificacion}"
+                                                   oncomplete="#{rich:component('panProcesando')}.hide();"
+                                                   reRender="frmEnviarCasilla, frmRenovacionMarca"
+                                                   rendered="#{clsNotificacionRCSrv.objFiltroBean.blFlagCondicionEnvio}"
+                                                   >
+                                                   
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"  
+                                                 >
+                                    </a4j:support>                 
+                                                                                         
+                </a4j:commandButton>
+                <a4j:commandButton id="bt_conversion_not_accion_cancelar"
+                                    value="Cancelar"
+                                                   >
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('modEnviarCasilla')}.hide();"  
+                                                 >
+                                    </a4j:support>                 
+                                                                                         
+                                </a4j:commandButton>
+                </h:panelGrid>
+                </center>
+                <br/>
+            <rich:dataTable id="dtb_conversion_not_resultados_enviar_casilla"
+                                            value="#{clsNotificacionRCSrv.lstExpedientesNotificar}" 
+                                            var="record"
+                                            width="100%" rows="5" rowKeyVar="row"
+                                            onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                                            onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+                                            rendered="#{clsNotificacionRCSrv.lstExpedientesNotificar.size()>0 ? true : false}"
+                                            >
+                <f:facet name="header">
+                <rich:columnGroup>
+                <rich:column colspan="9" >
+                 <h:outputText value="Notificaciones listos para enviar"/>
+                </rich:column>
+                <rich:column  breakBefore="true" >
+
+                   <h:panelGrid columns="2"  >
+                    <h:outputText value="#"/>
+                    <h:selectBooleanCheckbox class="cbInd" 
+                    value="#{clsNotificacionRCSrv.blCheckTableNotificable}"
+                    reRender="frmEnviarCasilla, dtb_conversion_not_resultados_enviar_casilla"
+                    disabled="#{!clsNotificacionRCSrv.objFiltroBean.blFlagCondicionEnvio}"
+                    >
+                    <a4j:support event="onchange"
+                    action="#{clsNotificacionRCSrv.doSeleccionarTodosEnviables}"
+                     reRender="frmEnviarCasilla, dtb_conversion_not_resultados_enviar_casilla"
+                    />
+                    </h:selectBooleanCheckbox>
+                </h:panelGrid>
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Expediente"/>   
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Nro Notificacion"/>   
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Solicitante"/>   
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Direccion de casilla"/>   
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Certificado"/>   
+                 <rich:column >
+                <h:outputText value="Categoria notificación"/>   
+                </rich:column>
+                </rich:column>
+                <rich:column >
+                <h:outputText value="Adjuntos"/>   
+                </rich:column>
+                
+                <rich:column >
+                <h:outputText value="Estado"/>   
+                </rich:column>
+               
+                </rich:columnGroup>
+                </f:facet>
+                
+                <rich:column style="text-align:center; font-weight: 700; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}" >
+                <h:panelGrid columns="2"  >
+                    <h:outputText style="font-size:9px" value="#{row + 1}" />
+                    <h:selectBooleanCheckbox class="cbInd" value="#{record.blIndSeleccion}"
+                    reRender="frmEnviarCasilla, dtb_conversion_not_resultados_enviar_casilla"
+                    disabled="#{record.nuEstadoNotificacion==5 ? true : false}"
+                    >
+                    <a4j:support event="onchange"
+                    action="#{clsNotificacionRCSrv.doSeleccionarItemNotificables(record)}"
+                    reRender="frmEnviarCasilla, dtb_conversion_not_resultados_enviar_casilla"
+                    />
+                    </h:selectBooleanCheckbox>
+                </h:panelGrid>
+                </rich:column>
+                <rich:column style="text-align:center; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}" >
+                <h:outputText style="font-size:9px" value="#{record.nuIdExpediente}-#{record.nuAnioExpediente}/#{record.vcAreaExpediente=='OSD' ? 'DSD' :record.vcAreaExpediente }" />
+                </rich:column>
+                <rich:column style="text-align:center; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''} " >
+                <h:outputText style="font-size:9px" value="#{record.vcNroNotificacion}" />
+                </rich:column>
+                <rich:column style="text-align:center; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''} " >
+                <h:outputText style="font-size:9px" value="#{record.vcSolicitantes}" />
+                </rich:column>
+                <rich:column style="text-align:center; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''} " >
+                <h:outputText style="font-size:9px" value="#{record.vcDireccionCasilla}" />
+                </rich:column>
+                <rich:column style="text-align:center; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''} ">
+                <h:outputText style="font-size:9px" value="#{record.vcNroCertificado}" />
+                </rich:column>
+                
+                <rich:column style="text-align:center; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''} ">
+                <h:outputText style="font-size:9px" value="#{record.vcDesCategoriaNotificacion}" /> 
+                </rich:column>  
+                
+                <rich:column style="text-align:center; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                <h:outputText style="font-size:9px" value="#{record.lstArchivoPorExpedienteNotificable.size()}" />
+                </rich:column>   
+                <rich:column style="text-align:center; #{record.nuEstadoNotificacion==5 ? 'background:#fff7d2':''}">
+                <h:graphicImage url="#{record.nuEstadoNotificacion == -1?'/imagenes/img_status_0.svg':record.nuEstadoNotificacion == 2 ?'/imagenes/img_status_25.svg':record.nuEstadoNotificacion == 4?'/imagenes/img_status_100.svg':record.nuEstadoNotificacion == 5?'/imagenes/img_status_enviado.svg':''}"/>
+                </rich:column>
+                <f:facet name="footer">
+                <rich:datascroller id="pagEnviarNotificacion" for="dtb_conversion_not_resultados_enviar_casilla" maxPages="20" width="100%" rendered="true"/>
+                </f:facet>
+                </rich:dataTable>
+     
+            </a4j:form>
+        </rich:modalPanel>
+         
+    </body>
+</html>

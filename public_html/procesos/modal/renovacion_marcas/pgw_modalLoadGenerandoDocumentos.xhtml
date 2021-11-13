@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+    <rich:modalPanel id="panGenerandoDocumentos" autosized="true" >
+            
+            <center>
+            <h:panelGrid columns="1" >
+            <h:outputText id="ot_general_not_titulo" value="#{msgs['ot.general.not.titulo']}" rendered="#{clsNotificacionRenovacionMarcaSrv.objFiltroBean.nuIDTipoAplicacion == 3?'true':'false'}"/>
+            <h:panelGrid columns="3" rendered="#{clsNotificacionRenovacionMarcaSrv.blFlagDocCreado}">
+            <h:panelGrid >
+            <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            </div>
+            </h:panelGrid>
+            <h:outputText id="ot_general_proceso_segundo_plano" value="Procesando datos." />
+            <h:panelGrid style="color:#FF5252; font-size:12px;">
+            <div class="tooltip">
+            ¡Importante!
+            <span class="tooltiptext">Estamos creando solicitudes y resoluciones.
+            <br/>
+            <br/>
+            Nota: Es posible que no encuentre sus documentos si aún no estan procesados.
+            Espere por favor...
+            </span>
+            </div>
+            </h:panelGrid>
+            </h:panelGrid>
+           </h:panelGrid>
+                
+            </center>
+            
+        </rich:modalPanel>
+ 
+   
+    </body>
+</html>

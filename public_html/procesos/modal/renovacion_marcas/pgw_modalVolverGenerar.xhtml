@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        <rich:modalPanel id="panVolverGenerar" autosized="true" styleClass="modal-form" width="400">
+            
+            <f:facet name="header">
+                <h:outputText value="Opciones"></h:outputText>
+            </f:facet>
+            
+            <a4j:form id="frmVolverGenerar" ajaxSubmit="true">
+            <center><h:outputLabel value="¿Deseas volver a generar los procesos reiniciados?" style="font-weight: 600;"/></center>
+            <br></br>
+            <h:outputLabel value="NOTA: Recuerda que generaremos todos los procesos reiniciados y los pendientes." 
+            style="color:red;"/>
+                <center>
+                <br></br>
+               <panelGrid columns="2" style="font-size:12px; text-align:center;" > 
+               <a4j:commandButton id="btn_volver_generar" 
+                                                   value="Generar" 
+                                                   reRender="frmRenovacionMarca"
+                                                   style="margin:5px;"
+                                                   oncomplete="#{rich:component('panVolverGenerar')}.hide();"
+                                                   >
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="document.getElementById('frmRenovacionMarca:btn_procesar_documentos2').click()"
+                                                 >
+                                    </a4j:support>
+                                    
+                </a4j:commandButton>
+                
+                <a4j:commandButton id="btn_cancelar_volver_cargar" 
+                                                   value="Cancelar" 
+                                                   reRender="frmRenovacionMarca"
+                                                   style="margin:5px;"
+                                                   oncomplete="#{rich:component('panVolverGenerar')}.hide();"
+                                                   >
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="document.getElementById('frmRenovacionMarca:bt_conversion_not_filtro_buscar').click()"
+                                                 >
+                                    </a4j:support>
+                                    
+                </a4j:commandButton> 
+                
+               </panelGrid>     
+                </center>
+                
+            </a4j:form>
+            
+        </rich:modalPanel>
+        
+   
+    </body>
+</html>

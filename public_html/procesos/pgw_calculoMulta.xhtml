@@ -1,0 +1,2191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+        <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jsMain.js?v=7"></script>
+        <link type="text/css" rel="stylesheet" href="css/main.css"/>
+        <link type="text/css" rel="stylesheet" href="css/style_expediente_electronico.css"/>
+        <title>"#{msgs['ot.general.res.titulo']}"</title>
+    </head>
+    <body onload="if(#{clsCalculoMultaSrv.objFiltroBean.lstMetodosCalculo.size()==1}){
+        javaScript:document.getElementById('frmBusqueda:btn_selecciona_metodo').click();
+       }">
+    <rich:panel styleClass="top">
+     <f:facet name="header">
+      <h:outputText id="ot_DeterminacionMulta" value="#{msgs['ot.general.res.titulo']}"/>
+     </f:facet>
+        <h:panelGrid columnClasses="panel" columns="5" styleClass="style_pgVisorExpediente">
+            <rich:panel styleClass="top">
+                    <a4j:form id="frmBusqueda" ajaxsubmit="true">
+                        <!-- Busqueda Electronica -->
+                        <h:panelGrid id="pgBusqueda_filtros" columns="5" cellpadding="1">
+                            
+                            <h:outputText id="ot_cal_mbase_organo" style="font-size:12px; display:block; width:200px;"
+                                    value="#{msgs['ot.cal_mbase.organo']}"/>
+                            <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="it_cal_mbase_org"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                    
+                            <h:outputText id="ot_cal_mbase_metodo" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.metodo']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_metodos" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcMetodo}">
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstMetodosCalculo}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarMetodo()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide();"
+                                reRender="frmBusqueda, pgBusqueda_preestab1, pgBusqueda_preestab2, ot_cal_mbase_factor, ot_cal_mbase_factorccd" />
+                            </h:selectOneMenu>
+                            <a4j:commandButton id="btn_selecciona_metodo"
+                                    value="btn_selecciona_metodo"
+                                    style="display:none;"
+                                    reRender="frmBusqueda">
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doSeleccionarMetodo()}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.lstInstanciasCalculo.size()==1 and clsCalculoMultaSrv.objFiltroBean.vcMetodo==3}){
+                                                javaScript:document.getElementById('frmBusqueda:btn_selecciona_instancia_ventas').click();
+                                               }#{rich:component('panProcesando')}.hide();"
+                                            reRender="frmBusqueda, pgBusqueda_preestab1, pgBusqueda_preestab2, ot_cal_mbase_factor, ot_cal_mbase_factorccd, ot_cal_mbase_organopi, cb_cal_mbase_organopi, ot_cal_mbase_organoccd, cb_cal_mbase_organoccd, ot_cal_mbase_organopventas, cb_cal_mbase_organopventas, ot_cal_mbase_organoadhoc, cb_cal_mbase_organoadhoc"
+                                    ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            
+
+                        </h:panelGrid>
+
+                        <rich:separator height="2" style="margin-top:8px;margin-bottom:8px;"></rich:separator>
+
+                        <h:panelGrid id="pgBusqueda_preestab1" columns="5" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}">  
+                                <h:outputText id="ot_cal_mbase_instancia" 
+                                                style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}"
+                                                value="#{msgs['ot.cal_mbase.instancia']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_instancias" 
+                                                required="true" 
+                                                style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}"
+                                                autoWidth="false"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInstancia}">
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstInstanciasCalculo}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarInstancia()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="frmBusqueda, cb_cal_mbase_metodos" />
+                                </h:selectOneMenu>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}"/>
+                        
+                                <h:outputText id="ot_cal_mbase_ruc" style="font-size:12px; display:block; width:200px;"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="it_cal_mbase_ruc"
+                                    maxlength="12"
+                                    onkeypress="return checkNumeros(event)"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcRuc}" columnClasses="input-width-50"/>
+                                <a4j:commandButton id="bt_cal_mbase_ruc"
+                                    value="#{msgs['bt.cal_mbase.buscarruc']}"
+                                    reRender="frmBusqueda, ot_cal_mbase_rsocial" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doBuscarRuc}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_ruc');"
+                                            reRender="frmBusqueda, ot_cal_mbase_rsocial"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_rsoc" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_rsocial"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_factu" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.facturacion']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="it_cal_mbase_facturacion"
+                                    converter="javax.faces.Double"
+                                    onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUit', 'frmBusqueda:cb_cal_mbase_anioUit', 'frmBusqueda:bt_cal_mbase_calcularMbase');"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnual}" columnClasses="input-width-50">
+                                    <f:convertNumber pattern="###,###.##"/>
+                                </h:inputText>
+                                <a4j:commandButton id="bt_cal_factUit"
+                                    value="btn1"
+                                    style="display:none;"
+                                    reRender="frmBusqueda, ot_cal_mbase_valoruit">
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMulta()}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valoruit"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <rich:toolTip for="it_cal_mbase_facturacion" styleClass="tooltip">
+                                    <span style="white-space:nowrap">
+                                    <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
+                                    </span>
+                                </rich:toolTip>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_aniof" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_anioUit" 
+                                                required="true" 
+                                                style="display:block;width:300px"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucion}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMulta()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="frmBusqueda,ot_cal_mbase_valoruit, ot_cal_mbase_tamempresa, it_cal_mbase_facturacion" />
+                                </h:selectOneMenu>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_valuit" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.uitfacturacion_pre']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_valoruit"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_tamemp" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.tamempresa']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_tamempresa"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresa}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_afectacion" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.afectacion']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_infracciones" 
+                                                required="true" 
+                                                style="display:block;width:300px"
+                                                autoWidth="false"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccion}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarInfraccion()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="ot_cal_mbase_nivelafectacion, it_cal_mbase_tipfectacion" />
+                                </h:selectOneMenu>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText value=""/>
+                                <h:inputTextarea 
+                                    style="display:block; height:70px; width:300px; resize:none"
+                                    maxlength="1000" 
+                                    id="it_cal_mbase_tipfectacion"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacion}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_nivelafect" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.nivelafectacion']}"/>
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_nivelafectacion"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcNivelAfectacion}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_fecinicio" style="font-size:12px;" 
+                                            value="#{msgs['ot.cal_mbase.fecinicio']}"/>
+                                <rich:calendar id="cl_conversion_res_filtro_fechaInicio" value="#{clsCalculoMultaSrv.objFiltroBean.dtFechaInicio}"
+                                                locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
+                                                cellHeight="22px" inputStyle="width:65px"
+                                                isDayEnabled="isPresDayEnabled"
+                                                dayStyleClass="getPresDisabledStyle">
+                                    <a4j:support event="onchanged" action="#{clsCalculoMultaSrv.calculaFD}" reRender="ot_cal_mbase_factor"/>
+                                </rich:calendar>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_fecfin" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.fecfin']}"/>
+                                <rich:calendar id="cl_conversion_res_filtro_fechaFin" value="#{clsCalculoMultaSrv.objFiltroBean.dtFechaFin}"
+                                                locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
+                                                isDayEnabled="isPresDayEnabled"
+                                                dayStyleClass="getPresDisabledStyle"
+                                                cellHeight="22px" inputStyle="width:65px">
+                                    <a4j:support event="onchanged" action="#{clsCalculoMultaSrv.calculaFD}" reRender="ot_cal_mbase_factor"/>
+                                </rich:calendar>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                
+                                <h:outputText id="ot_cal_mbase_fact" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.factor']}"/>
+                                <h:inputText style="display:block;width:300px"
+                                            id="ot_cal_mbase_factor"
+                                            readonly="true"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorDuracion}" 
+                                            columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                    
+                                <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_calcularMbase"
+                                    value="#{msgs['bt.cal_mbase.calcularMbase']}"
+                                    reRender="frmMultaPreliminar" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doCalcularMbase}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaPreestablecido();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valmatriz"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_libro1" columns="5" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraLibro}">  
+                            <h:outputText id="ot_cal_mbase_ruclib" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_ruclib"
+                                maxlength="12"
+                                onkeypress="return checkNumeros(event)"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRucLibro}" columnClasses="input-width-50"/>
+                            <a4j:commandButton id="bt_cal_mbase_ruclib"
+                                value="#{msgs['bt.cal_mbase.buscarruc']}"
+                                reRender="frmBusqueda, ot_cal_mbase_rsociallib" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doBuscarRucLibro}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_ruclib');"
+                                        reRender="frmBusqueda, ot_cal_mbase_rsociallib"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_rsoclib" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_rsociallib"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factulib" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.facturacion']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_facturacionlib"
+                                converter="javax.faces.Double"
+                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitlib', 'frmBusqueda:cb_cal_mbase_anioUitlib', 'frmBusqueda:bt_cal_mbase_calcularMbaselib');"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualLibro}" columnClasses="input-width-50">
+                                <f:convertNumber pattern="###,###.##"/>
+                            </h:inputText>
+                            <a4j:commandButton id="bt_cal_factUitlib"
+                                value="btn1"
+                                style="display:none;"
+                                reRender="frmBusqueda, ot_cal_mbase_valoruitlib">
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaLibro()}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();"
+                                        reRender="frmBusqueda, ot_cal_mbase_valoruit"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <rich:toolTip for="it_cal_mbase_facturacionlib" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_anioflib" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_anioUitlib" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucionLibro}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaLibro()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_valoruitlib, ot_cal_mbase_tamempresalib, it_cal_mbase_facturacionlib" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valuitlib" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.uitfacturacion_pre']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valoruitlib"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_tamemplib" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.tamempresa']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_tamempresalib"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresa}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_afectacionlib" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.afectacion']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_infraccioneslib" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionLibro}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionLibro()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_clasificacionlib, it_cal_mbase_tipfectacionlib" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <h:inputTextarea 
+                                style="display:block; height:70px; width:300px; resize:none"
+                                maxlength="1000" 
+                                id="it_cal_mbase_tipfectacionlib"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionLibro}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_nivelafectlib" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.clasificacion']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_clasificacionlib"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcClasificacion}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                
+                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbaselib"
+                                value="#{msgs['bt.cal_mbase.calcularMbase']}"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doCalcularMRefLibro}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaLibro();"
+                                        reRender="frmBusqueda, ot_cal_mbase_valmatriz"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_barreras1" columns="5" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraBarreras}">  
+                            <h:outputText id="ot_cal_mbase_rucbar" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_rucbar"
+                                maxlength="12"
+                                onkeypress="return checkNumeros(event)"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRucBarreras}" columnClasses="input-width-50"/>
+                            <a4j:commandButton id="bt_cal_mbase_rucbar"
+                                value="#{msgs['bt.cal_mbase.buscarruc']}"
+                                reRender="frmBusqueda, ot_cal_mbase_rsocialbar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doBuscarRucBarreras}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucbar');"
+                                        reRender="frmBusqueda, ot_cal_mbase_rsocialbar"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_rsocbar" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_rsocialbar"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            
+                            <h:outputText id="ot_cal_mbase_tipbarreras" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.tipbarreras']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_tipbarreras" 
+                                            required="true" 
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcIdTipoBarrera}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoBarreras}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarTipoBarreras()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmBusqueda, cb_cal_mbase_metodos, ot_cal_mbase_factubarreras, ot_cal_mbase_valfactuitbarreras, ot_cal_mbase_aniofbarreras, ot_cal_mbase_valuitbarreras" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factubarreras" style="font-size:12px;"
+                                          value="#{clsCalculoMultaSrv.objFiltroBean.vcIdTipoBarrera==1? msgs['ot.cal_mbase.montoinicialbarreras1'] : msgs['ot.cal_mbase.montoinicialbarreras2']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_facturacionbarreras"
+                                converter="javax.faces.Double"
+                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitbarreras', 'frmBusqueda:cb_cal_mbase_anioUitbarreras', 'frmBusqueda:bt_cal_mbase_calcularMbasebar');"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualBarrera}" columnClasses="input-width-50">
+                                <f:convertNumber pattern="###,###.##"/>
+                            </h:inputText>
+                            <a4j:commandButton id="bt_cal_factUitbarreras"
+                                value="btn1"
+                                style="display:none;"
+                                reRender="frmBusqueda, ot_cal_mbase_valoruitbarreras">
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaBarreras()}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();"
+                                        reRender="frmBusqueda, ot_cal_mbase_valoruitbarreras"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <rich:toolTip for="it_cal_mbase_facturacionbarreras" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_aniofbarreras" style="font-size:12px;"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcIdTipoBarrera==1? msgs['ot.cal_mbase.aniofacturacionbar1'] : msgs['ot.cal_mbase.aniofacturacionbar2']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_anioUitbarreras" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucionBarrera}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaBarreras()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_valoruitbarreras, ot_cal_mbase_aniouitbarreras, it_cal_mbase_facturacionbarreras" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valuitbarreras" style="font-size:12px;"
+                                          value="#{clsCalculoMultaSrv.objFiltroBean.vcIdTipoBarrera==1? msgs['ot.cal_mbase.uitfacturacionbar1'] : msgs['ot.cal_mbase.uitfacturacionbar2']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_aniouitbarreras"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuAnioUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valfactuitbarreras" style="font-size:12px;"
+                                          value="#{clsCalculoMultaSrv.objFiltroBean.vcIdTipoBarrera==1? msgs['ot.cal_mbase.remuneracionuit1'] : msgs['ot.cal_mbase.remuneracionuit2']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valoruitbarreras"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_afectacionbarreras" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.afectacion']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_infraccionesbarreras" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionBarrera}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionBarreras()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_nivelafectacionbarreras, it_cal_mbase_tipfectacionbarreras, ot_cal_mbase_daniobasebar" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <h:inputTextarea 
+                                style="display:block; height:70px; width:300px; resize:none"
+                                maxlength="1000" 
+                                id="it_cal_mbase_tipfectacionbarreras"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionBarrera}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_nivelafectbarreras" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.nivelafectacion']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_nivelafectacionbarreras"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcClasificacionBarrera}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_daniobasebarreras" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.daniobase']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_daniobasebar"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuDanioBaseBarrera}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_alcbarreras" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.tipalcance']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_alcbarreras" 
+                                            required="true" 
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcIdTipoAlcanceBarrera}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAlcanceBarreras}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarTipoAlcanceBarreras()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmBusqueda, ot_cal_mbase_multadbar, ot_fsececobarreras, cb_cal_mbase_fsececobarreras, ot_cal_mbase_fsececobarreras" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_fpobbarreras" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.factpob']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_fpobbarreras" 
+                                            required="true" 
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcIdFactPoblacionBarrera}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstFactorPoblacionBarreras}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarFactorPoblacionBarreras()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmBusqueda, ot_cal_mbase_multadbar" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_fsececobarreras" style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraFacSecEconBarreras}"
+                                            value="#{msgs['ot.cal_mbase.factsector']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_fsececobarreras" 
+                                            style="display:#{clsCalculoMultaSrv.vcMuestraFacSecEconBarreras}"
+                                            required="true" 
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcIdFactSecEconBarrera}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstFactorSecEconomicoBarreras}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarFactorSecEconBarreras()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmBusqueda, ot_cal_mbase_multadbar, ot_cal_mbase_alcancebarrerabar" />
+                            </h:selectOneMenu>
+                            <h:outputText id="ot_fsececobarreras" value="" style="display:#{clsCalculoMultaSrv.vcMuestraFacSecEconBarreras}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFacSecEconBarreras}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFacSecEconBarreras}"/>
+
+                            <h:outputText id="ot_cal_mbase_alcancebarrera" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.alcancebarrera']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_alcancebarrerabar"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuAlcanceBarrera}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_multadbarreras" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.multadbarreras']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multadbar"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaDBarrera}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_pi1" columns="5" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoPi}">  
+                                <h:outputText id="ot_cal_mbase_instanciapi" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.instancia']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_instanciaspi" 
+                                                required="true" 
+                                                style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoPi}"
+                                                autoWidth="false"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInstanciaPi}">
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstInstanciasCalculo}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarInstanciaPi()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="frmBusqueda, ot_cal_mbase_organopi, cb_cal_mbase_organopi"/>
+                                </h:selectOneMenu>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoPi}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoPi}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoPi}"/>
+                        
+                                <h:outputText id="ot_cal_mbase_organopi"
+                                            style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaPi}"
+                                            value="#{msgs['ot.cal_mbase.organopi']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_organopi" 
+                                                required="true" 
+                                                style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaPi}"
+                                                autoWidth="false"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgano1raInstancia}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstOrganosMetodo}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarOrgano1raInstanciaPi()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="frmBusqueda"/>
+                                </h:selectOneMenu>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaPi}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaPi}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaPi}"/>
+
+                                <h:outputText id="ot_cal_mbase_rucpi" style="font-size:12px; display:block; width:200px;"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="it_cal_mbase_rucpi"
+                                    maxlength="12"
+                                    onkeypress="return checkNumeros(event)"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcRucPi}" columnClasses="input-width-50"/>
+                                <a4j:commandButton id="bt_cal_mbase_rucpi"
+                                    value="#{msgs['bt.cal_mbase.buscarruc']}"
+                                    reRender="frmBusqueda, ot_cal_mbase_rsocial" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doBuscarRucPi}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucpi');"
+                                            reRender="frmBusqueda, ot_cal_mbase_rsocial"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_rsocpi" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_rsocialpi"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_factupi" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.facturacion']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="it_cal_mbase_facturacionpi"
+                                    converter="javax.faces.Double"
+                                    onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitpi', 'frmBusqueda:cb_cal_mbase_anioUitpi', 'frmBusqueda:bt_cal_mbase_calcularMbasepi');"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualPi}" columnClasses="input-width-50">
+                                    <f:convertNumber pattern="###,###.##"/>
+                                </h:inputText>
+                                <a4j:commandButton id="bt_cal_factUitpi"
+                                    value="btn1"
+                                    style="display:none;"
+                                    reRender="frmBusqueda, ot_cal_mbase_valoruitpi">
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaPi()}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valoruitpi"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <rich:toolTip for="it_cal_mbase_facturacionpi" styleClass="tooltip">
+                                    <span style="white-space:nowrap">
+                                    <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
+                                    </span>
+                                </rich:toolTip>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_aniofpi" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_anioUitpi" 
+                                                required="true" 
+                                                style="display:block;width:300px"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucionPi}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaPi()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="ot_cal_mbase_valoruitpi, ot_cal_mbase_tamempresapi, it_cal_mbase_facturacionpi" />
+                                </h:selectOneMenu>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_valuitpi" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.uitfacturacion_pre']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_valoruitpi"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_tamemppi" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.tamempresa']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_tamempresapi"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresa}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_afectacionpi" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.afectacion']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_infraccionespi" 
+                                                required="true" 
+                                                style="display:block;width:300px"
+                                                autoWidth="false"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionPi}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarInfraccionPi()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="ot_cal_mbase_nivelafectacionpi, it_cal_mbase_tipfectacionpi" />
+                                </h:selectOneMenu>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText value=""/>
+                                <h:inputTextarea 
+                                    style="display:block; height:70px; width:300px; resize:none"
+                                    maxlength="1000" 
+                                    id="it_cal_mbase_tipfectacionpi"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionPi}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_nivelafectpi" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.nivelafectacion']}"/>
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_nivelafectacionpi"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcNivelAfectacionPi}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                
+                    
+                                <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_calcularMbasepi"
+                                    value="#{msgs['bt.cal_mbase.calcularMbase']}"
+                                    reRender="frmMultaPreliminar" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doCalcularMbasePi}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaPi();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valmatriz"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_ccd" columns="5" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoCcd}">  
+                                <h:outputText id="ot_cal_mbase_instanciaccd" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.instancia']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_instanciasccd" 
+                                                required="true" 
+                                                style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoCcd}"
+                                                autoWidth="false"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInstanciaCcd}">
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstInstanciasCalculo}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarInstanciaCcd()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="frmBusqueda, ot_cal_mbase_organoccd, cb_cal_mbase_organoccd"/>
+                                </h:selectOneMenu>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoCcd}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoCcd}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoCcd}"/>
+                        
+                                <h:outputText id="ot_cal_mbase_organoccd"
+                                            style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaCcd}"
+                                            value="#{msgs['ot.cal_mbase.organopi']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_organoccd" 
+                                                required="true" 
+                                                style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaCcd}"
+                                                autoWidth="false"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgano1raInstanciaCcd}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstOrganosMetodo}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarOrgano1raInstanciaCcd()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="frmBusqueda"/>
+                                </h:selectOneMenu>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaCcd}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaCcd}"/>
+                                <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaCcd}"/>
+                                
+                                <h:outputText id="ot_cal_mbase_rucccd" style="font-size:12px; display:block; width:200px;"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="it_cal_mbase_rucccd"
+                                    maxlength="12"
+                                    onkeypress="return checkNumeros(event)"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcRucCcd}" columnClasses="input-width-50"/>
+                                <a4j:commandButton id="bt_cal_mbase_rucccd"
+                                    value="#{msgs['bt.cal_mbase.buscarruc']}"
+                                    reRender="frmBusqueda, ot_cal_mbase_rsocial" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doBuscarRucCcd}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucccd');"
+                                            reRender="frmBusqueda, ot_cal_mbase_rsocial"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_rsocccd" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_rsocialccd"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_factuccd" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.facturacion']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="it_cal_mbase_facturacionccd"
+                                    converter="javax.faces.Double"
+                                    onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitccd', 'frmBusqueda:cb_cal_mbase_anioUitccd', 'frmBusqueda:bt_cal_mbase_calcularMbaseccd');"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualCcd}" columnClasses="input-width-50">
+                                    <f:convertNumber pattern="###,###.##"/>
+                                </h:inputText>
+                                <a4j:commandButton id="bt_cal_factUitccd"
+                                    value="btn1"
+                                    style="display:none;"
+                                    reRender="frmBusqueda, ot_cal_mbase_valoruitccd">
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaCcd()}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valoruitccd"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <rich:toolTip for="it_cal_mbase_facturacionccd" styleClass="tooltip">
+                                    <span style="white-space:nowrap">
+                                    <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
+                                    </span>
+                                </rich:toolTip>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_aniofccd" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_anioUitccd" 
+                                                required="true" 
+                                                style="display:block;width:300px"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucionCcd}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaCcd()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="ot_cal_mbase_valoruitccd, ot_cal_mbase_tamempresaccd, it_cal_mbase_facturacionccd" />
+                                </h:selectOneMenu>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_valuitccd" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.uitfacturacion']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_valoruitccd"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_tamempccd" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.tamempresa']}"/> 
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_tamempresaccd"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresa}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_afectacionccd" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.afectacion']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_infraccionesccd" 
+                                                required="true" 
+                                                style="display:block;width:300px"
+                                                autoWidth="false"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionCcd}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarInfraccionCcd()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="ot_cal_mbase_nivelafectacionccd, it_cal_mbase_tipfectacionccd" />
+                                </h:selectOneMenu>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText value=""/>
+                                <h:inputTextarea 
+                                    style="display:block; height:70px; width:300px; resize:none"
+                                    maxlength="1000" 
+                                    id="it_cal_mbase_tipfectacionccd"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionCcd}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_nivelafectccd" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.nivelafectacion']}"/>
+                                <h:inputText 
+                                    style="display:block;width:300px"
+                                    id="ot_cal_mbase_nivelafectacionccd"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcNivelAfectacionCcd}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                
+                                <h:outputText id="ot_cal_mbase_fecinicioccd" style="font-size:12px;" 
+                                            value="#{msgs['ot.cal_mbase.fecinicio']}"/>
+                                <rich:calendar id="cl_conversion_res_filtro_fechaInicioccd" 
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.dtFechaInicioCcd}"
+                                                locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
+                                                cellHeight="22px" inputStyle="width:65px"
+                                                isDayEnabled="isPresDayEnabled"
+                                                dayStyleClass="getPresDisabledStyle">
+                                    <a4j:support event="onchanged" action="#{clsCalculoMultaSrv.calculaFD}" 
+                                    reRender="ot_cal_mbase_factorccd"/>
+                                </rich:calendar>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_fecfinccd" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.fecfin']}"/>
+                                <rich:calendar id="cl_conversion_res_filtro_fechaFinccd" 
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.dtFechaFinCcd}"
+                                                locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
+                                                isDayEnabled="isPresDayEnabled"
+                                                dayStyleClass="getPresDisabledStyle"
+                                                cellHeight="22px" inputStyle="width:65px">
+                                    <a4j:support event="onchanged" action="#{clsCalculoMultaSrv.calculaFD}" 
+                                    reRender="ot_cal_mbase_factorccd"/>
+                                </rich:calendar>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                
+                                <h:outputText id="ot_cal_mbase_factccd" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.factor']}"/>
+                                <h:inputText style="display:block;width:300px"
+                                            id="ot_cal_mbase_factorccd"
+                                            readonly="true"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorDuracion}" 
+                                            columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_calcularMbaseccd"
+                                    value="#{msgs['bt.cal_mbase.calcularMbase']}"
+                                    reRender="frmMultaPreliminar" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doCalcularMbaseCcd}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaCcd();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valmatrizccd, ot_cal_mbase_multabaseccd"
+                                            ></a4j:support>
+                                </a4j:commandButton>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_firma" columns="5" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoFirma}">  
+                            <h:outputText id="ot_cal_mbase_rucfirma" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_rucfirma"
+                                maxlength="12"
+                                onkeypress="return checkNumeros(event)"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRucFirma}" columnClasses="input-width-50"/>
+                            <a4j:commandButton id="bt_cal_mbase_rucfirma"
+                                value="#{msgs['bt.cal_mbase.buscarruc']}"
+                                reRender="frmBusqueda, ot_cal_mbase_rsocialfirma" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doBuscarRucFirma}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucfirma');"
+                                        reRender="frmBusqueda, ot_cal_mbase_rsocialfirma"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_rsocfirma" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_rsocialfirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            
+                            <h:outputText id="ot_cal_mbase_tipfirma" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.tipfirma']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_tipfirma" 
+                                            required="true" 
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcIdTipoServicioFirma}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstServicioProductoAcreditadoFirma}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarServicioProductoAcreditadoFirma()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmBusqueda, cb_cal_mbase_metodos" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factufirma" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.facturacionfirma']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_facturacionfirma"
+                                converter="javax.faces.Double"
+                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitfirma', 'frmBusqueda:cb_cal_mbase_anioUitfirma', 'frmBusqueda:bt_cal_mbase_calcularMbasefirma');"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualFirma}" columnClasses="input-width-50">
+                                <f:convertNumber pattern="###,###.##"/>
+                            </h:inputText>
+                            <a4j:commandButton id="bt_cal_factUitfirma"
+                                value="btn1"
+                                style="display:none;"
+                                reRender="frmBusqueda, ot_cal_mbase_valoruitfirma">
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaFirma()}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();"
+                                        reRender="frmBusqueda, ot_cal_mbase_valoruitfirma"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <rich:toolTip for="it_cal_mbase_facturacionfirma" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_anioffirma" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_anioUitfirma" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucionFirma}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaFirma()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_valoruitfirma, ot_cal_mbase_aniouitfirma, ot_cal_mbase_tamempresafirma, it_cal_mbase_factfirma, it_cal_mbase_facturacionfirma" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valuitfirma" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.uitfacturacion']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_aniouitfirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuAnioUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valfactuitfirma" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.facturacionuitfirma']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valoruitfirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_tamempfirma" style="font-size:12px;"
+                                              value="#{msgs['ot.cal_mbase.tamempresa']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_tamempresafirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresa}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_afectacionfirma" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.afectacion']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_infraccionesfirma" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionFirma}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionFirma()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_nivelafectacionfirma, it_cal_mbase_tipfectacionfirma, it_cal_mbase_daniobasefirma" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <h:inputTextarea 
+                                style="display:block; height:70px; width:300px; resize:none"
+                                maxlength="1000" 
+                                id="it_cal_mbase_tipfectacionfirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionFirma}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_nivelafectfirma" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.nivelafectacion']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_nivelafectacionfirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcNivelAfectacionFirma}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_daniobasefirma" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.daniobase']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_daniobasefirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuDanioBaseFirma}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factfirma" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.factfirma']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_factfirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorFirma}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbasefirma"
+                                value="#{msgs['bt.cal_mbase.calcularMbase']}"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doCalcularMbaseFirma}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaFirma();"
+                                        reRender="frmBusqueda, ot_cal_mbase_probresufirma, ot_cal_mbase_multabasefirma"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_pventas" columns="5" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPorcentajeVentas}">  
+                            
+                            <h:outputText id="ot_cal_mbase_instanciapventas" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.instancia']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_instanciaspventas" 
+                                            required="true" 
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInstanciaVentas}">
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstInstanciasCalculo}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarInstanciaVentas()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide();"
+                                reRender="frmBusqueda, ot_cal_mbase_organopventas, cb_cal_mbase_organopventas"/>
+                            </h:selectOneMenu>
+                            <a4j:commandButton id="btn_selecciona_instancia_ventas"
+                                    value="btn_selecciona_instancia_ventas"
+                                    style="display:none;"
+                                    reRender="frmBusqueda">
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doSeleccionarInstanciaVentas()}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();"
+                                            reRender="frmBusqueda, ot_cal_mbase_organopventas, cb_cal_mbase_organopventas"
+                                    ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_organopventas"
+                                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaVentas}"
+                                        value="#{msgs['ot.cal_mbase.organopi']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_organopventas" 
+                                            required="true" 
+                                            style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaVentas}"
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgano1raInstanciaVentas}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstOrganosMetodo}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarOrgano1raInstanciaVentas()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmBusqueda"/>
+                            </h:selectOneMenu>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaVentas}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaVentas}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaVentas}"/>
+
+
+                            <h:outputText id="ot_cal_mbase_rucpventas" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_rucpventas"
+                                maxlength="12"
+                                onkeypress="return checkNumeros(event)"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRucVentas}" columnClasses="input-width-50"/>
+                            <a4j:commandButton id="bt_cal_mbase_rucpventas"
+                                value="#{msgs['bt.cal_mbase.buscarruc']}"
+                                reRender="frmBusqueda, ot_cal_mbase_rsocialpventas" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doBuscarRucVentas}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucpventas');"
+                                        reRender="frmBusqueda, ot_cal_mbase_rsocialpventas"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_rsocpventas" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_rsocialpventas"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factupventas" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.facturacionpventas']}"
+                                          escape="false"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_facturacionpventas"
+                                converter="javax.faces.Double"
+                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitpventas', 'frmBusqueda:cb_cal_mbase_anioUitpventas', 'frmBusqueda:bt_cal_mbase_calcularMbasepventas');"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualVentas}" columnClasses="input-width-50">
+                                <f:convertNumber pattern="###,###.##"/>
+                                </h:inputText>
+                            <rich:toolTip for="ot_cal_mbase_factupventas" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.facturacionnotapventas']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
+                            <a4j:commandButton id="bt_cal_factUitpventas"
+                                value="btn1"
+                                style="display:none;"
+                                reRender="frmBusqueda, ot_cal_mbase_valoruitpventas">
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaVentas()}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();"
+                                        reRender="frmBusqueda, ot_cal_mbase_valoruitpventas"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <rich:toolTip for="it_cal_mbase_facturacionpventas" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
+
+                            <h:outputText id="ot_cal_mbase_aniofpventas" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_anioUitpventas" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucionVentas}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaVentas()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_valoruitpventas, ot_cal_mbase_aniouitpventas, it_cal_mbase_facturacionprodpventas, it_cal_mbase_facturacionpventas" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valuitpventas" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.uitfacturacion']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_aniouitpventas"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuAnioUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valfactuitpventas" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.facturacionuitfirma']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valoruitpventas"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factuprodpventas" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.facturacionprodpventas']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_facturacionprodpventas"
+                                converter="javax.faces.Double"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualProductoVentas}" columnClasses="input-width-50">
+                                <f:convertNumber pattern="###,###.##"/>
+                                </h:inputText>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="lblot_cal_mbase_factorapventas" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.factorapventas']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_factorapventas"
+                                converter="javax.faces.Double"
+                                onkeyup="checkFactorAValido('frmBusqueda:it_cal_mbase_umbralfactorapventas','frmBusqueda:it_cal_mbase_factorapventas','frmBusqueda:lblot_cal_mbase_factorapventas','frmBusqueda:it_cal_mbase_org');"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorAVentas}" columnClasses="input-width-50"/>
+                            <h:inputText 
+                                style="display:none;"
+                                id="it_cal_mbase_umbralfactorapventas"
+                                converter="javax.faces.Double"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorAVentas}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            
+
+                            <h:outputText id="ot_cal_mbase_afectacionpventas" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.disuasionpventas']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_infraccionespventas" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionVentas}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionVentas()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_nivelafectacionpventas, it_cal_mbase_tipfectacionpventas, it_cal_mbase_factorgpventas" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <h:inputTextarea 
+                                style="display:block; height:70px; width:300px; resize:none"
+                                maxlength="1000" 
+                                id="it_cal_mbase_tipfectacionpventas"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionVentas}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_nivelafectpventas" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.ndisuasionpventas']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_nivelafectacionpventas"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcNivelAfectacionVentas}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factorgpventas" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.factorgpventas']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_factorgpventas"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorGVentas}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbasepventas"
+                                value="#{msgs['bt.cal_mbase.calcularMbase']}"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doCalcularMbaseVentas}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaVentas();"
+                                        reRender="frmBusqueda, ot_cal_mbase_multabase1pventas, ot_cal_mbase_multabase2pventas"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_adhoc" columns="5" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraAdHoc}">  
+                            
+                            <h:outputText id="ot_cal_mbase_instanciaadhoc" style="font-size:12px;"
+                                value="#{msgs['ot.cal_mbase.instancia']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_instanciasadhoc" 
+                                            required="true" 
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInstanciaAdhoc}">
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstInstanciasCalculo}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarInstanciaAdhoc()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmBusqueda, ot_cal_mbase_organoadhoc, cb_cal_mbase_organoadhoc"/>
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_organoadhoc"
+                                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaAdhoc}"
+                                        value="#{msgs['ot.cal_mbase.organopi']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_organoadhoc" 
+                                            required="true" 
+                                            style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaAdhoc}"
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgano1raInstanciaAdhoc}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstOrganosMetodo}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarOrgano1raInstanciaAdhoc()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmBusqueda"/>
+                            </h:selectOneMenu>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaAdhoc}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaAdhoc}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaAdhoc}"/>
+
+                            <h:outputText id="ot_cal_mbase_rucadhoc" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_rucpadhoc"
+                                maxlength="12"
+                                onkeypress="return checkNumeros(event)"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRucAdhoc}" columnClasses="input-width-50"/>
+                            <a4j:commandButton id="bt_cal_mbase_rucadhoc"
+                                value="#{msgs['bt.cal_mbase.buscarruc']}"
+                                reRender="frmBusqueda, ot_cal_mbase_rsocialadhoc" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doBuscarRucAdhoc}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucpadhoc');"
+                                        reRender="frmBusqueda, ot_cal_mbase_rsocialadhoc"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_rsocadhoc" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_rsocialadhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                                
+
+                            <h:outputText id="ot_cal_mbase_factuadhoc" style="font-size:12px; display:block; width:200px;"
+                                        value="#{msgs['ot.cal_mbase.facturacionadhoc']}"
+                                        escape="false"/>                          
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_facturacionadhoc"
+                                converter="javax.faces.Double"
+                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitadhoc', 'frmBusqueda:cb_cal_mbase_anioUitadhoc', 'frmBusqueda:bt_cal_mbase_calcularMbaseadhoc');"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualAdhoc}" columnClasses="input-width-50">
+                                <f:convertNumber pattern="###,###.##"/>
+                                </h:inputText>
+                            <rich:toolTip for="ot_cal_mbase_factuadhoc" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.facturacionnotaadhoc']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
+                            <a4j:commandButton id="bt_cal_factUitadhoc"
+                                value="btn1"
+                                style="display:none;"
+                                reRender="frmBusqueda, ot_cal_mbase_valoruitadhoc">
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaAdhoc()}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();"
+                                        reRender="frmBusqueda, ot_cal_mbase_valoruitadhoc"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <rich:toolTip for="it_cal_mbase_facturacionadhoc" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
+
+                            <h:outputText id="ot_cal_mbase_aniofadhoc" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_anioUitadhoc" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucionAdhoc}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaAdhoc()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_valoruitadhoc, ot_cal_mbase_aniouitadhoc, it_cal_mbase_facturacionadhoc, ot_cal_mbase_tamempresaadhoc" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valuitadhoc" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.uitfacturacion']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_aniouitadhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuAnioUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_valfactuitadhoc" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.facturacionuitfirma']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valoruitadhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_tamempadhoc" 
+                                    style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraTamEmpresaAdHoc}"
+                                    value="#{msgs['ot.cal_mbase.tamempresa']}"/> 
+                            <h:inputText 
+                                    style="display:block;width:300px; display:#{clsCalculoMultaSrv.vcMuestraTamEmpresaAdHoc}"
+                                    id="ot_cal_mbase_tamempresaadhoc"
+                                    readonly="true"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresa}" columnClasses="input-width-50"/>
+                            <h:outputText value=""
+                                style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraTamEmpresaAdHoc}"/>
+                            <h:outputText value=""
+                                style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraTamEmpresaAdHoc}"/>
+                            <h:outputText value=""
+                                style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraTamEmpresaAdHoc}"/>
+
+
+                            <h:outputText id="ot_cal_mbase_factorbadhoc" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.factorbadhoc']}"/> 
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_factorbadhoc"
+                                converter="javax.faces.Double"
+                                maxlength="6"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorBAdhoc}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_afectacionadhoc" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.disuasionadhoc']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_infraccionesadhoc" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            autoWidth="false"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionAdhoc}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionAdhoc()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_nivelafectacionadhoc, it_cal_mbase_tipfectacionadhoc, it_cal_mbase_factorpadhoc" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <h:inputTextarea 
+                                style="display:block; height:70px; width:300px; resize:none"
+                                maxlength="1000" 
+                                id="it_cal_mbase_tipfectacionadhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionAdhoc}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_nivelafectadhoc" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.ndisuasionadhoc']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_nivelafectacionadhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcNivelAfectacionAdhoc}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factorpadhoc" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.factorpadhoc']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_factorpadhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcFactorPAdhoc}" columnClasses="input-width-50">
+                                </h:inputText>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbaseadhoc"
+                                value="#{msgs['bt.cal_mbase.calcularMbase']}"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doCalcularMbaseAdhoc}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaAdhoc();"
+                                        reRender="frmBusqueda, ot_cal_mbase_multabase2adhoc, ot_cal_mbase_multabase1adhoc"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                        </h:panelGrid>
+
+                        <rich:separator height="2" style="margin-top:8px;margin-bottom:8px;"></rich:separator>
+
+                        <h:panelGrid id="pgBusqueda_preestab2" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}">  
+                            <h:outputText id="ot_cal_mbase_valmat" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.valmatriz']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valmatriz"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuValorMatriz}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_mbase" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.multabase']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabase"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBase}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_aplicarAA" 
+                                    value="#{msgs['bt.cal_mbase.aplicaratenuantes']}" 
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAA}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlMultaBase }){javaScript:Richfaces.showModalPanel('modAtenuantesAgravantes');}#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmEnviarCasilla">
+                                        <a4j:support event="onclick" 
+                                                    onsubmit="#{rich:component('panProcesando')}.show();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_libro2" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraLibro}">  
+                            <h:outputText id="ot_cal_mbase_multaref" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.multaref']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valmultaref"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaRefLibro}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factorai" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.factorai']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valfactorai"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorAi}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factorfco" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.factorfco']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valfactorfco"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorFco}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factorao" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.factorao']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valfactorao"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorAo}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factorfci" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.factorfci']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valfactorfci"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorFci}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_aplicarAALibro" 
+                                    value="#{msgs['bt.cal_mbase.aplicaratenuantes']}" 
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAA}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlMultaBaseLibro }){javaScript:Richfaces.showModalPanel('modAtenuantesAgravantes');}#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmEnviarCasilla">
+                                        <a4j:support event="onclick" 
+                                                    onsubmit="#{rich:component('panProcesando')}.show();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_barreras21" columns="1" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraBarreras}">  
+                            <h:outputText id="ot_cal_mbase_detecbarreras" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.detecbarreras']}"/>   
+                        </h:panelGrid>
+                        <h:panelGrid id="pgBusqueda_barreras2" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraBarreras}">  
+                            <h:outputText id="ot_cal_mbase_probbarreras" style="font-size:12px;"
+                                            value="#{msgs['ot.cal_mbase.probbarreras']}"/>
+                            <h:selectOneMenu id="cb_cal_mbase_probbarreras" 
+                                            required="true" 
+                                            style="display:block;width:300px"
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcCaso}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstProbabilidadBarreras}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarProbabilidadBarreras()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="ot_cal_mbase_valoruitbarreras, ot_cal_mbase_probresubarreras" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_probresulabelbarreras" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.probresubarreras']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_probresubarreras"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorPBarrera}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbasebar"
+                                value="#{msgs['bt.cal_mbase.calcularMbase']}"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doCalcularMbaseBarreras}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaBarreras();"
+                                        reRender="frmBusqueda, ot_cal_mbase_multabasebar"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                            <h:outputText value=""/>
+                            </h:panelGrid>
+
+                            <rich:separator height="2" style="margin-top:8px;margin-bottom:8px;display:#{clsCalculoMultaSrv.vcMuestraBarreras}"></rich:separator>
+                            <h:panelGrid id="pgBusqueda_barreras23" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraBarreras}">  
+                        
+
+                            <h:outputText id="ot_cal_mbase_mbasebar" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.multabasebarreras']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabasebar"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBaseBarrera}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_aplicarAAbar" 
+                                    value="#{msgs['bt.cal_mbase.aplicaratenuantes']}" 
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAA}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlMultaBaseBarrera }){javaScript:Richfaces.showModalPanel('modAtenuantesAgravantes');}#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmEnviarCasilla">
+                                        <a4j:support event="onclick" 
+                                                    onsubmit="#{rich:component('panProcesando')}.show();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_pi2" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoPi}">  
+                            <h:outputText id="ot_cal_mbase_mbasepi" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.multabase']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabasepi"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBasePi}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_aplicarAApi" 
+                                    value="#{msgs['bt.cal_mbase.aplicaratenuantes']}" 
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAA}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlMultaBasePi }){javaScript:Richfaces.showModalPanel('modAtenuantesAgravantes');}#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmEnviarCasilla">
+                                        <a4j:support event="onclick" 
+                                                    onsubmit="#{rich:component('panProcesando')}.show();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_ccd2" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoCcd}">  
+                            <h:outputText id="ot_cal_mbase_valmatccd" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.valmatriz']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_valmatrizccd"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuValorMatriz}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                        
+                            <h:outputText id="ot_cal_mbase_mbaseccd" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.multabase']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabaseccd"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBaseCcd}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_aplicarAAccd" 
+                                    value="#{msgs['bt.cal_mbase.aplicaratenuantes']}" 
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAA}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlMultaBaseCcd }){javaScript:Richfaces.showModalPanel('modAtenuantesAgravantes');}#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmEnviarCasilla">
+                                        <a4j:support event="onclick" 
+                                                    onsubmit="#{rich:component('panProcesando')}.show();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_firma2" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoFirma}">  
+                            <h:outputText id="ot_cal_mbase_detecfirma" style="font-size:12px; display:block; width:200px;"
+                                            value="#{msgs['ot.cal_mbase.detecfirma']}"/>        
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_probresulabelfirma" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.probresufirma']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_probresufirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorPFirma}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_mbasefirma" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.multabase']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabasefirma"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBaseFirma}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_aplicarAAfirma" 
+                                    value="#{msgs['bt.cal_mbase.aplicaratenuantes']}" 
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAA}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlMultaBaseFirma }){javaScript:Richfaces.showModalPanel('modAtenuantesAgravantes');}#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmEnviarCasilla">
+                                        <a4j:support event="onclick" 
+                                                    onsubmit="#{rich:component('panProcesando')}.show();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_pventas2" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraPorcentajeVentas}">  
+                            <h:outputText id="ot_cal_mbase_mbase1pventas" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.multabase1pventas']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabase1pventas"
+                                converter="javax.faces.Double"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBaseVentas}" columnClasses="input-width-50">
+                                <f:convertNumber pattern="###,###.##"/>
+                                </h:inputText>
+                            <h:outputText value=""/>
+                        
+                            <h:outputText id="ot_cal_mbase_mbase2pventas" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.multabase2pventas']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabase2pventas"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBaseUITVentas}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_aplicarAApventas" 
+                                    value="#{msgs['bt.cal_mbase.aplicaratenuantes']}" 
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAA}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlMultaBaseVentas }){javaScript:Richfaces.showModalPanel('modAtenuantesAgravantes');}#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmEnviarCasilla">
+                                        <a4j:support event="onclick" 
+                                                    onsubmit="#{rich:component('panProcesando')}.show();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="pgBusqueda_adhoc2" columns="3" cellpadding="1" style="display:#{clsCalculoMultaSrv.vcMuestraAdHoc}">  
+                            <h:outputText id="ot_cal_mbase_mbase1adhoc" style="font-size:12px; display:block; width:200px;"
+                                          value="#{msgs['ot.cal_mbase.multabase1adhoc']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabase1adhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBaseAdhoc}" columnClasses="input-width-50">
+                                <f:convertNumber pattern="###,###.##"/>
+                                </h:inputText>
+                            <h:outputText value=""/>
+                        
+                            <h:outputText id="ot_cal_mbase_mbase2adhoc" style="font-size:12px;"
+                                          value="#{msgs['ot.cal_mbase.multabase2adhoc']}"/>        
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabase2adhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBaseUITAdhoc}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_aplicarAAadhoc" 
+                                    value="#{msgs['bt.cal_mbase.aplicaratenuantes']}" 
+                                    action="#{clsCalculoMultaSrv.doSeleccionarAA}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlMultaBaseAdhoc }){javaScript:Richfaces.showModalPanel('modAtenuantesAgravantes');}#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmEnviarCasilla">
+                                        <a4j:support event="onclick" 
+                                                    onsubmit="#{rich:component('panProcesando')}.show();">
+                                        </a4j:support>
+                                </a4j:commandButton>
+                            <h:outputText value=""/>
+
+                        </h:panelGrid>
+
+                    <br></br>
+                </a4j:form>
+            </rich:panel>
+    
+        </h:panelGrid>
+
+    </rich:panel> 
+    
+        <rich:modalPanel id="panProcesando" autosized="true" width="300">
+            <center>
+                <h:outputText value="#{msgs['ot.procesando']}"/>
+                <br/>
+                <h:graphicImage value="../imagenes/loading.gif"/>
+            </center>
+        </rich:modalPanel>
+
+    <!--los modales se encuentra en /modal/ del proyecto-->
+    <ui:include src="../procesos/modal/pgw_modalAtenAgrav.xhtml"/>
+    <ui:include src="../procesos/modal/pgw_modalMPreliminar.xhtml"/>  
+    </body>
+</ui:composition>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee">
+    <application>
+        <message-bundle>pe.gob.indecopi.messages</message-bundle>
+        <resource-bundle>
+            <base-name>pe.gob.indecopi.messages</base-name>
+            <var>msgs</var>
+        </resource-bundle>
+    </application>
+    
+    <managed-bean>
+        <managed-bean-name>clsCalculoMultaSrv</managed-bean-name>
+        <managed-bean-class>pe.gob.indecopi.srv.ClsCalculoMultaSrv</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>clsCalculoBean</managed-bean-name>
+        <managed-bean-class>pe.gob.indecopi.bean.ClsCalculoBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+</faces-config>

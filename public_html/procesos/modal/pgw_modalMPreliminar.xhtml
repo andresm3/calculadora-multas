@@ -1,0 +1,603 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+  <rich:modalPanel id="modMPreliminar" autosized="true" width="500">
+            <f:facet name="controls">
+                <h:panelGroup>
+                    <h:graphicImage id="hidePanelModMPreliminar" value="/imagenes/btnCerrar.png"/>
+                    <rich:componentControl for="modMPreliminar" attachTo="hidePanelModMPreliminar" operation="hide"
+                                           event="onclick"/>
+                </h:panelGroup>
+            </f:facet>
+            <f:facet name="header">
+                <h:outputText value="Determinación de la Multa - Multa Final"/>
+            </f:facet>
+            <a4j:form id="frmMultaPreliminar" ajaxSubmit="true">
+                
+                <rich:separator height="2" style="margin-top:8px;margin-bottom:8px;"></rich:separator>
+
+                <h:panelGrid id="pgBusqueda_filtros2" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}">  
+                    <h:outputText id="ot_cal_mbase_orgp" style="font-size:12px; display:block; width:250px"
+                                              value="#{msgs['ot.cal_mbase.organo']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_orgp"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}"/>
+                
+                    <h:outputText id="ot_cal_mbase_rucp" style="font-size:12px;" width="200"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_rucp"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRuc}" columnClasses="input-width-50"/>
+                        
+                    <h:outputText id="ot_cal_mbase_rsocp" style="font-size:12px;"
+                        value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="ot_cal_mbase_rsocialp"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros2_libro" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraLibro}">  
+                    <h:outputText id="ot_cal_mbase_orgplib" style="font-size:12px; display:block; width:250px"
+                                              value="#{msgs['ot.cal_mbase.organo']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_orgplib"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}"/>
+                
+                    <h:outputText id="ot_cal_mbase_rucplib" style="font-size:12px;" width="200"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_rucplib"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRucLibro}" columnClasses="input-width-50"/>
+                        
+                    <h:outputText id="ot_cal_mbase_rsocplib" style="font-size:12px;"
+                        value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="ot_cal_mbase_rsocialplib"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros2_bar" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraBarreras}">  
+                    <h:outputText id="ot_cal_mbase_orgpbar" style="font-size:12px; display:block; width:250px"
+                                              value="#{msgs['ot.cal_mbase.organo']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_orgpbar"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}"/>
+
+                    <h:outputText id="ot_cal_mbase_rucbar" style="font-size:12px;" width="200"
+                        value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_rucbar"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRucBarreras}" columnClasses="input-width-50"/>
+                    
+                    <h:outputText id="ot_cal_mbase_rsocbar" style="font-size:12px;"
+                        value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="ot_cal_mbase_rsocialbar"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros2_pi" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoPi}">  
+                    <h:outputText id="ot_cal_mbase_orgppi" style="font-size:12px; display:block; width:250px"
+                                              value="#{msgs['ot.cal_mbase.organo']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_orgppi"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}"/>
+                
+                    <h:outputText id="ot_cal_mbase_rucppi" style="font-size:12px;" width="200"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_rucppi"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRucPi}" columnClasses="input-width-50"/>
+                        
+                    <h:outputText id="ot_cal_mbase_rsocppi" style="font-size:12px;"
+                        value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="ot_cal_mbase_rsocialppi"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros2_ccd" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoCcd}">  
+                    <h:outputText id="ot_cal_mbase_orgpccd" style="font-size:12px; display:block; width:250px"
+                                              value="#{msgs['ot.cal_mbase.organo']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_orgpccd"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}"/>
+                
+                    <h:outputText id="ot_cal_mbase_rucpccd" style="font-size:12px;" width="200"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_rucpccd"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRucCcd}" columnClasses="input-width-50"/>
+                        
+                    <h:outputText id="ot_cal_mbase_rsocpccd" style="font-size:12px;"
+                        value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="ot_cal_mbase_rsocialpccd"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros2_firma" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoFirma}">  
+                    <h:outputText id="ot_cal_mbase_orgpfirma" style="font-size:12px; display:block; width:250px"
+                                              value="#{msgs['ot.cal_mbase.organo']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_orgpfirma"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}"/>
+                
+                    <h:outputText id="ot_cal_mbase_rucpfirma" style="font-size:12px;" width="200"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_rucpfirma"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRucFirma}" columnClasses="input-width-50"/>
+                        
+                    <h:outputText id="ot_cal_mbase_rsocpfirma" style="font-size:12px;"
+                        value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="ot_cal_mbase_rsocialpfirma"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros2_pventas" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPorcentajeVentas}">  
+                    <h:outputText id="ot_cal_mbase_orgppventas" style="font-size:12px; display:block; width:250px"
+                                              value="#{msgs['ot.cal_mbase.organo']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_orgppventas"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}"/>
+                
+                    <h:outputText id="ot_cal_mbase_rucppventas" style="font-size:12px;" width="200"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_rucppventas"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRucVentas}" columnClasses="input-width-50"/>
+                        
+                    <h:outputText id="ot_cal_mbase_rsocppventas" style="font-size:12px;"
+                        value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="ot_cal_mbase_rsocialppventas"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros2_adhoc" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraAdHoc}">  
+                    <h:outputText id="ot_cal_mbase_orgpadhoc" style="font-size:12px; display:block; width:250px"
+                                              value="#{msgs['ot.cal_mbase.organo']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_orgpadhoc"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}"/>
+                
+                    <h:outputText id="ot_cal_mbase_rucpadhoc" style="font-size:12px;" width="200"
+                                              value="#{msgs['ot.cal_mbase.ruc']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mbase_rucpadhoc"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRucAdhoc}" columnClasses="input-width-50"/>
+                        
+                    <h:outputText id="ot_cal_mbase_rsocpadhoc" style="font-size:12px;"
+                        value="#{msgs['ot.cal_mbase.razsocial']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="ot_cal_mbase_rsocialpadhoc"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
+                </h:panelGrid>
+
+                    <rich:separator height="2" style="margin-top:8px;margin-bottom:8px;"></rich:separator>
+
+                <h:panelGrid id="pgBusqueda_filtros3" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}">  
+                    <h:outputText id="ot_cal_mprelim_multa" style="font-size:12px; display:block;width:250px"
+                                    value="#{msgs['ot.prelim.multapre']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_multa"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaPreUIT}"/>
+
+                    <h:outputText id="ot_cal_mprelim_gravedad" style="font-size:12px;"
+                                    value="#{msgs['ot.prelim.gravedad']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_gravedad"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcGravedadMulta}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_toplegalgrav" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.toplegalgrav']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_toplegalgrav"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuGravedadTope}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_toplegaling" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.toplegaling']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_toplegaling"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuIngresosTope}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_mulfinuit" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.mulfinuit']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_mulfinuit"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
+
+
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros3_libro" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraLibro}">  
+
+                    <h:outputText id="ot_cal_mprelim_multaaa" style="font-size:12px; display:block;width:250px"
+                                    value="#{msgs['ot.prelim.mulatenagrav']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_multalib"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaAALibro}"/>
+
+                    <h:outputText id="ot_cal_mprelim_ajustesleg" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.ajustesleglibro']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_ajustesleglib"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuAjusIngLibro}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_mulfinuitlib" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.mulfinuit']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_mulfinuitlib"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
+
+
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros3_bar" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraBarreras}">  
+
+                    <h:outputText id="ot_cal_mprelim_multaabar" style="font-size:12px; display:block;width:250px"
+                                    value="#{msgs['ot.prelim.mulatenagrav']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_multabar"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaAABarrera}"/>
+
+                    <h:outputText id="ot_cal_mprelim_ajminbarrera" style="font-size:12px;"
+                                    value="#{msgs['ot.prelim.ajminbarrera']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_ajminbarrera"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuAjusteMinBarrera}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_ajmaxbarrera" style="font-size:12px;"
+                                    value="#{msgs['ot.prelim.ajmaxbarrera']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_ajmaxbarrera"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuAjusteMaxBarrera}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_gravedadbar" style="font-size:12px;"
+                                    value="#{msgs['ot.prelim.ajbarrera']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_gravedadbar"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaAjustadaBarrera}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_ajusteslegbar" style="font-size:12px;"
+                        value="#{msgs['ot.prelim.ajusteslegbar']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_ajusteslegbar"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuAjusteIngBarrera}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_mulfinuitbar" style="font-size:12px;"
+                        value="#{msgs['ot.prelim.mulfinuit']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_mulfinuitbar"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
+
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros3_pi" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoPi}">  
+                    <h:outputText id="ot_cal_mprelim_multapi" style="font-size:12px; display:block;width:250px"
+                                    value="#{msgs['ot.prelim.multapre']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_multapi"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaPreUITPi}"/>
+
+                    <h:outputText id="ot_cal_mprelim_gravedadpi" style="font-size:12px;"
+                                    value="#{msgs['ot.prelim.gravedad']}"/>        
+                    <h:selectOneMenu id="cb_cal_mbase_organopi" 
+                                    required="true" 
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.nuGravedadTopePi}">
+                        <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstGravedadTopePi}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarGravedadSubtipoPi()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmBusqueda,it_cal_mprelim_toplegalgravpi,it_cal_mprelim_mulfinuitpi,it_cal_mprelim_mulsolespi"/>
+                    </h:selectOneMenu>
+
+                    <h:outputText id="ot_cal_mprelim_toplegalgravpi" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.toplegalgrav']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_toplegalgravpi"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuGravedadTopePi}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_mulfinuitpi" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.mulfinuit']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_mulfinuitpi"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
+
+
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros3_ccd" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoCcd}">  
+                    <h:outputText id="ot_cal_mprelim_multaccd" style="font-size:12px; display:block;width:250px"
+                                    value="#{msgs['ot.prelim.multapre']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_multaccd"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaPreUIT}"/>
+
+                    <h:outputText id="ot_cal_mprelim_gravedadccd" style="font-size:12px;"
+                                    value="#{msgs['ot.prelim.gravedad']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_gravedadccd"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcGravedadMulta}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_toplegalgravccd" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.toplegalgrav']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_toplegalgravccd"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuGravedadTope}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_toplegalingccd" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.toplegaling']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_toplegalingccd"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuIngresosTope}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_mulfinuitccd" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.mulfinuit']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_mulfinuitccd"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
+
+
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros3_firma" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecidoFirma}">  
+
+                    <h:outputText id="ot_cal_mprelim_multaaafirma" style="font-size:12px; display:block;width:250px"
+                                    value="#{msgs['ot.prelim.mulatenagrav']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_multafirma"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaAAFirma}"/>
+
+                    <h:outputText id="ot_cal_mprelim_ajusteslegfirma" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.toplegalfirma']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_ajusteslegfirma"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuTopeLegalFirma}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_mulfinuitfirma" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.mulfinuit']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_mulfinuitfirma"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
+
+
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros3_pventas" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraPorcentajeVentas}">  
+                    <h:outputText id="ot_cal_mprelim_multapventas" style="font-size:12px; display:block;width:250px"
+                                    value="#{msgs['ot.prelim.multapre']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_multapventas"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaAAVentas}"/>
+
+                    <h:outputText id="ot_cal_mprelim_gravedadpventas" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.gravedad']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_gravedadpventas"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.vcGravedadMulta}" columnClasses="input-width-50"/>
+
+
+                    <h:outputText id="ot_cal_mprelim_toplegalgravpventas" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.toplegalgrav']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_toplegalgravpventas"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.vcGravedadTopeVentas}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_ajusteslegpventas" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.ajusteslegpventas']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_ajusteslegpventas"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuAjusteIngVentas}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_mulfinuitpventas" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.mulfinuit']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_mulfinuitpventas"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
+
+                </h:panelGrid>
+
+                <h:panelGrid id="pgBusqueda_filtros3_adhoc" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraAdHoc}">  
+                    <h:outputText id="ot_cal_mprelim_multaadhoc" style="font-size:12px; display:block;width:250px"
+                                    value="#{msgs['ot.prelim.multapre']}"/>        
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_multaadhoc"
+                        readonly="true"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaAAAdhoc}"/>
+
+                    <h:outputText id="ot_cal_mprelim_gravedadadhoc" 
+                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"
+                        value="#{msgs['ot.prelim.gravedad']}"/>        
+                    <h:inputText 
+                    style="width:300px; display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"
+                    id="it_cal_mprelim_gravedadadhoc"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.vcGravedadMulta}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_gravedadadhoc2" 
+                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraGravedad2AdHoc}"
+                        value="#{msgs['ot.prelim.gravedad']}"/>        
+                    <h:selectOneMenu id="cb_cal_mbase_organoadhoc" 
+                            style="width:300px; display:#{clsCalculoMultaSrv.vcMuestraGravedad2AdHoc}"
+                            required="true" 
+                            autoWidth="false"
+                            value="#{clsCalculoMultaSrv.objFiltroBean.nuGravedadTopeAdhoc}">
+                        <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstGravedadTopeAdhoc}"/>
+                        <a4j:support event="onchange"
+                        action="#{clsCalculoMultaSrv.doSeleccionarGravedadSubtipoAdhoc()}" 
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide()"
+                        reRender="frmBusqueda,it_cal_mprelim_toplegalgravadhoc,it_cal_mprelim_ajusteslegadhoc,it_cal_mprelim_mulfinuitadhoc"/>
+                    </h:selectOneMenu>
+
+                    <h:outputText id="ot_cal_mprelim_toplegalgravadhoc" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.toplegalgrav']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_toplegalgravadhoc"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.vcGravedadTopeAdhoc}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_ajusteslegadhoc" 
+                    style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraTopelegalNoPIAdHoc}"
+                    value="#{msgs['ot.prelim.ajusteslegadhoc']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px; display:#{clsCalculoMultaSrv.vcMuestraTopelegalNoPIAdHoc}"
+                    id="it_cal_mprelim_ajusteslegadhoc"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuAjusteIngAdhoc}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_mprelim_mulfinuitadhoc" style="font-size:12px;"
+                    value="#{msgs['ot.prelim.mulfinuit']}"/>        
+                    <h:inputText 
+                    style="display:block;width:300px"
+                    id="it_cal_mprelim_mulfinuitadhoc"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
+
+                    
+                </h:panelGrid>
+
+            </a4j:form>
+            <h:form id="frmAuxiliar" target="_blank">
+                
+                <a4j:commandButton id="btnDetener" 
+                    value="Aceptar"
+                    style="margin-top:5px; margin-left:100px;"
+                    onclick="javaScript:Richfaces.hideModalPanel('modMPreliminar');
+                            javaScript:Richfaces.hideModalPanel('modAtenuantesAgravantes');">
+                </a4j:commandButton>
+                <h:commandButton id="btn_descargar_reporte"
+                    value="#{msgs['bt.prelim.reporte']}"
+                    style="margin-top:5px; margin-left:160px;"
+                    action="#{clsCalculoMultaSrv.doReportePreliminar}">
+                </h:commandButton>
+            </h:form>
+        </rich:modalPanel>
+         
+    </body>
+</html>

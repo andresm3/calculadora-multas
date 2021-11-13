@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        <rich:modalPanel id="panReiniciarProceso" autosized="true" styleClass="modal-form" width="400">
+            
+            <f:facet name="header">
+                <h:outputText value="Reiniciar proceso"></h:outputText>
+            </f:facet>
+            
+            <a4j:form id="frmReiniciarProceso" ajaxSubmit="true">
+            <h:panelGrid rendered="#{clsCedulaNotificacionDDASrv.objFiltroBean.blFlagReiniciar}" style="width:100%; ">
+            <h:panelGrid columns="1" style="text-align:left; width:100%; text-align:center;" > 
+            <h:outputLabel value="¿Estas seguro que quieres reiniciar el proceso?" 
+            style="font-weight: 600; font-size:12px;"/>
+            </h:panelGrid>
+   
+            <h:outputLabel value="NOTA: Recuerda que perderas todos los archivos generados, modificados, firmados y  se procesara nuevamente todo." 
+            style="color:red; font-size:12px;"/>
+                <center>
+               <h:panelGrid columns="2" style="font-size:12px; text-align:center;width:100%;" > 
+               <h:panelGrid columns="1" style="text-align:right; width:100%;" > 
+               <a4j:commandButton id="btn_reiniciar_proceso" 
+                                                   value="Reiniciar" 
+                                                   action="#{clsCedulaNotificacionDDASrv.doReiniciarProceso}"
+                                                   oncomplete="#{rich:component('panVolverGenerar')}.show();#{rich:component('panProcesando')}.hide();
+                                                   #{rich:component('panReiniciarProceso')}.hide();"
+                                                   reRender="frmReiniciarProceso"
+                                                   style="margin-left:10px;"
+                                                   
+                                                   >
+                                    <a4j:support event="onclick" 
+                                                 onsubmit="#{rich:component('panProcesando')}.show();"
+                                                 >
+                                    </a4j:support>
+                                    
+                </a4j:commandButton> 
+                </h:panelGrid>
+                <h:panelGrid columns="1" style="text-align:left; width:100%;" > 
+                <a4j:commandButton id="btn_cancerlar_reiniciar_proceso" 
+                value="Cancelar"
+                style="margin:5px;">
+                        <a4j:support event="onclick" 
+                        oncomplete="#{rich:component('panReiniciarProceso')}.hide();"
+                        >
+                        </a4j:support>
+                </a4j:commandButton>
+                </h:panelGrid>
+                
+               </h:panelGrid>     
+                </center>
+                </h:panelGrid>
+                <h:panelGrid style="font-size:12px; width:100%; text-align:center;" columns="1"  
+                rendered="#{!clsCedulaNotificacionDDASrv.objFiltroBean.blFlagReiniciar}">
+                <h:panelGrid columns="1" style="text-align:left; width:100%; text-align:center;" > 
+                <h:outputLabel value="Debe seleccionar almenos un proceso reiniciable." style="font-size:12px;" />
+                </h:panelGrid>
+                
+                 <a4j:commandButton id="btn_cancerlar_reiniciar_proceso2" 
+                value="Cancelar"
+                style="margin:5px;">
+                        <a4j:support event="onclick" 
+                        oncomplete="#{rich:component('panReiniciarProceso')}.hide();"
+                        >
+                        </a4j:support>
+                </a4j:commandButton>
+
+                </h:panelGrid>
+            </a4j:form>
+            
+        </rich:modalPanel>
+        
+   
+    </body>
+</html>

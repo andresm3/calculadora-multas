@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+    <title>MANTENIMIENTO PLANTILLAS</title>
+    <link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/cssMain.css"/>
+    <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/js_global.js"></script>
+    <link href="${facesContext.externalContext.requestContextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="${facesContext.externalContext.requestContextPath}/resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <script language="javascript" type="text/javascript"
+            src="${facesContext.externalContext.requestContextPath}/resources/bootstrap/js/jquery-1.11.1.min.js" charset="UTF-8"></script>
+    <script language="javascript" type="text/javascript"
+            src="${facesContext.externalContext.requestContextPath}/resources/bootstrap/js/bootstrap.min.js" charset="UTF-8"></script>  
+    <script language="javascript" type="text/javascript"
+            src="${facesContext.externalContext.requestContextPath}/js/js_sancionadores.js" charset="UTF-8"></script>  
+    <script language="JavaScript" type="text/javascript">
+      // jQuery 1.11.1 into noConflict mode.
+      var $jq1 = jQuery.noConflict(true);
+    </script>
+   
+  </head>
+  <body>
+    <!--Pnael Principal-->
+    <a4j:form id="frmImputaciones" ajaxsubmit="true">
+    
+    
+    <rich:panel>
+      <f:facet name="header">
+        <h:outputText value="MANTENIMIENTO DE IMPUTACIONES"/>
+          
+      </f:facet>
+      
+                          
+        <button id="btnAbrirPanelImputaciones" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#panImputacion" style="display:none;">
+                                    Abrir Panel        
+        </button>
+        <rich:dataTable id="tbImputaciones"
+                            value="#{clsMantenimientoSrv.lstImputaciones}"
+                            var="imputacion" width="100%" 
+                            rendered="true"
+                            rows="25"
+                            rowKeyVar="row"
+                            onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                            onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'">
+        <f:facet name="header">
+        
+              <h:panelGrid columns="3" columnClasses="gColum25R,gColum25RgColum25R" style="width:100%;">
+               <h:outputText value=""/>
+               <h:outputText id="cntListados" value="IMPUTACIONES ENCONTRADAS: #{fn:length(clsMantenimientoSrv.lstImputaciones)}"/>
+               <a4j:commandButton id="btnAgregarImputacion" 
+                                  value="Nueva Imputación" 
+                                  oncomplete="javaScript:document.getElementById('btnAbrirPanelImputaciones').click();"
+                                  action="#{clsMantenimientoSrv.doNuevaImputacion}"
+                                  reRender="txtImputacion">
+               </a4j:commandButton> 
+             </h:panelGrid> 
+              
+        
+           
+        </f:facet>
+        <rich:column>
+        <f:facet name="header">
+            <h:outputText style="font-size:9px" value="N°"/>
+        </f:facet>
+        <h:outputText  value="#{row + 1}"/>
+        </rich:column>
+        <rich:column>
+        <f:facet name="header">
+            <h:outputText style="font-size:9px" value="Descripción Imputación"/>
+        </f:facet>
+        <h:outputText style="font-size:9px;"  value="#{imputacion.vcImputacion}"/>
+        </rich:column>
+        <rich:column style="text-align:center;">
+        <f:facet name="header">
+             <h:outputText style="font-size:9px" value="Estado"/>
+        </f:facet>
+             <h:outputText style="font-size:9px" value="#{imputacion.vcEstado}"/>
+        </rich:column>
+        <rich:column style="text-align:center;">
+        <f:facet name="header">
+             <h:outputText style="font-size:9px" value="Usuario Creación"/>
+        </f:facet>
+             <h:outputText style="font-size:9px" value="#{imputacion.vcUsuarioReg}"/>
+        </rich:column>
+        <rich:column style="text-align:center;">
+        <f:facet name="header">
+             <h:outputText style="font-size:9px" value="Usuario Modificación"/>
+        </f:facet>
+            <h:outputText style="font-size:9px" value="#{imputacion.vcUsuarioMod}"/>
+        </rich:column>
+        <rich:column>
+        <f:facet name="header">
+            <h:outputText style="font-size:9px" value="Opc."/>
+        </f:facet>
+        <center>
+            <h:panelGrid id="pnlBotoneraOpciones" columns="4">
+                <a4j:commandLink id="cmdEditarImp" rendered="#{imputacion.nuEditar == 1 ? true : false}">
+                               <h:graphicImage id="imgEditarImp" value="../imagenes/img_edit.png" style="border:0"/>
+                               <rich:toolTip for="cmdEditarImp" styleClass="tooltip">
+                                    <span style="white-space:nowrap">
+                                        <h:outputText value="EDITAR IMPUTACIÓN" styleClass="label" escape="false"/>
+                                    </span>
+                               </rich:toolTip>
+                               <a4j:support event="onclick"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            action="#{clsMantenimientoSrv.doSeleccionarImputacion(imputacion)}"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:document.getElementById('btnAbrirPanelImputaciones').click();"
+                                            reRender="txtImputacion"/>
+                </a4j:commandLink>
+                <a4j:commandLink id="cmdEliminarImp" >
+                               <h:graphicImage id="imgEliminarImp" value="#{imputacion.nuEliminar == 1 ? '../imagenes/img_eliminar.png' : '../imagenes/img_checked.png'}" style="border:0"/>
+                               <rich:toolTip for="cmdEliminarImp" styleClass="tooltip" layout="block">
+                                    <span style="white-space:nowrap">
+                                        <h:outputText value="DESACTIVAR IMPUTACIÓN" styleClass="label" escape="false"/>
+                                    </span>
+                               </rich:toolTip>
+                               <a4j:support event="onclick"
+                                            onsubmit="if(!confirm('¿Está seguro de desactivar la imputación?')){return false;}"
+                                            action="#{clsMantenimientoSrv.doEliminarImputacion(imputacion)}"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();alert('#{clsMantenimientoSrv.strMensaje}');"
+                                            reRender="tbImputaciones"
+                                            ajaxSingle="true"/>
+                </a4j:commandLink>
+            </h:panelGrid>
+        </center>
+        </rich:column>
+        
+        <f:facet name="footer">
+               <rich:datascroller id="paginacion" for="tbImputaciones" maxPages="15"
+                                  width="100%" rendered="true"/>
+        </f:facet>
+        
+        </rich:dataTable>
+     </rich:panel>
+    </a4j:form>
+    <!--Panel Mantenimiento Imputación-->
+    
+    <div id="panImputacion" class="modal fade"  role="dialog">
+    <div class="modal-dialog">
+      <a4j:form id="frmImputacion" ajaxSubmit="true">
+       
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Mantenimiento de Imputaciones</h4>
+        </div>
+        <div class="modal-body">
+          
+                <div class="row">
+                   <div class="col-sm-2">
+                      <h:outputLabel id="lblImputacion" value="Imputación"/>
+                   </div>    
+                   <div class="col-sm-9">
+                    <h:inputTextarea id="txtImputacion" value="#{clsMantenimientoSrv.objImputacion.vcImputacion}" 
+                                     maxlength="200" style="width:100%;"
+                                     rows="5" cols="50"
+                                     onkeydown="f_CountLeft('frmImputacion:txtImputacion','frmImputacion:strCountImputacion,200);"
+                                     onkeyup="f_CountLeft('frmImputacion:txtImputacion','frmImputacion:strCountImputacion',200);"/>
+                    <br/>
+                    <h:outputText value="Quedan"
+                                  style="color:#aaaaaa; font-size:9px; font-weight: normal;"/>
+                    <h:inputText size="4" value="200" readonly="true"
+                                 id="strCountImputacion"
+                                 style="font-size:9px; text-align:center;color:#aaaaaa;"/>
+                   
+                   </div> 
+                </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+              <div class="col-sm-3">     
+              </div>
+              <div class="col-sm-3">     
+                <a4j:commandButton id="btnGuardarImputacion" 
+                                   value="GUARDAR"  
+                                   action="#{clsMantenimientoSrv.doGuardarImputacion}"
+                                   oncomplete="alert('#{clsMantenimientoSrv.strMensaje}');javaScript:document.getElementById('btnCerrarImputacion').click();"
+                                   reRender="tbImputaciones"/>
+              </div> 
+              <div class="col-sm-3">     
+                <a4j:commandButton id="btnCerrarModalImputacion" value="CERRAR"  oncomplete="javaScript:document.getElementById('btnCerrarImputacion').click();"/>
+              </div>
+              <div class="col-sm-3">     
+              </div>
+          </div>
+          <button id="btnCerrarImputacion" style="display:none;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      </a4j:form>
+    </div>
+  </div>   
+   
+    <!--Panel Cargando-->
+    <rich:modalPanel id="panProcesando" autosized="true" width="300">
+       <center>
+          <h:outputText value="Procesando..."/>
+          <br/>
+          <h:graphicImage value="imagenes/loading.gif"/>
+       </center>
+    </rich:modalPanel>
+  </body>
+</html>

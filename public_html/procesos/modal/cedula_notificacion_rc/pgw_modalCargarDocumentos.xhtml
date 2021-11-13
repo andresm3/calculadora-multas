@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        <rich:modalPanel id="panCargaDocumentos" autosized="true" styleClass="modal-form">
+            
+            <f:facet name="header">
+                <h:outputText value="Cargar Documentos"></h:outputText>
+            </f:facet>
+            
+            <a4j:form id="formCargaArchivo" ajaxSubmit="true">
+            
+                <h:panelGrid columns="1" style="font-size:12px;" >
+                <h:outputLabel value="Por favor tenga en cuenta lo siguiente:" style="color:red;"/>
+                <h:outputLabel value="-El nombre de los archivos debe tener el siguiente formato (Expediente)NNNNNN-YYYY-TYPE.doc Ejemplo: 10000-2019-CN.doc"/>
+                <h:outputLabel value="-Solo se admiten archivos en formato DOC."/>  
+                </h:panelGrid>
+                
+                <rich:fileUpload id="fileAdjuntaDocumento"
+                                 fileUploadListener="#{clsNotificacionRCSrv.doCambiarArchivos}"
+                                 immediateUpload="false"
+                                 acceptedTypes="doc" 
+                                 maxFilesQuantity="50"
+                                 addControlLabel="Subir archivo..."
+                                 clearAllControlLabel="Eliminar"
+                                 clearControlLabel="Eliminar"
+                                 stopEntryControlLabel="Detener"
+                                 uploadControlLabel="Subir archivo"
+                                 doneLabel="Terminado" 
+                                 listWidth="500px"
+                                 listHeight="150px" 
+                                 autoclear="false"
+                                 alt="Se permiten la extension pdf">
+                           
+                    <f:facet name="label">
+                      <h:outputText value="{_KB}KB de {KB}KB cargados --- {mm}:{ss}"/>
+                    </f:facet>
+                    
+                    <a4j:support event="onuploadcomplete"
+                                 oncomplete="javaScript:Richfaces.hideModalPanel('panCargaDocumentos');"
+                                 reRender="dtb_conversion_not_resultados">
+                    </a4j:support>
+                            
+                    <a4j:support event="onclear" 
+                                 reRender="fileAdjuntaDocumento">
+                    </a4j:support>
+                    
+                </rich:fileUpload>
+                
+                <br/>
+                
+                <center>
+                
+                    <a4j:commandButton id="btnCancelarCargaArchivo" value="Cancelar">
+                        <a4j:support event="onclick" oncomplete="javaScript:Richfaces.hideModalPanel('panCargaDocumentos');"></a4j:support>
+                    </a4j:commandButton>
+                    
+                </center>
+                
+            </a4j:form>
+            
+        </rich:modalPanel>
+        
+   
+    </body>
+</html>
