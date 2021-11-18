@@ -1225,7 +1225,7 @@ public List<SelectItem> getAtenF0(){
   }
 
 public void doLimpiarRUC() {
-
+    logger.info(">>doLimpiarRUC");
     /* this.getObjFiltroBean().setVcRuc("");
     this.getObjFiltroBean().setVcRazonSocial("");
     this.getObjFiltroBean().setVcRucLibro("");
@@ -1338,10 +1338,18 @@ public void doLimpiarRUC() {
     this.getObjFiltroBean().setIsBlMultaBaseVentas(false);
     this.getObjFiltroBean().setIsBlMultaBaseAdhoc(false);
     this.getObjFiltroBean().setIsBlMultaBaseFirma(false);
+
+    this.getObjFiltroBean().setVcIdTipoAlcanceBarrera("-1");
+    this.getObjFiltroBean().setVcIdFactPoblacionBarrera("-1");
+    this.getObjFiltroBean().setVcIdFactSecEconBarrera("-1");
+    this.getObjFiltroBean().setNuAlcanceBarrera(0);
+    this.getObjFiltroBean().setNuMultaDBarrera(0);
+
+    logger.info(">>FIN doLimpiarRUC");
   }
 
   public void doLimpiar() {
-    logger.info(">>doLimpiar()");
+    logger.info(">>doLimpiar");
     this.getObjFiltroBean().setVcRuc("");
     this.getObjFiltroBean().setVcRazonSocial("");
     this.getObjFiltroBean().setVcRucLibro("");
@@ -1459,7 +1467,7 @@ public void doLimpiarRUC() {
     this.setLstAfectacionBean(null);// manejar con IsBlLstAfectacion
     this.getObjFiltroBean().setIsBlLstAfectacion(false);
 
-    logger.info(">>FIN doLimpiar()");
+    logger.info(">>FIN doLimpiar");
   }
   public void doSeleccionarMetodo() {
     logger.info(">>doSeleccionarMetodo(): "+ this.getObjFiltroBean().getVcMetodo());
