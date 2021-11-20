@@ -8,7 +8,7 @@ xmlns:rich="http://richfaces.org/rich">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta http-equiv="X-UA-Compatible" content="IE=8"/>
-        <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jsMain.js?v=7"></script>
+        <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jsMain.js?v=9"></script>
         <link type="text/css" rel="stylesheet" href="css/main.css"/>
         <link type="text/css" rel="stylesheet" href="css/style_expediente_electronico.css"/>
         <title>"#{msgs['ot.general.res.titulo']}"</title>
@@ -23,7 +23,7 @@ xmlns:rich="http://richfaces.org/rich">
         <h:panelGrid columnClasses="panel" columns="5" styleClass="style_pgVisorExpediente">
             <rich:panel styleClass="top">
                     <a4j:form id="frmBusqueda" ajaxsubmit="true">
-                        <!-- Busqueda Electronica -->
+                        <!-- Panel Principal -->
                         <h:panelGrid id="pgBusqueda_filtros" columns="5" cellpadding="1">
                             
                             <h:outputText id="ot_cal_mbase_organo" style="font-size:12px; display:block; width:200px;"
@@ -87,7 +87,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     action="#{clsCalculoMultaSrv.doSeleccionarInstancia()}" 
                                     onsubmit="#{rich:component('panProcesando')}.show();"
                                     oncomplete="#{rich:component('panProcesando')}.hide()"
-                                    reRender="frmBusqueda, cb_cal_mbase_metodos" />
+                                    reRender="frmBusqueda" />
                                 </h:selectOneMenu>
                                 <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}"/>
                                 <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraPreestablecido}"/>
@@ -98,7 +98,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:inputText 
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_ruc"
-                                    maxlength="12"
+                                    maxlength="11"
                                     onkeypress="return checkNumeros(event)"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcRuc}" columnClasses="input-width-50"/>
                                 <a4j:commandButton id="bt_cal_mbase_ruc"
@@ -195,27 +195,24 @@ xmlns:rich="http://richfaces.org/rich">
 
                                 <h:outputText id="ot_cal_mbase_afectacion" style="font-size:12px;"
                                                 value="#{msgs['ot.cal_mbase.afectacion']}"/>
-                                <h:selectOneMenu id="cb_cal_mbase_infracciones" 
-                                                required="true" 
-                                                style="display:block;width:300px"
-                                                autoWidth="false"
-                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccion}">
-                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
-                                    <a4j:support event="onchange"
-                                    action="#{clsCalculoMultaSrv.doSeleccionarInfraccion()}" 
-                                    onsubmit="#{rich:component('panProcesando')}.show();"
-                                    oncomplete="#{rich:component('panProcesando')}.hide()"
-                                    reRender="ot_cal_mbase_nivelafectacion, it_cal_mbase_tipfectacion" />
-                                </h:selectOneMenu>
+                                <a4j:commandLink id="button_ver_infracciones" 
+                                    action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
+                                        Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                       }#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmSeleccionarInfraccion"
+                                    >
+                                    <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                    Seleccionar
+                                </a4j:commandLink>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
 
                                 <h:outputText value=""/>
                                 <h:inputTextarea 
-                                    style="display:block; height:70px; width:300px; resize:none"
-                                    maxlength="1000" 
+                                    style="display:block; height:120px; width:300px; resize:none"
+                                    maxlength="2000" 
                                     id="it_cal_mbase_tipfectacion"
                                     readonly="true"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacion}" columnClasses="input-width-50"/>
@@ -294,7 +291,7 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_ruclib"
-                                maxlength="12"
+                                maxlength="11"
                                 onkeypress="return checkNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucLibro}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_ruclib"
@@ -391,27 +388,24 @@ xmlns:rich="http://richfaces.org/rich">
 
                             <h:outputText id="ot_cal_mbase_afectacionlib" style="font-size:12px;"
                                             value="#{msgs['ot.cal_mbase.afectacion']}"/>
-                            <h:selectOneMenu id="cb_cal_mbase_infraccioneslib" 
-                                            required="true" 
-                                            style="display:block;width:300px"
-                                            autoWidth="false"
-                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionLibro}">
-                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
-                                <a4j:support event="onchange"
-                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionLibro()}" 
-                                onsubmit="#{rich:component('panProcesando')}.show();"
-                                oncomplete="#{rich:component('panProcesando')}.hide()"
-                                reRender="ot_cal_mbase_clasificacionlib, it_cal_mbase_tipfectacionlib" />
-                            </h:selectOneMenu>
+                            <a4j:commandLink id="button_ver_infraccioneslib" 
+                                action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
+                                    Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                   }#{rich:component('panProcesando')}.hide();"
+                                reRender="frmSeleccionarInfraccion"
+                                >
+                                <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                Seleccionar
+                            </a4j:commandLink>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
                             <h:outputText value=""/>
                             <h:inputTextarea 
-                                style="display:block; height:70px; width:300px; resize:none"
-                                maxlength="1000" 
+                                style="display:block; height:120px; width:300px; resize:none"
+                                maxlength="2000" 
                                 id="it_cal_mbase_tipfectacionlib"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionLibro}" columnClasses="input-width-50"/>
@@ -453,7 +447,7 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_rucbar"
-                                maxlength="12"
+                                maxlength="11"
                                 onkeypress="return checkNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucBarreras}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_rucbar"
@@ -492,7 +486,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 action="#{clsCalculoMultaSrv.doSeleccionarTipoBarreras()}" 
                                 onsubmit="#{rich:component('panProcesando')}.show();"
                                 oncomplete="#{rich:component('panProcesando')}.hide()"
-                                reRender="frmBusqueda, cb_cal_mbase_metodos, ot_cal_mbase_factubarreras, ot_cal_mbase_valfactuitbarreras, ot_cal_mbase_aniofbarreras, ot_cal_mbase_valuitbarreras" />
+                                reRender="frmBusqueda, ot_cal_mbase_factubarreras, ot_cal_mbase_valfactuitbarreras, ot_cal_mbase_aniofbarreras, ot_cal_mbase_valuitbarreras" />
                             </h:selectOneMenu>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
@@ -568,27 +562,24 @@ xmlns:rich="http://richfaces.org/rich">
 
                             <h:outputText id="ot_cal_mbase_afectacionbarreras" style="font-size:12px;"
                                             value="#{msgs['ot.cal_mbase.afectacion']}"/>
-                            <h:selectOneMenu id="cb_cal_mbase_infraccionesbarreras" 
-                                            required="true" 
-                                            style="display:block;width:300px"
-                                            autoWidth="false"
-                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionBarrera}">
-                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
-                                <a4j:support event="onchange"
-                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionBarreras()}" 
-                                onsubmit="#{rich:component('panProcesando')}.show();"
-                                oncomplete="#{rich:component('panProcesando')}.hide()"
-                                reRender="ot_cal_mbase_nivelafectacionbarreras, it_cal_mbase_tipfectacionbarreras, ot_cal_mbase_daniobasebar" />
-                            </h:selectOneMenu>
+                            <a4j:commandLink id="button_ver_infraccionesbar" 
+                                action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
+                                    Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                   }#{rich:component('panProcesando')}.hide();"
+                                reRender="frmSeleccionarInfraccion"
+                                >
+                                <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                Seleccionar
+                            </a4j:commandLink>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
                             <h:outputText value=""/>
                             <h:inputTextarea 
-                                style="display:block; height:70px; width:300px; resize:none"
-                                maxlength="1000" 
+                                style="display:block; height:120px; width:300px; resize:none"
+                                maxlength="2000" 
                                 id="it_cal_mbase_tipfectacionbarreras"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionBarrera}" columnClasses="input-width-50"/>
@@ -740,7 +731,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:inputText 
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_rucpi"
-                                    maxlength="12"
+                                    maxlength="11"
                                     onkeypress="return checkNumeros(event)"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcRucPi}" columnClasses="input-width-50"/>
                                 <a4j:commandButton id="bt_cal_mbase_rucpi"
@@ -837,27 +828,24 @@ xmlns:rich="http://richfaces.org/rich">
 
                                 <h:outputText id="ot_cal_mbase_afectacionpi" style="font-size:12px;"
                                                 value="#{msgs['ot.cal_mbase.afectacion']}"/>
-                                <h:selectOneMenu id="cb_cal_mbase_infraccionespi" 
-                                                required="true" 
-                                                style="display:block;width:300px"
-                                                autoWidth="false"
-                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionPi}">
-                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
-                                    <a4j:support event="onchange"
-                                    action="#{clsCalculoMultaSrv.doSeleccionarInfraccionPi()}" 
-                                    onsubmit="#{rich:component('panProcesando')}.show();"
-                                    oncomplete="#{rich:component('panProcesando')}.hide()"
-                                    reRender="ot_cal_mbase_nivelafectacionpi, it_cal_mbase_tipfectacionpi" />
-                                </h:selectOneMenu>
+                                <a4j:commandLink id="button_ver_infraccionespi" 
+                                    action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
+                                        Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                       }#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmSeleccionarInfraccion"
+                                    >
+                                    <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                    Seleccionar
+                                </a4j:commandLink>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
 
                                 <h:outputText value=""/>
                                 <h:inputTextarea 
-                                    style="display:block; height:70px; width:300px; resize:none"
-                                    maxlength="1000" 
+                                    style="display:block; height:120px; width:300px; resize:none"
+                                    maxlength="2000" 
                                     id="it_cal_mbase_tipfectacionpi"
                                     readonly="true"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionPi}" columnClasses="input-width-50"/>
@@ -938,7 +926,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:inputText 
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_rucccd"
-                                    maxlength="12"
+                                    maxlength="11"
                                     onkeypress="return checkNumeros(event)"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcRucCcd}" columnClasses="input-width-50"/>
                                 <a4j:commandButton id="bt_cal_mbase_rucccd"
@@ -1035,27 +1023,24 @@ xmlns:rich="http://richfaces.org/rich">
 
                                 <h:outputText id="ot_cal_mbase_afectacionccd" style="font-size:12px;"
                                                 value="#{msgs['ot.cal_mbase.afectacion']}"/>
-                                <h:selectOneMenu id="cb_cal_mbase_infraccionesccd" 
-                                                required="true" 
-                                                style="display:block;width:300px"
-                                                autoWidth="false"
-                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionCcd}">
-                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
-                                    <a4j:support event="onchange"
-                                    action="#{clsCalculoMultaSrv.doSeleccionarInfraccionCcd()}" 
-                                    onsubmit="#{rich:component('panProcesando')}.show();"
-                                    oncomplete="#{rich:component('panProcesando')}.hide()"
-                                    reRender="ot_cal_mbase_nivelafectacionccd, it_cal_mbase_tipfectacionccd" />
-                                </h:selectOneMenu>
+                                <a4j:commandLink id="button_ver_infraccionesccd" 
+                                    action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                    oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
+                                        Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                       }#{rich:component('panProcesando')}.hide();"
+                                    reRender="frmSeleccionarInfraccion"
+                                    >
+                                    <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                    Seleccionar
+                                </a4j:commandLink>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
 
                                 <h:outputText value=""/>
                                 <h:inputTextarea 
-                                    style="display:block; height:70px; width:300px; resize:none"
-                                    maxlength="1000" 
+                                    style="display:block; height:120px; width:300px; resize:none"
+                                    maxlength="2000" 
                                     id="it_cal_mbase_tipfectacionccd"
                                     readonly="true"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionCcd}" columnClasses="input-width-50"/>
@@ -1138,7 +1123,7 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_rucfirma"
-                                maxlength="12"
+                                maxlength="11"
                                 onkeypress="return checkNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucFirma}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_rucfirma"
@@ -1177,7 +1162,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 action="#{clsCalculoMultaSrv.doSeleccionarServicioProductoAcreditadoFirma()}" 
                                 onsubmit="#{rich:component('panProcesando')}.show();"
                                 oncomplete="#{rich:component('panProcesando')}.hide()"
-                                reRender="frmBusqueda, cb_cal_mbase_metodos" />
+                                reRender="frmBusqueda" />
                             </h:selectOneMenu>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
@@ -1264,27 +1249,24 @@ xmlns:rich="http://richfaces.org/rich">
 
                             <h:outputText id="ot_cal_mbase_afectacionfirma" style="font-size:12px;"
                                             value="#{msgs['ot.cal_mbase.afectacion']}"/>
-                            <h:selectOneMenu id="cb_cal_mbase_infraccionesfirma" 
-                                            required="true" 
-                                            style="display:block;width:300px"
-                                            autoWidth="false"
-                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionFirma}">
-                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
-                                <a4j:support event="onchange"
-                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionFirma()}" 
-                                onsubmit="#{rich:component('panProcesando')}.show();"
-                                oncomplete="#{rich:component('panProcesando')}.hide()"
-                                reRender="ot_cal_mbase_nivelafectacionfirma, it_cal_mbase_tipfectacionfirma, it_cal_mbase_daniobasefirma" />
-                            </h:selectOneMenu>
+                            <a4j:commandLink id="button_ver_infraccionesfirma" 
+                                action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
+                                    Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                   }#{rich:component('panProcesando')}.hide();"
+                                reRender="frmSeleccionarInfraccion"
+                                >
+                                <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                Seleccionar
+                            </a4j:commandLink>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
                             <h:outputText value=""/>
                             <h:inputTextarea 
-                                style="display:block; height:70px; width:300px; resize:none"
-                                maxlength="1000" 
+                                style="display:block; height:120px; width:300px; resize:none"
+                                maxlength="2000" 
                                 id="it_cal_mbase_tipfectacionfirma"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionFirma}" columnClasses="input-width-50"/>
@@ -1396,7 +1378,7 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_rucpventas"
-                                maxlength="12"
+                                maxlength="11"
                                 onkeypress="return checkNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucVentas}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_rucpventas"
@@ -1528,27 +1510,24 @@ xmlns:rich="http://richfaces.org/rich">
 
                             <h:outputText id="ot_cal_mbase_afectacionpventas" style="font-size:12px;"
                                             value="#{msgs['ot.cal_mbase.disuasionpventas']}"/>
-                            <h:selectOneMenu id="cb_cal_mbase_infraccionespventas" 
-                                            required="true" 
-                                            style="display:block;width:300px"
-                                            autoWidth="false"
-                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionVentas}">
-                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
-                                <a4j:support event="onchange"
-                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionVentas()}" 
-                                onsubmit="#{rich:component('panProcesando')}.show();"
-                                oncomplete="#{rich:component('panProcesando')}.hide()"
-                                reRender="ot_cal_mbase_nivelafectacionpventas, it_cal_mbase_tipfectacionpventas, it_cal_mbase_factorgpventas" />
-                            </h:selectOneMenu>
+                            <a4j:commandLink id="button_ver_infraccionespventas" 
+                                action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
+                                    Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                   }#{rich:component('panProcesando')}.hide();"
+                                reRender="frmSeleccionarInfraccion"
+                                >
+                                <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                Seleccionar
+                            </a4j:commandLink>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
                             <h:outputText value=""/>
                             <h:inputTextarea 
-                                style="display:block; height:70px; width:300px; resize:none"
-                                maxlength="1000" 
+                                style="display:block; height:120px; width:300px; resize:none"
+                                maxlength="2000" 
                                 id="it_cal_mbase_tipfectacionpventas"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionVentas}" columnClasses="input-width-50"/>
@@ -1638,7 +1617,7 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_rucpadhoc"
-                                maxlength="12"
+                                maxlength="11"
                                 onkeypress="return checkNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucAdhoc}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_rucadhoc"
@@ -1769,27 +1748,24 @@ xmlns:rich="http://richfaces.org/rich">
 
                             <h:outputText id="ot_cal_mbase_afectacionadhoc" style="font-size:12px;"
                                             value="#{msgs['ot.cal_mbase.disuasionadhoc']}"/>
-                            <h:selectOneMenu id="cb_cal_mbase_infraccionesadhoc" 
-                                            required="true" 
-                                            style="display:block;width:300px"
-                                            autoWidth="false"
-                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcInfraccionAdhoc}">
-                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTipoAfectacion}"/>
-                                <a4j:support event="onchange"
-                                action="#{clsCalculoMultaSrv.doSeleccionarInfraccionAdhoc()}" 
-                                onsubmit="#{rich:component('panProcesando')}.show();"
-                                oncomplete="#{rich:component('panProcesando')}.hide()"
-                                reRender="ot_cal_mbase_nivelafectacionadhoc, it_cal_mbase_tipfectacionadhoc, it_cal_mbase_factorpadhoc" />
-                            </h:selectOneMenu>
+                            <a4j:commandLink id="button_ver_infraccionesadhoc" 
+                                action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
+                                    Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                   }#{rich:component('panProcesando')}.hide();"
+                                reRender="frmSeleccionarInfraccion"
+                                >
+                                <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                Seleccionar
+                            </a4j:commandLink>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
                             <h:outputText value=""/>
                             <h:inputTextarea 
-                                style="display:block; height:70px; width:300px; resize:none"
-                                maxlength="1000" 
+                                style="display:block; height:120px; width:300px; resize:none"
+                                maxlength="2000" 
                                 id="it_cal_mbase_tipfectacionadhoc"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionAdhoc}" columnClasses="input-width-50"/>
@@ -2187,5 +2163,6 @@ xmlns:rich="http://richfaces.org/rich">
     <!--los modales se encuentra en /modal/ del proyecto-->
     <ui:include src="../procesos/modal/pgw_modalAtenAgrav.xhtml"/>
     <ui:include src="../procesos/modal/pgw_modalMPreliminar.xhtml"/>  
+    <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccion.xhtml"/>  
     </body>
 </ui:composition>

@@ -19,7 +19,7 @@ xmlns:rich="http://richfaces.org/rich">
                 </h:panelGroup>
             </f:facet>
             <f:facet name="header">
-                <h:outputText value="Seleccionar Tipo de Afectacion"/>
+                <h:outputText value="#{msgs['ot.mod_infraccion.titulo']}"/>
             </f:facet>
             
             <a4j:form id="frmSeleccionarInfraccion" ajaxSubmit="true">
@@ -35,11 +35,11 @@ xmlns:rich="http://richfaces.org/rich">
                                             onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
                                                 >
                     <rich:column>
-                        <f:facet name="header">Infraccion/Afectacion</f:facet>
+                        <f:facet name="header">#{msgs['ot.mod_infraccion.descripcion']}</f:facet>
                         <h:outputText value="#{result.vcTipoAfectacion}" />
                     </rich:column>
                     <rich:column>
-                        <f:facet name="header">Nivel</f:facet>
+                        <f:facet name="header">#{msgs['ot.mod_infraccion.tipo']}</f:facet>
                         <h:outputText value="#{result.getVcValorNivelClasif()}" />
                     </rich:column>
                     

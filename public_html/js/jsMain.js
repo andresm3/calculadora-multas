@@ -130,6 +130,7 @@ function f_colorea(mFormulario, mElementId, mTipo) {
 }
 
 function fn_validaPreestablecido(){
+    console.log(">>fn_validaPreestablecido<<");
     console.log("factu: "+document.getElementById('frmBusqueda:it_cal_mbase_facturacion').value);
 
     var vMensaje = 'Por favor valide los siguientes datos: \n';
@@ -139,7 +140,7 @@ function fn_validaPreestablecido(){
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocial').value;
     var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacion').value;
     var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresa').value;
-    var vAfectacion = document.getElementById('frmBusqueda:cb_cal_mbase_infracciones').value;
+    var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacion').value;
     
     if(vInstancia!= "-1"){
         f_colorea('frmBusqueda','ot_cal_mbase_instancia','Black');
@@ -176,7 +177,7 @@ function fn_validaPreestablecido(){
         nuError += 1;
         f_colorea('frmBusqueda','ot_cal_mbase_aniof','Red');
     }
-    if(vAfectacion!= "-1"){
+    if(vAfectacion!= ""){
         f_colorea('frmBusqueda','ot_cal_mbase_afectacion','Black');
     }else{
         vMensaje+= '-Debe seleccionar Tipo de afectaci\u00F3n.\n'; 
@@ -198,6 +199,7 @@ function fn_validaPreestablecido(){
 }
 
 function fn_validaCcd(){
+    console.log(">>fn_validaCcd<<");
     
     var vMensaje = 'Por favor valide los siguientes datos: \n';
     var nuError = 0;
@@ -206,7 +208,7 @@ function fn_validaCcd(){
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialccd').value;
     var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionccd').value;
     var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaccd').value;
-    var vAfectacion = document.getElementById('frmBusqueda:cb_cal_mbase_infraccionesccd').value;
+    var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionccd').value;
     //var vFd = document.getElementById('frmBusqueda:ot_cal_mbase_factor').value;
     
     if(vInstancia!= "-1"){
@@ -244,7 +246,7 @@ function fn_validaCcd(){
         nuError += 1;
         f_colorea('frmBusqueda','ot_cal_mbase_aniofccd','Red');
     }
-    if(vAfectacion!= "-1"){
+    if(vAfectacion!= ""){
         f_colorea('frmBusqueda','ot_cal_mbase_afectacionccd','Black');
     }else{
         vMensaje+= '-Debe seleccionar Tipo de afectaci\u00F3n.\n'; 
@@ -266,6 +268,7 @@ function fn_validaCcd(){
 }
 
 function fn_validaPi(){
+    console.log(">>fn_validaPi<<");
     
     var vMensaje = 'Por favor valide los siguientes datos: \n';
     var nuError = 0;
@@ -274,7 +277,7 @@ function fn_validaPi(){
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialpi').value;
     var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionpi').value;
     var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresapi').value;
-    var vAfectacion = document.getElementById('frmBusqueda:cb_cal_mbase_infraccionespi').value;
+    var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionpi').value;
     //var vFd = document.getElementById('frmBusqueda:ot_cal_mbase_factor').value;
     
     if(vInstancia!= "-1"){
@@ -312,7 +315,7 @@ function fn_validaPi(){
         nuError += 1;
         f_colorea('frmBusqueda','ot_cal_mbase_aniofpi','Red');
     }
-    if(vAfectacion!= "-1"){
+    if(vAfectacion!= ""){
         f_colorea('frmBusqueda','ot_cal_mbase_afectacionpi','Black');
     }else{
         vMensaje+= '-Debe seleccionar Tipo de afectaci\u00F3n.\n'; 
@@ -334,6 +337,7 @@ function fn_validaPi(){
 }
 
 function fn_validaFirma(){
+    console.log(">>fn_validaFirma<<");
     
     var vMensaje = 'Por favor valide los siguientes datos: \n';
     var nuError = 0;
@@ -341,7 +345,7 @@ function fn_validaFirma(){
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialfirma').value;
     var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionfirma').value;
     var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresafirma').value;
-    var vAfectacion = document.getElementById('frmBusqueda:cb_cal_mbase_infraccionesfirma').value;
+    var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionfirma').value;
     var vTipo = document.getElementById('frmBusqueda:cb_cal_mbase_tipfirma').value;
     //var vFd = document.getElementById('frmBusqueda:ot_cal_mbase_factor').value;
     
@@ -380,7 +384,7 @@ function fn_validaFirma(){
         nuError += 1;
         f_colorea('frmBusqueda','ot_cal_mbase_anioffirma','Red');
     }
-    if(vAfectacion!= "-1"){
+    if(vAfectacion!= ""){
         f_colorea('frmBusqueda','ot_cal_mbase_afectacionfirma','Black');
     }else{
         vMensaje+= '-Debe seleccionar Tipo de afectaci\u00F3n.\n'; 
@@ -402,11 +406,12 @@ function fn_validaFirma(){
 }
 
 function fn_validaAdhoc(){
+    console.log(">>fn_validaAdhoc<<");
     console.log("factu: "+document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value);
     console.log("ruc: "+document.getElementById('frmBusqueda:it_cal_mbase_rucpadhoc').value);
     console.log("rz: "+document.getElementById('frmBusqueda:ot_cal_mbase_rsocialadhoc').value);
     console.log("instancia: "+document.getElementById('frmBusqueda:cb_cal_mbase_instanciasadhoc').value);
-    console.log("afect: "+document.getElementById('frmBusqueda:cb_cal_mbase_infraccionesadhoc').value);
+    console.log("afect: "+document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionadhoc').value);
     console.log("fb: "+document.getElementById('frmBusqueda:it_cal_mbase_factorbadhoc').value);
     
     var vMensaje = 'Por favor valide los siguientes datos: \n';
@@ -416,7 +421,7 @@ function fn_validaAdhoc(){
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialadhoc').value;
     var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value;
     var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaadhoc').value;
-    var vAfectacion = document.getElementById('frmBusqueda:cb_cal_mbase_infraccionesadhoc').value;
+    var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionadhoc').value;
     var vFb = document.getElementById('frmBusqueda:it_cal_mbase_factorbadhoc').value;
     
     if(vInstancia!= "-1"){
@@ -454,7 +459,7 @@ function fn_validaAdhoc(){
         nuError += 1;
         f_colorea('frmBusqueda','ot_cal_mbase_aniofadhoc','Red');
     }
-    if(vAfectacion!= "-1"){
+    if(vAfectacion!= ""){
         f_colorea('frmBusqueda','ot_cal_mbase_afectacionadhoc','Black');
     }else{
         vMensaje+= '-Debe seleccionar Tipo de afectaci\u00F3n.\n'; 
@@ -483,13 +488,7 @@ function fn_validaAdhoc(){
 }
 
 function fn_validaVentas(){
-    console.log("factu: "+document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value);
-    console.log("ruc: "+document.getElementById('frmBusqueda:it_cal_mbase_rucpventas').value);
-    console.log("rz: "+document.getElementById('frmBusqueda:ot_cal_mbase_rsocialadhoc').value);
-    console.log("instancia: "+document.getElementById('frmBusqueda:cb_cal_mbase_instanciaspventas').value);
-    console.log("afect: "+document.getElementById('frmBusqueda:cb_cal_mbase_infraccionesadhoc').value);
-    console.log("fb: "+document.getElementById('frmBusqueda:it_cal_mbase_factorbadhoc').value);
-    
+    console.log(">>fn_validaVentas<<");
     var vMensaje = 'Por favor valide los siguientes datos: \n';
     var nuError = 0;
     var vInstancia = document.getElementById('frmBusqueda:cb_cal_mbase_instanciaspventas').value;
@@ -499,7 +498,7 @@ function fn_validaVentas(){
     var vFactuProd = document.getElementById('frmBusqueda:it_cal_mbase_facturacionprodpventas').value;
     //var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaadhoc').value;
     var vAnio = document.getElementById('frmBusqueda:cb_cal_mbase_anioUitpventas').value;
-    var vAfectacion = document.getElementById('frmBusqueda:cb_cal_mbase_infraccionespventas').value;
+    var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionpventas').value;
     var vFa = document.getElementById('frmBusqueda:it_cal_mbase_factorapventas').value;
     
     if(vInstancia!= "-1"){
@@ -544,7 +543,7 @@ function fn_validaVentas(){
         nuError += 1;
         f_colorea('frmBusqueda','ot_cal_mbase_factuprodpventas','Red');
     }
-    if(vAfectacion!= "-1"){
+    if(vAfectacion!= ""){
         f_colorea('frmBusqueda','ot_cal_mbase_afectacionpventas','Black');
     }else{
         vMensaje+= '-Debe seleccionar Caracter\u00EDsticas del nivel de disuasi\u00F3n.\n'; 
@@ -573,6 +572,7 @@ function fn_validaVentas(){
 }
 
 function fn_validaBarreras(){
+    console.log(">>fn_validaBarreras<<");
     var vMensaje = 'Por favor valide los siguientes datos: \n';
     var nuError = 0;
     var vInfractor = document.getElementById('frmBusqueda:cb_cal_mbase_tipbarreras').value;
@@ -583,7 +583,7 @@ function fn_validaBarreras(){
     var vAnio = document.getElementById('frmBusqueda:cb_cal_mbase_anioUitbarreras').value;
     var vAgente = document.getElementById('frmBusqueda:cb_cal_mbase_alcbarreras').value;
     var vPoblacion = document.getElementById('frmBusqueda:cb_cal_mbase_fpobbarreras').value;
-    var vAfectacion = document.getElementById('frmBusqueda:cb_cal_mbase_infraccionesbarreras').value;
+    var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionbarreras').value;
     
     var vProbabilidad = document.getElementById('frmBusqueda:ot_cal_mbase_probresubarreras').value;
     
@@ -636,7 +636,7 @@ function fn_validaBarreras(){
         nuError += 1;
         f_colorea('frmBusqueda','ot_cal_mbase_factubarreras','Red');
     }
-    if(vAfectacion!= "-1"){
+    if(vAfectacion!= ""){
         f_colorea('frmBusqueda','ot_cal_mbase_afectacionbarreras','Black');
     }else{
         vMensaje+= '-Debe seleccionar Tipo de afectaci\u00F3n.\n'; 
@@ -665,6 +665,7 @@ function fn_validaBarreras(){
 }
 
 function fn_validaLibro(){
+    console.log(">>fn_validaLibro<<");
     var vMensaje = 'Por favor valide los siguientes datos: \n';
     var nuError = 0;
     //var vInstancia = document.getElementById('frmBusqueda:cb_cal_mbase_instancias').value;
@@ -672,7 +673,7 @@ function fn_validaLibro(){
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsociallib').value;
     var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionlib').value;
     var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresalib').value;
-    var vAfectacion = document.getElementById('frmBusqueda:cb_cal_mbase_infraccioneslib').value;
+    var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionlib').value;
     //var vFd = document.getElementById('frmBusqueda:ot_cal_mbase_factor').value;
     
     
@@ -704,7 +705,7 @@ function fn_validaLibro(){
         nuError += 1;
         f_colorea('frmBusqueda','ot_cal_mbase_anioflib','Red');
     }
-    if(vAfectacion!= "-1"){
+    if(vAfectacion!= ""){
         f_colorea('frmBusqueda','ot_cal_mbase_afectacionlib','Black');
     }else{
         vMensaje+= '-Debe seleccionar el Tipo de afectaci\u00F3n.\n'; 

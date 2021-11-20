@@ -137,7 +137,7 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
 
     @Override
     public ClsResultDAO doGetValorDescripcion(int nuTablaPadre, String vcParametro, int nuValor) {
-        logger.info("------------->>doGetValorDescripcion ");
+        logger.info(">>doGetValorDescripcion ");
         logger.debug("nuTablaPadre: "+nuTablaPadre);
         logger.debug("vcParametro: "+vcParametro);
         logger.debug("nuValor: "+nuValor);
