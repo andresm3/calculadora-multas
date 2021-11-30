@@ -576,7 +576,7 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
             if(stmt.getInt(i - 1) == 0){
                 response.put("VC_RAZONSOC", vcRazonSocial);
             }else{
-                response.put("VC_RAZONSOC", "RUC no encontrado");
+                response.put("VC_RAZONSOC", "RUC no encontrado - RUC incompleto");
             }
             //response.put("VC_RAZONSOC", vcRazonSocial);
             response.put(ClsResultDAO.CODIGO_ERROR, stmt.getInt(i - 1));
@@ -947,7 +947,7 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
                     lstInstancias.put(rs.getString("VC_NOMBRE"), rs.getString("VC_VALOR"));
                 }
             }
-
+            logger.debug("lstInstancias.size(): "+lstInstancias.size());
             response = new ClsResultDAO();
             response.put("SP_LST_ORGANOS_METODO", lstInstancias);
             response.put(ClsResultDAO.CODIGO_ERROR, stmt.getInt(i - 1));

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+        <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jsMain.js?v=2"></script>
+        <link type="text/css" rel="stylesheet" href="css/main.css"/>
+        <link type="text/css" rel="stylesheet" href="css/style_expediente_electronico.css"/>
+        <title>"#{msgs['ot.general.res.titulo']}"</title>
+    </head>
+    <body>
+    <rich:panel styleClass="top">
+     <f:facet name="header">
+      <h:outputText id="ot_DeterminacionMulta" value="#{msgs['ot.general.inicio.titulo']}"/>
+     </f:facet>
+        <h:panelGrid columnClasses="panel" columns="3" styleClass="style_pgVisorExpediente">
+            <rich:panel styleClass="top">
+                    <a4j:form id="frmInicio" ajaxsubmit="true">
+                        <!-- Busqueda Electronica -->
+                        <h:panelGrid id="pgBusqueda_filtros" columns="3" cellpadding="1">
+                            <h:outputText value="Seleccion Area" style="font-size:12px;"/>
+                            <h:selectOneMenu id="cb_temp" 
+                                    required="true" 
+                                    style="display:block;width:300px"
+                                    autoWidth="false"
+                                    value="#{clsCalculoMultaSrv.valorArea}">
+                                <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.lstOrgano}"/>
+                                <a4j:support event="onchange"
+                                action="#{clsCalculoMultaSrv.doSeleccionarO()}" 
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                reRender="frmInicio" />
+                            </h:selectOneMenu>
+                            <h:outputText value=""/>
+                        </h:panelGrid>
+                        <rich:separator height="2" style="margin-top:8px;margin-bottom:8px;"></rich:separator>
+
+						<a4j:commandButton id="bt_cal_mbase_inicializar"
+							value="#{msgs['bt.general.inicio.boton']}"
+							reRender="frmInicio" >
+							<a4j:support event="onclick"
+									action="#{clsCalculoMultaSrv.doIniciar}"
+									onsubmit="#{rich:component('panProcesando')}.show();"
+									oncomplete="#{rich:component('panProcesando')}.hide();"
+									reRender="frmInicio"
+									></a4j:support>
+						</a4j:commandButton>
+							
+					</a4j:form>
+            </rich:panel>
+    
+        </h:panelGrid>
+
+    </rich:panel> 
+    
+        <rich:modalPanel id="panProcesando" autosized="true" width="300">
+            <center>
+                <h:outputText value="#{msgs['ot.procesando']}"/>
+                <br/>
+                <h:graphicImage value="imagenes/loading.gif"/>
+            </center>
+        </rich:modalPanel>
+
+    </body>
+</ui:composition>
