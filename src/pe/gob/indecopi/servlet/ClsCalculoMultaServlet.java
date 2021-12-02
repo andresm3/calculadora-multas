@@ -56,7 +56,7 @@ public class ClsCalculoMultaServlet extends HttpServlet implements Serializable 
         //jgapps = "000";      //xxx  PS0
         //jgapps = "000";      //yyy  CPC
 
-        //jgapps="2d5d5a4d4f40384054695d04701e0d09";
+        jgapps="2a495e534d45395c4a2415417418030f1a1d6f05";
 
 
         ClsCripto ClsCripto = new ClsCripto();
@@ -101,7 +101,8 @@ public class ClsCalculoMultaServlet extends HttpServlet implements Serializable 
         }
         
         request.getSession().setAttribute("clsCalculoMultaSrv", objCalculoMultaSrv);
-        response.sendRedirect(request.getContextPath() + "/procesos/pgw_calculoMulta.seam");//@amolero  
+        //response.sendRedirect(request.getContextPath() + "/procesos/pgw_calculoMulta.seam");//@amolero  
+        response.sendRedirect(request.getContextPath() + "/procesos/pgw_inicio.seam");//@amolero  
 
         /* } else {
             

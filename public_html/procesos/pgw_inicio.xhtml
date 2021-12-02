@@ -30,7 +30,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     autoWidth="false"
                                     value="#{clsCalculoMultaSrv.valorArea}">
                                 <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
-                                <f:selectItems value="#{clsCalculoMultaSrv.lstOrgano}"/>
+                                <f:selectItems value="#{clsCalculoMultaSrv.lstAreas}"/>
                                 <a4j:support event="onchange"
                                 action="#{clsCalculoMultaSrv.doSeleccionarO()}" 
                                 onsubmit="#{rich:component('panProcesando')}.show();"
