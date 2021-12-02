@@ -75,6 +75,7 @@ public class ClsCalculoMultaSrv {
   private String vcMuestraAtenuanteF8;
   private String vcMuestraAtenuanteF10;
   private String vcMuestraAtenuanteF7;
+  
 
   private String vcError;
   private String vcMensaje;
@@ -122,6 +123,8 @@ public class ClsCalculoMultaSrv {
 
   private int nuIDTipoAplicacion;
 
+
+    private String vcTituloModalInfraccion;
 
   public ClsCalculoMultaSrv() {
   }
@@ -1344,6 +1347,11 @@ public void doLimpiarRUC() {
     this.getObjFiltroBean().setVcIdFactSecEconBarrera("-1");
     this.getObjFiltroBean().setNuAlcanceBarrera(0);
     this.getObjFiltroBean().setNuMultaDBarrera(0);
+    //
+    this.getObjFiltroBean().setVcIdTipoBarrera("-1");
+    this.getObjFiltroBean().setVcCaso("-1");
+    this.getObjFiltroBean().setNuFactorPBarrera(0);
+
 
     logger.info(">>FIN doLimpiarRUC");
   }
@@ -1520,12 +1528,13 @@ public void doLimpiarRUC() {
         }
       }
       
-      if(this.getObjFiltroBean().getVcInstanciaVentas().equals("2") && this.getObjFiltroBean().getVcOrgResolutivo().equals("SDC")){
+      /*if(this.getObjFiltroBean().getVcInstanciaVentas().equals("2") && this.getObjFiltroBean().getVcOrgResolutivo().equals("SDC")){
         this.doListarOrganosMetodo(this.getObjFiltroBean().getVcMetodo(), Integer.parseInt(this.getObjFiltroBean().getVcInstanciaVentas()));
         this.setVcMuestraOrgano1raInstanciaVentas(" block;");
       }else{
         this.setVcMuestraOrgano1raInstanciaVentas(" none;");
-      }
+      }*/
+      this.doSeleccionarInstanciaVentas();
 
       this.setVcMuestraBarreras(" none;");
       this.setVcMuestraPreestablecido(" none;");
@@ -1579,6 +1588,7 @@ public void doLimpiarRUC() {
     }
 
       this.doListarInstanciasXOrg();
+      this.doSeleccionarInstanciaAdhoc();
       //this.doListarInfraccionesXOrgInstancia();
       this.setVcMuestraBarreras(" none;");
       this.setVcMuestraPreestablecido(" none;");
@@ -1605,6 +1615,7 @@ public void doLimpiarRUC() {
 
     }else if(this.getObjFiltroBean().getVcMetodo().equals("6")){ //PREESTABLECIDO PI
       this.doListarInstanciasXOrg();
+      this.doSeleccionarInstanciaPi();
       //this.doListarInfraccionesXOrgInstancia();
       this.setVcMuestraOrgano1raInstanciaPi(" none;");
       this.setVcMuestraPreestablecidoPi(" block;");
@@ -1628,6 +1639,7 @@ public void doLimpiarRUC() {
 
     }else if(this.getObjFiltroBean().getVcMetodo().equals("7")){ //PREESTABLECIDO CCD
       this.doListarInstanciasXOrg();
+      this.doSeleccionarInstanciaCcd();
       this.calculaFD();
       //this.doListarInfraccionesXOrgInstancia();
       this.setVcMuestraOrgano1raInstanciaCcd(" none;");
@@ -1729,13 +1741,15 @@ public void doLimpiarRUC() {
   }
 
   public void doListarOrganosMetodo(String nuIdMetodo, int nuInstancia) { // PARA PREESTABLECIDO PI
-    logger.info(">>doListarOrganosMetodo() " + this.getObjFiltroBean().getVcMetodo());
-      ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
-      ClsResultDAO objResult = objDAO.doListarOrganosMetodo(nuIdMetodo, nuInstancia);
-      if (objResult != null) {
-            this.getObjFiltroBean().setLstOrganosMetodo((Map<String, String>) objResult.get("SP_LST_ORGANOS_METODO"));
-      }
-      logger.info(">>FIN doListarOrganosMetodo");
+    logger.info(">>doListarOrganosMetodo");
+    logger.debug("nuIdMetodo: " + nuIdMetodo);
+    logger.debug("nuInstancia: " + nuInstancia);
+    ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+    ClsResultDAO objResult = objDAO.doListarOrganosMetodo(nuIdMetodo, nuInstancia);
+    if (objResult != null) {
+          this.getObjFiltroBean().setLstOrganosMetodo((Map<String, String>) objResult.get("SP_LST_ORGANOS_METODO"));
+    }
+    logger.info(">>FIN doListarOrganosMetodo");
   }
 
   public void doListarTipoBarreras() { //Tipo Infractor
@@ -1846,6 +1860,10 @@ public void doLimpiarRUC() {
     logger.info(">>doListarInfraccionesXOrgInstancia");
     logger.debug("getVcMetodo(): " + this.getObjFiltroBean().getVcMetodo());
     logger.debug("getVcInstancia(): " + this.getObjFiltroBean().getVcInstancia());
+    logger.debug("getVcInstanciaAdhoc(): " + this.getObjFiltroBean().getVcInstanciaAdhoc());
+    logger.debug("getVcInstanciaVentas(): " + this.getObjFiltroBean().getVcInstanciaVentas());
+    logger.debug("getVcInstanciaPi(): " + this.getObjFiltroBean().getVcInstanciaPi());
+    logger.debug("getVcInstanciaCcd(): " + this.getObjFiltroBean().getVcInstanciaCcd());
     logger.debug("getVcOrgResolutivo(): " + this.getObjFiltroBean().getVcOrgResolutivo());
     ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
 
@@ -2430,6 +2448,44 @@ public void doLimpiarRUC() {
       logger.info(">>Fin doSeleccionarAnioUITMulta");
   }
 
+  public void doSeleccionarAnioUITMultaYMultaBase(){
+      logger.info(">>doSeleccionarAnioUITMultaYMultaBase ");
+      logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
+      logger.debug("this.getObjFiltroBean().getVcAnioResolucion(): " + this.getObjFiltroBean().getVcAnioResolucion());
+      logger.debug("this.getObjFiltroBean().getNuFacturacionAnual(): " + this.getObjFiltroBean().getNuFacturacionAnual());
+      
+      //hacer calcula tam empresa
+      //String idAnio = (String) this.getObjFiltroBean().getVcAnioResolucion();
+      ClsMultaUITAnioBean obj = this.lstMultaUITAnioBean.stream()
+                                  .filter(p -> this.getObjFiltroBean().getVcAnioResolucion().equals(p.getVcIdMultaUIT()))
+                                  .findAny()
+                                  .orElse(null);
+      if(obj != null){
+        logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
+        logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+        this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
+        //obtengo UIT del anio seleccionado
+        //con la facturacion ingresada / uit = uitD  
+        double facturacionUIT = (double) this.getObjFiltroBean().getNuFacturacionAnual() / (double) obj.getNuUIT();
+        logger.debug("facturacionUIT: " + facturacionUIT);
+        int IntFacturacionEmpresa = (int) facturacionUIT;
+        //
+        ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+        ClsResultDAO objResult = objDAO.doGetTamEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), IntFacturacionEmpresa);
+        if (objResult != null) {
+              //this.setLstInstancias((Map<String, String>) objResult.get("SP_LST_INSTANCIAS"));
+              //this.getObjFiltroBean().setVcIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+              this.setNuIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+              this.getObjFiltroBean().setVcTamEmpresa(objResult.get("GET_TAM_EMPRESA")+"");
+              this.getObjFiltroBean().setNuPorcTope((Double) objResult.get("GET_PORC_TOPE"));
+              this.getObjFiltroBean().setNuValorUIT(round(facturacionUIT,2));
+        }
+      }                          
+      logger.debug("this.getNuIdTamEmpresa(): " + this.getNuIdTamEmpresa());
+      this.doCalcularMbase();
+      logger.info(">>Fin doSeleccionarAnioUITMultaYMultaBase");
+  }
+
   public void doSeleccionarAnioUITMultaLibro(){
       logger.info(">>doSeleccionarAnioUITMultaLibro ");
       logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
@@ -2469,6 +2525,45 @@ public void doLimpiarRUC() {
       logger.info(">>Fin doSeleccionarAnioUITMultaLibro");
   }
 
+  public void doSeleccionarAnioUITMultaLibroYMultaBase(){
+      logger.info(">>doSeleccionarAnioUITMultaLibroYMultaBase ");
+      logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
+      logger.debug("this.getObjFiltroBean().getVcAnioResolucionLibro(): " + this.getObjFiltroBean().getVcAnioResolucionLibro());
+      logger.debug("this.getObjFiltroBean().getNuFacturacionAnualLibro(): " + this.getObjFiltroBean().getNuFacturacionAnualLibro());
+      
+      //hacer calcula tam empresa
+      //String idAnio = (String) this.getObjFiltroBean().getVcAnioResolucion();
+      ClsMultaUITAnioBean obj = this.lstMultaUITAnioBean.stream()
+                                  .filter(p -> this.getObjFiltroBean().getVcAnioResolucionLibro().equals(p.getVcIdMultaUIT()))
+                                  .findAny()
+                                  .orElse(null);
+      if(obj != null){
+        logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
+        logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+        this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
+        //obtengo UIT del anio seleccionado
+        //con la facturacion ingresada / uit = uitD  
+        double facturacionUIT = (double) this.getObjFiltroBean().getNuFacturacionAnualLibro() / (double) obj.getNuUIT();
+        logger.debug("facturacionUIT: " + facturacionUIT);
+        int IntFacturacionEmpresa = (int) facturacionUIT;
+        //
+        ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+        ClsResultDAO objResult = objDAO.doGetTamEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), IntFacturacionEmpresa);
+        if (objResult != null) {
+              //this.setLstInstancias((Map<String, String>) objResult.get("SP_LST_INSTANCIAS"));
+              //this.getObjFiltroBean().setVcIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+              this.setNuIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+              this.getObjFiltroBean().setVcTamEmpresa(objResult.get("GET_TAM_EMPRESA")+"");
+              this.getObjFiltroBean().setNuPorcTopeLibro((Double) objResult.get("GET_PORC_TOPE"));
+              this.getObjFiltroBean().setNuPorcTope((Double) objResult.get("GET_PORC_TOPE"));
+              this.getObjFiltroBean().setNuValorUIT(round(facturacionUIT,2));
+              logger.debug("this.getNuIdTamEmpresa(): " + this.getNuIdTamEmpresa());
+        }
+      }                          
+      this.doCalcularMRefLibro();
+      logger.info(">>Fin doSeleccionarAnioUITMultaLibroYMultaBase");
+  }
+
 public void doSeleccionarAnioUITMultaBarreras(){
       logger.info(">>doSeleccionarAnioUITMultaBarreras ");
       logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
@@ -2497,6 +2592,35 @@ public void doSeleccionarAnioUITMultaBarreras(){
       
       logger.info(">>Fin doSeleccionarAnioUITMultaBarreras");
   }
+
+public void doSeleccionarAnioUITMultaBarrerasYMultaBase(){
+    logger.info(">>doSeleccionarAnioUITMultaBarrerasYMultaBase ");
+    logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
+    logger.debug("this.getObjFiltroBean().getVcAnioResolucionBarrera(): " + this.getObjFiltroBean().getVcAnioResolucionBarrera());
+    logger.debug("this.getObjFiltroBean().getNuFacturacionAnualBarrera(): " + this.getObjFiltroBean().getNuFacturacionAnualBarrera());
+    
+    //hacer calcula tam empresa
+    //String idAnio = (String) this.getObjFiltroBean().getVcAnioResolucion();
+    ClsMultaUITAnioBean obj = this.lstMultaUITAnioBean.stream()
+                                .filter(p -> this.getObjFiltroBean().getVcAnioResolucionBarrera().equals(p.getVcIdMultaUIT()))
+                                .findAny()
+                                .orElse(null);
+    if(obj != null){
+      logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
+      logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+      
+      //obtengo UIT del anio seleccionado
+      //con la facturacion ingresada / uit = uitD  
+      double facturacionUIT = (double) this.getObjFiltroBean().getNuFacturacionAnualBarrera() / (double) obj.getNuUIT();
+      logger.debug("facturacionUIT: " + facturacionUIT);
+
+      this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
+      this.getObjFiltroBean().setNuValorUIT(round(facturacionUIT,2));
+
+    }                          
+    this.doCalcularMbaseBarreras();
+    logger.info(">>Fin doSeleccionarAnioUITMultaBarrerasYMultaBase");
+}
 
 public void doSeleccionarAnioUITMultaPi(){
       logger.info(">>doSeleccionarAnioUITMultaPi ");
@@ -2536,6 +2660,45 @@ public void doSeleccionarAnioUITMultaPi(){
       
       logger.info(">>Fin doSeleccionarAnioUITMultaPi");
   }
+
+public void doSeleccionarAnioUITMultaPiYMultaBase(){
+    logger.info(">>doSeleccionarAnioUITMultaPiYMultaBase ");
+    logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
+    logger.debug("this.getObjFiltroBean().getVcAnioResolucionPi(): " + this.getObjFiltroBean().getVcAnioResolucionPi());
+    logger.debug("this.getObjFiltroBean().getNuFacturacionAnualPi(): " + this.getObjFiltroBean().getNuFacturacionAnualPi());
+    
+    //hacer calcula tam empresa
+    //String idAnio = (String) this.getObjFiltroBean().getVcAnioResolucion();
+    ClsMultaUITAnioBean obj = this.lstMultaUITAnioBean.stream()
+                                .filter(p -> this.getObjFiltroBean().getVcAnioResolucionPi().equals(p.getVcIdMultaUIT()))
+                                .findAny()
+                                .orElse(null);
+    if(obj != null){
+      logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
+      logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+      this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
+      //obtengo UIT del anio seleccionado
+      //con la facturacion ingresada / uit = uitD  
+      double facturacionUIT = (double) this.getObjFiltroBean().getNuFacturacionAnualPi() / (double) obj.getNuUIT();
+      logger.debug("facturacionUIT: " + facturacionUIT);
+      int IntFacturacionEmpresa = (int) facturacionUIT;
+      //
+      ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+      ClsResultDAO objResult = objDAO.doGetTamEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), IntFacturacionEmpresa);
+      if (objResult != null) {
+            //this.setLstInstancias((Map<String, String>) objResult.get("SP_LST_INSTANCIAS"));
+            //this.getObjFiltroBean().setVcIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+            this.setNuIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+            this.getObjFiltroBean().setVcTamEmpresa(objResult.get("GET_TAM_EMPRESA")+"");
+            this.getObjFiltroBean().setNuPorcTope((Double) objResult.get("GET_PORC_TOPE"));
+            this.getObjFiltroBean().setNuValorUIT(round(facturacionUIT,2));
+            logger.debug("this.getNuIdTamEmpresa(): " + this.getNuIdTamEmpresa());
+      }
+
+    }                          
+    this.doCalcularMbasePi();
+    logger.info(">>Fin doSeleccionarAnioUITMultaPiYMultaBase");
+}
 
 public void doSeleccionarAnioUITMultaCcd(){
       logger.info(">>doSeleccionarAnioUITMultaCcd ");
@@ -2577,6 +2740,46 @@ public void doSeleccionarAnioUITMultaCcd(){
       logger.info(">>Fin doSeleccionarAnioUITMultaCcd");
   }
 
+public void doSeleccionarAnioUITMultaCcdYMultaBase(){
+  logger.info(">>doSeleccionarAnioUITMultaCcdYMultaBase ");
+  logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
+  logger.debug("this.getObjFiltroBean().getVcAnioResolucionCcd(): " + this.getObjFiltroBean().getVcAnioResolucionCcd());
+  logger.debug("this.getObjFiltroBean().getNuFacturacionAnualCcd(): " + this.getObjFiltroBean().getNuFacturacionAnualCcd());
+  
+  //hacer calcula tam empresa
+  //String idAnio = (String) this.getObjFiltroBean().getVcAnioResolucion();
+  ClsMultaUITAnioBean obj = this.lstMultaUITAnioBean.stream()
+                              .filter(p -> this.getObjFiltroBean().getVcAnioResolucionCcd().equals(p.getVcIdMultaUIT()))
+                              .findAny()
+                              .orElse(null);
+  if(obj != null){
+    logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
+    logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+    this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
+    //obtengo UIT del anio seleccionado
+    //con la facturacion ingresada / uit = uitD  
+    double facturacionUIT = (double) this.getObjFiltroBean().getNuFacturacionAnualCcd() / (double) obj.getNuUIT();
+    logger.debug("facturacionUIT: " + facturacionUIT);
+    int IntFacturacionEmpresa = (int) facturacionUIT;
+    //
+    ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+    ClsResultDAO objResult = objDAO.doGetTamEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), IntFacturacionEmpresa);
+    if (objResult != null) {
+          //this.setLstInstancias((Map<String, String>) objResult.get("SP_LST_INSTANCIAS"));
+          //this.getObjFiltroBean().setVcIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+          this.setNuIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+          this.getObjFiltroBean().setVcTamEmpresa(objResult.get("GET_TAM_EMPRESA")+"");
+          this.getObjFiltroBean().setNuPorcTope((Double) objResult.get("GET_PORC_TOPE"));
+          this.getObjFiltroBean().setNuValorUIT(round(facturacionUIT,2));
+          //logger.debug("getVcIdTamEmpresa(): " + this.getObjFiltroBean().getVcIdTamEmpresa());
+          logger.debug("this.getNuIdTamEmpresa(): " + this.getNuIdTamEmpresa());
+    }
+
+  }                          
+  this.doCalcularMbaseCcd();
+  logger.info(">>Fin doSeleccionarAnioUITMultaCcdYMultaBase");
+}
+
   public void doSeleccionarAnioUITMultaFirma(){
       logger.info(">>doSeleccionarAnioUITMultaFirma ");
       logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
@@ -2616,6 +2819,46 @@ public void doSeleccionarAnioUITMultaCcd(){
       logger.info(">>Fin doSeleccionarAnioUITMultaFirma");
   }
 
+  public void doSeleccionarAnioUITMultaFirmaYMultaBase(){
+      logger.info(">>doSeleccionarAnioUITMultaFirmaYMultaBase ");
+      logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
+      logger.debug("this.getObjFiltroBean().getVcAnioResolucionFirma(): " + this.getObjFiltroBean().getVcAnioResolucionFirma());
+      logger.debug("this.getObjFiltroBean().getNuFacturacionAnualFirma(): " + this.getObjFiltroBean().getNuFacturacionAnualFirma());
+      
+      //hacer calcula tam empresa
+      //String idAnio = (String) this.getObjFiltroBean().getVcAnioResolucion();
+      ClsMultaUITAnioBean obj = this.lstMultaUITAnioBean.stream()
+                                  .filter(p -> this.getObjFiltroBean().getVcAnioResolucionFirma().equals(p.getVcIdMultaUIT()))
+                                  .findAny()
+                                  .orElse(null);
+      if(obj != null){
+        logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
+        logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+        this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
+        //obtengo UIT del anio seleccionado
+        //con la facturacion ingresada / uit = uitD  
+        double facturacionUIT = (double) this.getObjFiltroBean().getNuFacturacionAnualFirma() / (double) obj.getNuUIT();
+        logger.debug("facturacionUIT: " + facturacionUIT);
+        int IntFacturacionEmpresa = (int) facturacionUIT;
+        //
+        ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+        ClsResultDAO objResult = objDAO.doGetTamEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), IntFacturacionEmpresa);
+        if (objResult != null) {
+              //this.setLstInstancias((Map<String, String>) objResult.get("SP_LST_INSTANCIAS"));
+              //this.getObjFiltroBean().setVcIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+              this.setNuIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+              this.getObjFiltroBean().setVcTamEmpresa(objResult.get("GET_TAM_EMPRESA")+"");
+              this.getObjFiltroBean().setNuFactorFirma((Double) objResult.get("GET_PORC_TOPE"));
+              this.getObjFiltroBean().setNuValorUIT(round(facturacionUIT,2));
+              logger.debug("this.getNuIdTamEmpresa(): " + this.getNuIdTamEmpresa());
+        }
+
+      }                          
+      
+      this.doCalcularMbaseFirma();
+      logger.info(">>Fin doSeleccionarAnioUITMultaFirmaYMultaBase");
+  }
+
   public void doSeleccionarAnioUITMultaVentas(){
       logger.info(">>doSeleccionarAnioUITMultaVentas ");
       logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
@@ -2653,6 +2896,45 @@ public void doSeleccionarAnioUITMultaCcd(){
       }                          
       
       logger.info(">>Fin doSeleccionarAnioUITMultaVentas");
+  }
+
+  public void doSeleccionarAnioUITMultaVentasYMultaBase(){
+      logger.info(">>doSeleccionarAnioUITMultaVentasYMultaBase ");
+      logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
+      logger.debug("this.getObjFiltroBean().getVcAnioResolucionVentas(): " + this.getObjFiltroBean().getVcAnioResolucionVentas());
+      logger.debug("this.getObjFiltroBean().getNuFacturacionAnualVentas(): " + this.getObjFiltroBean().getNuFacturacionAnualVentas());
+      
+      //hacer calcula tam empresa
+      //String idAnio = (String) this.getObjFiltroBean().getVcAnioResolucion();
+      ClsMultaUITAnioBean obj = this.lstMultaUITAnioBean.stream()
+                                  .filter(p -> this.getObjFiltroBean().getVcAnioResolucionVentas().equals(p.getVcIdMultaUIT()))
+                                  .findAny()
+                                  .orElse(null);
+      if(obj != null){
+        logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
+        logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+        this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
+        //obtengo UIT del anio seleccionado
+        //con la facturacion ingresada / uit = uitD  
+        double facturacionUIT = (double) this.getObjFiltroBean().getNuFacturacionAnualVentas() / (double) obj.getNuUIT();
+        logger.debug("facturacionUIT: " + facturacionUIT);
+        int IntFacturacionEmpresa = (int) facturacionUIT;
+        //
+        ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+        ClsResultDAO objResult = objDAO.doGetTamEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), IntFacturacionEmpresa);
+        if (objResult != null) {
+              //this.setLstInstancias((Map<String, String>) objResult.get("SP_LST_INSTANCIAS"));
+              //this.getObjFiltroBean().setVcIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+              this.setNuIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+              this.getObjFiltroBean().setVcTamEmpresa(objResult.get("GET_TAM_EMPRESA")+"");
+              this.getObjFiltroBean().setNuPorcTope((Double) objResult.get("GET_PORC_TOPE"));
+              this.getObjFiltroBean().setNuValorUIT(round(facturacionUIT,2));
+              logger.debug("this.getNuIdTamEmpresa(): " + this.getNuIdTamEmpresa());
+        }
+
+      }                          
+      this.doCalcularMbaseVentas();
+      logger.info(">>Fin doSeleccionarAnioUITMultaVentasYMultaBase");
   }
 
   public void doSeleccionarAnioUITMultaAdhoc(){
@@ -2695,6 +2977,47 @@ public void doSeleccionarAnioUITMultaCcd(){
       
       logger.info(">>Fin doSeleccionarAnioUITMultaAdhoc");
   }
+
+public void doSeleccionarAnioUITMultaAdhocYMultaBase(){
+    logger.info(">>doSeleccionarAnioUITMultaAdhocYMultaBase ");
+    logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
+    logger.debug("this.getObjFiltroBean().getVcAnioResolucionAdhoc(): " + this.getObjFiltroBean().getVcAnioResolucionAdhoc());
+    logger.debug("this.getObjFiltroBean().getNuFacturacionAnualAdhoc(): " + this.getObjFiltroBean().getNuFacturacionAnualAdhoc());
+    
+    //hacer calcula tam empresa
+    //String idAnio = (String) this.getObjFiltroBean().getVcAnioResolucion();
+    ClsMultaUITAnioBean obj = this.lstMultaUITAnioBean.stream()
+                                .filter(p -> this.getObjFiltroBean().getVcAnioResolucionAdhoc().equals(p.getVcIdMultaUIT()))
+                                .findAny()
+                                .orElse(null);
+    if(obj != null){
+      logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
+      logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+      this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
+      //obtengo UIT del anio seleccionado
+      //con la facturacion ingresada / uit = uitD  
+      double facturacionUIT = (double) this.getObjFiltroBean().getNuFacturacionAnualAdhoc() / (double) obj.getNuUIT();
+      logger.debug("facturacionUIT: " + facturacionUIT);
+      int IntFacturacionEmpresa = (int) facturacionUIT;
+      //
+      ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+      logger.debug("this.getObjFiltroBean().getVcMetodo(): " + this.getObjFiltroBean().getVcMetodo());
+      ClsResultDAO objResult = objDAO.doGetTamEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), IntFacturacionEmpresa);
+      if (objResult != null) {
+            //this.setLstInstancias((Map<String, String>) objResult.get("SP_LST_INSTANCIAS"));
+            //this.getObjFiltroBean().setVcIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+            this.setNuIdTamEmpresa((Integer) objResult.get("GET_ID_TAM_EMPRESA"));
+            this.getObjFiltroBean().setVcTamEmpresa(objResult.get("GET_TAM_EMPRESA")+"");
+            this.getObjFiltroBean().setNuPorcTope((Double) objResult.get("GET_PORC_TOPE"));
+            this.getObjFiltroBean().setNuValorUIT(round(facturacionUIT,2));
+            logger.debug("this.getNuIdTamEmpresa(): " + this.getNuIdTamEmpresa());
+            logger.debug("this.getObjFiltroBean().getNuPorcTope(): " + this.getObjFiltroBean().getNuPorcTope());
+      }
+
+    }                          
+    this.doCalcularMbaseAdhoc();
+    logger.info(">>Fin doSeleccionarAnioUITMultaAdhocYMultaBase");
+}
 
 public void doSeleccionarProbabilidadBarreras(){
       logger.info(">>doSeleccionarProbabilidadBarreras ");
@@ -2795,6 +3118,7 @@ public void doSeleccionarProbabilidadBarreras(){
   public void doCargarModalListaInfracciones() {
       logger.info(">>doCargarModalListaInfracciones");
       logger.debug("this.getObjFiltroBean().isIsBlLstAfectacion(): " + this.getObjFiltroBean().isIsBlLstAfectacion());
+      logger.debug("this.getVcMuestraBarreras(): " + this.getVcMuestraBarreras());
       logger.info(">>Fin doCargarModalListaInfracciones");
   }
 
@@ -3849,5 +4173,13 @@ public void doReportePreliminar(){
 
     public List<ClsInstanciasBean> getLstInstanciaBean() {
         return lstInstanciaBean;
+    }
+
+    public void setVcTituloModalInfraccion(String vcTituloModalInfraccion) {
+        this.vcTituloModalInfraccion = vcTituloModalInfraccion;
+    }
+
+    public String getVcTituloModalInfraccion() {
+        return vcTituloModalInfraccion;
     }
 }

@@ -8,7 +8,7 @@ xmlns:rich="http://richfaces.org/rich">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta http-equiv="X-UA-Compatible" content="IE=8"/>
-        <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jsMain.js?v=9"></script>
+        <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jsMain.js?v=11"></script>
         <link type="text/css" rel="stylesheet" href="css/main.css"/>
         <link type="text/css" rel="stylesheet" href="css/style_expediente_electronico.css"/>
         <title>"#{msgs['ot.general.res.titulo']}"</title>
@@ -99,7 +99,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_ruc"
                                     maxlength="11"
-                                    onkeypress="return checkNumeros(event)"
+                                    onkeypress="return fnCheckNumeros(event)"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcRuc}" columnClasses="input-width-50"/>
                                 <a4j:commandButton id="bt_cal_mbase_ruc"
                                     value="#{msgs['bt.cal_mbase.buscarruc']}"
@@ -107,7 +107,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     <a4j:support event="onclick"
                                             action="#{clsCalculoMultaSrv.doBuscarRuc}"
                                             onsubmit="#{rich:component('panProcesando')}.show();"
-                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_ruc');"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckRuc('frmBusqueda:it_cal_mbase_ruc');"
                                             reRender="frmBusqueda, ot_cal_mbase_rsocial"
                                             ></a4j:support>
                                 </a4j:commandButton>
@@ -131,7 +131,8 @@ xmlns:rich="http://richfaces.org/rich">
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_facturacion"
                                     converter="javax.faces.Double"
-                                    onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUit', 'frmBusqueda:cb_cal_mbase_anioUit', 'frmBusqueda:bt_cal_mbase_calcularMbase');"
+                                    maxlength="13"
+                                    onkeypress="fnIfEnterClick(event, 'frmBusqueda:bt_cal_factUit', 'frmBusqueda:cb_cal_mbase_anioUit', 'frmBusqueda:bt_cal_mbase_calcularMbase2');"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnual}" columnClasses="input-width-50">
                                     <f:convertNumber pattern="###,###.##"/>
                                 </h:inputText>
@@ -151,7 +152,17 @@ xmlns:rich="http://richfaces.org/rich">
                                     <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
                                     </span>
                                 </rich:toolTip>
-                                <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_calcularMbase2"
+                                value="btnPre"
+                                style="display:none;"
+                                    reRender="frmMultaPreliminar" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaYMultaBase}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaPreestablecido();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valmatriz, ot_cal_mbase_valoruit"
+                                            ></a4j:support>
+                                </a4j:commandButton>
 
                                 <h:outputText id="ot_cal_mbase_aniof" style="font-size:12px;"
                                                 value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
@@ -236,8 +247,8 @@ xmlns:rich="http://richfaces.org/rich">
                                 <rich:calendar id="cl_conversion_res_filtro_fechaInicio" value="#{clsCalculoMultaSrv.objFiltroBean.dtFechaInicio}"
                                                 locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
                                                 cellHeight="22px" inputStyle="width:65px"
-                                                isDayEnabled="isPresDayEnabled"
-                                                dayStyleClass="getPresDisabledStyle">
+                                                isDayEnabled="fnIsPresDayEnabled"
+                                                dayStyleClass="fnGetPresDisabledStyle">
                                     <a4j:support event="onchanged" action="#{clsCalculoMultaSrv.calculaFD}" reRender="ot_cal_mbase_factor"/>
                                 </rich:calendar>
                                 <h:outputText value=""/>
@@ -248,8 +259,8 @@ xmlns:rich="http://richfaces.org/rich">
                                             value="#{msgs['ot.cal_mbase.fecfin']}"/>
                                 <rich:calendar id="cl_conversion_res_filtro_fechaFin" value="#{clsCalculoMultaSrv.objFiltroBean.dtFechaFin}"
                                                 locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
-                                                isDayEnabled="isPresDayEnabled"
-                                                dayStyleClass="getPresDisabledStyle"
+                                                isDayEnabled="fnIsPresDayEnabled"
+                                                dayStyleClass="fnGetPresDisabledStyle"
                                                 cellHeight="22px" inputStyle="width:65px">
                                     <a4j:support event="onchanged" action="#{clsCalculoMultaSrv.calculaFD}" reRender="ot_cal_mbase_factor"/>
                                 </rich:calendar>
@@ -275,7 +286,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     <a4j:support event="onclick"
                                             action="#{clsCalculoMultaSrv.doCalcularMbase}"
                                             onsubmit="#{rich:component('panProcesando')}.show();"
-                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaPreestablecido();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaPreestablecido();"
                                             reRender="frmBusqueda, ot_cal_mbase_valmatriz"
                                             ></a4j:support>
                                 </a4j:commandButton>
@@ -292,7 +303,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_ruclib"
                                 maxlength="11"
-                                onkeypress="return checkNumeros(event)"
+                                onkeypress="return fnCheckNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucLibro}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_ruclib"
                                 value="#{msgs['bt.cal_mbase.buscarruc']}"
@@ -300,7 +311,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doBuscarRucLibro}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_ruclib');"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckRuc('frmBusqueda:it_cal_mbase_ruclib');"
                                         reRender="frmBusqueda, ot_cal_mbase_rsociallib"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -323,8 +334,9 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_facturacionlib"
+                                maxlength="13"
                                 converter="javax.faces.Double"
-                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitlib', 'frmBusqueda:cb_cal_mbase_anioUitlib', 'frmBusqueda:bt_cal_mbase_calcularMbaselib');"
+                                onkeypress="fnIfEnterClick(event, 'frmBusqueda:bt_cal_factUitlib', 'frmBusqueda:cb_cal_mbase_anioUitlib', 'frmBusqueda:bt_cal_mbase_calcularMbaselib2');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualLibro}" columnClasses="input-width-50">
                                 <f:convertNumber pattern="###,###.##"/>
                             </h:inputText>
@@ -344,7 +356,17 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
                                 </span>
                             </rich:toolTip>
-                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbaselib2"
+                            value="btnLibro"
+                            style="display:none;"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaLibroYMultaBase}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaLibro();"
+                                        reRender="frmBusqueda, ot_cal_mbase_valmatriz, ot_cal_mbase_valoruit"
+                                        ></a4j:support>
+                            </a4j:commandButton>
 
                             <h:outputText id="ot_cal_mbase_anioflib" style="font-size:12px;"
                                             value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
@@ -431,7 +453,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doCalcularMRefLibro}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaLibro();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaLibro();"
                                         reRender="frmBusqueda, ot_cal_mbase_valmatriz"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -448,7 +470,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_rucbar"
                                 maxlength="11"
-                                onkeypress="return checkNumeros(event)"
+                                onkeypress="return fnCheckNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucBarreras}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_rucbar"
                                 value="#{msgs['bt.cal_mbase.buscarruc']}"
@@ -456,7 +478,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doBuscarRucBarreras}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucbar');"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckRuc('frmBusqueda:it_cal_mbase_rucbar');"
                                         reRender="frmBusqueda, ot_cal_mbase_rsocialbar"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -497,8 +519,9 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_facturacionbarreras"
+                                maxlength="13"
                                 converter="javax.faces.Double"
-                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitbarreras', 'frmBusqueda:cb_cal_mbase_anioUitbarreras', 'frmBusqueda:bt_cal_mbase_calcularMbasebar');"
+                                onkeypress="fnIfEnterClick(event, 'frmBusqueda:bt_cal_factUitbarreras', 'frmBusqueda:cb_cal_mbase_anioUitbarreras', 'frmBusqueda:bt_cal_mbase_calcularMbasebar2');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualBarrera}" columnClasses="input-width-50">
                                 <f:convertNumber pattern="###,###.##"/>
                             </h:inputText>
@@ -518,7 +541,17 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
                                 </span>
                             </rich:toolTip>
-                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbasebar2"
+                            value="btnbar"
+                            style="display:none;"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaBarrerasYMultaBase}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaBarreras();"
+                                        reRender="frmBusqueda, ot_cal_mbase_multabasebar, ot_cal_mbase_valoruitbarreras"
+                                        ></a4j:support>
+                            </a4j:commandButton>
 
                             <h:outputText id="ot_cal_mbase_aniofbarreras" style="font-size:12px;"
                                             value="#{clsCalculoMultaSrv.objFiltroBean.vcIdTipoBarrera==1? msgs['ot.cal_mbase.aniofacturacionbar1'] : msgs['ot.cal_mbase.aniofacturacionbar2']}"/>
@@ -732,7 +765,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_rucpi"
                                     maxlength="11"
-                                    onkeypress="return checkNumeros(event)"
+                                    onkeypress="return fnCheckNumeros(event)"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcRucPi}" columnClasses="input-width-50"/>
                                 <a4j:commandButton id="bt_cal_mbase_rucpi"
                                     value="#{msgs['bt.cal_mbase.buscarruc']}"
@@ -740,7 +773,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     <a4j:support event="onclick"
                                             action="#{clsCalculoMultaSrv.doBuscarRucPi}"
                                             onsubmit="#{rich:component('panProcesando')}.show();"
-                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucpi');"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckRuc('frmBusqueda:it_cal_mbase_rucpi');"
                                             reRender="frmBusqueda, ot_cal_mbase_rsocial"
                                             ></a4j:support>
                                 </a4j:commandButton>
@@ -763,8 +796,9 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:inputText 
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_facturacionpi"
+                                    maxlength="13"
                                     converter="javax.faces.Double"
-                                    onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitpi', 'frmBusqueda:cb_cal_mbase_anioUitpi', 'frmBusqueda:bt_cal_mbase_calcularMbasepi');"
+                                    onkeypress="fnIfEnterClick(event, 'frmBusqueda:bt_cal_factUitpi', 'frmBusqueda:cb_cal_mbase_anioUitpi', 'frmBusqueda:bt_cal_mbase_calcularMbasepi2');"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualPi}" columnClasses="input-width-50">
                                     <f:convertNumber pattern="###,###.##"/>
                                 </h:inputText>
@@ -784,7 +818,17 @@ xmlns:rich="http://richfaces.org/rich">
                                     <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
                                     </span>
                                 </rich:toolTip>
-                                <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_calcularMbasepi2"
+                                value="btnpi"
+                                style="display:none;"
+                                    reRender="frmMultaPreliminar" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaPiYMultaBase}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaPi();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valmatriz, ot_cal_mbase_valoruitpi"
+                                            ></a4j:support>
+                                </a4j:commandButton>
 
                                 <h:outputText id="ot_cal_mbase_aniofpi" style="font-size:12px;"
                                                 value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
@@ -872,7 +916,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     <a4j:support event="onclick"
                                             action="#{clsCalculoMultaSrv.doCalcularMbasePi}"
                                             onsubmit="#{rich:component('panProcesando')}.show();"
-                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaPi();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaPi();"
                                             reRender="frmBusqueda, ot_cal_mbase_valmatriz"
                                             ></a4j:support>
                                 </a4j:commandButton>
@@ -927,7 +971,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_rucccd"
                                     maxlength="11"
-                                    onkeypress="return checkNumeros(event)"
+                                    onkeypress="return fnCheckNumeros(event)"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcRucCcd}" columnClasses="input-width-50"/>
                                 <a4j:commandButton id="bt_cal_mbase_rucccd"
                                     value="#{msgs['bt.cal_mbase.buscarruc']}"
@@ -935,7 +979,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     <a4j:support event="onclick"
                                             action="#{clsCalculoMultaSrv.doBuscarRucCcd}"
                                             onsubmit="#{rich:component('panProcesando')}.show();"
-                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucccd');"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckRuc('frmBusqueda:it_cal_mbase_rucccd');"
                                             reRender="frmBusqueda, ot_cal_mbase_rsocial"
                                             ></a4j:support>
                                 </a4j:commandButton>
@@ -958,8 +1002,9 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:inputText 
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_facturacionccd"
+                                    maxlength="13"
                                     converter="javax.faces.Double"
-                                    onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitccd', 'frmBusqueda:cb_cal_mbase_anioUitccd', 'frmBusqueda:bt_cal_mbase_calcularMbaseccd');"
+                                    onkeypress="fnIfEnterClick(event, 'frmBusqueda:bt_cal_factUitccd', 'frmBusqueda:cb_cal_mbase_anioUitccd', 'frmBusqueda:bt_cal_mbase_calcularMbaseccd2');"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualCcd}" columnClasses="input-width-50">
                                     <f:convertNumber pattern="###,###.##"/>
                                 </h:inputText>
@@ -979,7 +1024,17 @@ xmlns:rich="http://richfaces.org/rich">
                                     <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
                                     </span>
                                 </rich:toolTip>
-                                <h:outputText value=""/>
+                                <a4j:commandButton id="bt_cal_mbase_calcularMbaseccd2"
+                                value="btnccd"
+                                style="display:none;"
+                                    reRender="frmMultaPreliminar" >
+                                    <a4j:support event="onclick"
+                                            action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaCcdYMultaBase}"
+                                            onsubmit="#{rich:component('panProcesando')}.show();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaCcd();"
+                                            reRender="frmBusqueda, ot_cal_mbase_valmatrizccd, ot_cal_mbase_multabaseccd, ot_cal_mbase_valoruitccd"
+                                            ></a4j:support>
+                                </a4j:commandButton>
 
                                 <h:outputText id="ot_cal_mbase_aniofccd" style="font-size:12px;"
                                                 value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
@@ -1065,8 +1120,8 @@ xmlns:rich="http://richfaces.org/rich">
                                             value="#{clsCalculoMultaSrv.objFiltroBean.dtFechaInicioCcd}"
                                                 locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
                                                 cellHeight="22px" inputStyle="width:65px"
-                                                isDayEnabled="isPresDayEnabled"
-                                                dayStyleClass="getPresDisabledStyle">
+                                                isDayEnabled="fnIsPresDayEnabled"
+                                                dayStyleClass="fnGetPresDisabledStyle">
                                     <a4j:support event="onchanged" action="#{clsCalculoMultaSrv.calculaFD}" 
                                     reRender="ot_cal_mbase_factorccd"/>
                                 </rich:calendar>
@@ -1079,8 +1134,8 @@ xmlns:rich="http://richfaces.org/rich">
                                 <rich:calendar id="cl_conversion_res_filtro_fechaFinccd" 
                                             value="#{clsCalculoMultaSrv.objFiltroBean.dtFechaFinCcd}"
                                                 locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
-                                                isDayEnabled="isPresDayEnabled"
-                                                dayStyleClass="getPresDisabledStyle"
+                                                isDayEnabled="fnIsPresDayEnabled"
+                                                dayStyleClass="fnGetPresDisabledStyle"
                                                 cellHeight="22px" inputStyle="width:65px">
                                     <a4j:support event="onchanged" action="#{clsCalculoMultaSrv.calculaFD}" 
                                     reRender="ot_cal_mbase_factorccd"/>
@@ -1107,7 +1162,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     <a4j:support event="onclick"
                                             action="#{clsCalculoMultaSrv.doCalcularMbaseCcd}"
                                             onsubmit="#{rich:component('panProcesando')}.show();"
-                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaCcd();"
+                                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaCcd();"
                                             reRender="frmBusqueda, ot_cal_mbase_valmatrizccd, ot_cal_mbase_multabaseccd"
                                             ></a4j:support>
                                 </a4j:commandButton>
@@ -1124,7 +1179,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_rucfirma"
                                 maxlength="11"
-                                onkeypress="return checkNumeros(event)"
+                                onkeypress="return fnCheckNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucFirma}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_rucfirma"
                                 value="#{msgs['bt.cal_mbase.buscarruc']}"
@@ -1132,7 +1187,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doBuscarRucFirma}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucfirma');"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckRuc('frmBusqueda:it_cal_mbase_rucfirma');"
                                         reRender="frmBusqueda, ot_cal_mbase_rsocialfirma"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -1173,8 +1228,9 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_facturacionfirma"
+                                maxlength="13"
                                 converter="javax.faces.Double"
-                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitfirma', 'frmBusqueda:cb_cal_mbase_anioUitfirma', 'frmBusqueda:bt_cal_mbase_calcularMbasefirma');"
+                                onkeypress="fnIfEnterClick(event, 'frmBusqueda:bt_cal_factUitfirma', 'frmBusqueda:cb_cal_mbase_anioUitfirma', 'frmBusqueda:bt_cal_mbase_calcularMbasefirma2');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualFirma}" columnClasses="input-width-50">
                                 <f:convertNumber pattern="###,###.##"/>
                             </h:inputText>
@@ -1194,7 +1250,17 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact']}" styleClass="label" escape="false"/>
                                 </span>
                             </rich:toolTip>
-                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbasefirma2"
+                                value="btnFirma"
+                                style="display:none;"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaFirmaYMultaBase}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaFirma();"
+                                        reRender="frmBusqueda, ot_cal_mbase_probresufirma, ot_cal_mbase_multabasefirma, ot_cal_mbase_valoruitfirma"
+                                        ></a4j:support>
+                            </a4j:commandButton>
 
                             <h:outputText id="ot_cal_mbase_anioffirma" style="font-size:12px;"
                                             value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
@@ -1314,7 +1380,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doCalcularMbaseFirma}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaFirma();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaFirma();"
                                         reRender="frmBusqueda, ot_cal_mbase_probresufirma, ot_cal_mbase_multabasefirma"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -1379,7 +1445,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_rucpventas"
                                 maxlength="11"
-                                onkeypress="return checkNumeros(event)"
+                                onkeypress="return fnCheckNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucVentas}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_rucpventas"
                                 value="#{msgs['bt.cal_mbase.buscarruc']}"
@@ -1387,7 +1453,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doBuscarRucVentas}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucpventas');"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckRuc('frmBusqueda:it_cal_mbase_rucpventas');"
                                         reRender="frmBusqueda, ot_cal_mbase_rsocialpventas"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -1403,7 +1469,17 @@ xmlns:rich="http://richfaces.org/rich">
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
-                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbasepventas2"
+                            value="btnventas"
+                            style="display:none;"
+                                reRender="frmMultaPreliminar" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaVentasYMultaBase}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaVentas();"
+                                        reRender="frmBusqueda, ot_cal_mbase_multabase1pventas, ot_cal_mbase_multabase2pventas, ot_cal_mbase_valoruitpventas"
+                                        ></a4j:support>
+                            </a4j:commandButton>
 
                             <h:outputText id="ot_cal_mbase_factupventas" style="font-size:12px; display:block; width:200px;"
                                           value="#{msgs['ot.cal_mbase.facturacionpventas']}"
@@ -1411,8 +1487,9 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_facturacionpventas"
+                                maxlength="13"
                                 converter="javax.faces.Double"
-                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitpventas', 'frmBusqueda:cb_cal_mbase_anioUitpventas', 'frmBusqueda:bt_cal_mbase_calcularMbasepventas');"
+                                onkeypress="fnIfEnterClick(event, 'frmBusqueda:bt_cal_factUitpventas', 'frmBusqueda:cb_cal_mbase_anioUitpventas', 'frmBusqueda:bt_cal_mbase_calcularMbasepventas2');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualVentas}" columnClasses="input-width-50">
                                 <f:convertNumber pattern="###,###.##"/>
                                 </h:inputText>
@@ -1483,6 +1560,7 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_facturacionprodpventas"
+                                maxlength="13"
                                 converter="javax.faces.Double"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualProductoVentas}" columnClasses="input-width-50">
                                 <f:convertNumber pattern="###,###.##"/>
@@ -1496,8 +1574,9 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_factorapventas"
+                                maxlength="6"
                                 converter="javax.faces.Double"
-                                onkeyup="checkFactorAValido('frmBusqueda:it_cal_mbase_umbralfactorapventas','frmBusqueda:it_cal_mbase_factorapventas','frmBusqueda:lblot_cal_mbase_factorapventas','frmBusqueda:it_cal_mbase_org');"
+                                onkeyup="fnCheckFactorAValido('frmBusqueda:it_cal_mbase_umbralfactorapventas','frmBusqueda:it_cal_mbase_factorapventas','frmBusqueda:lblot_cal_mbase_factorapventas','frmBusqueda:it_cal_mbase_org');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorAVentas}" columnClasses="input-width-50"/>
                             <h:inputText 
                                 style="display:none;"
@@ -1513,9 +1592,9 @@ xmlns:rich="http://richfaces.org/rich">
                             <a4j:commandLink id="button_ver_infraccionespventas" 
                                 action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
                                 oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
-                                    Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                    Richfaces.showModalPanel('modSeleccionarInfraccionVentas');
                                    }#{rich:component('panProcesando')}.hide();"
-                                reRender="frmSeleccionarInfraccion"
+                                reRender="frmSeleccionarInfraccionVentas"
                                 >
                                 <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
                                 Seleccionar
@@ -1564,7 +1643,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doCalcularMbaseVentas}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaVentas();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaVentas();"
                                         reRender="frmBusqueda, ot_cal_mbase_multabase1pventas, ot_cal_mbase_multabase2pventas"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -1618,7 +1697,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_rucpadhoc"
                                 maxlength="11"
-                                onkeypress="return checkNumeros(event)"
+                                onkeypress="return fnCheckNumeros(event)"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRucAdhoc}" columnClasses="input-width-50"/>
                             <a4j:commandButton id="bt_cal_mbase_rucadhoc"
                                 value="#{msgs['bt.cal_mbase.buscarruc']}"
@@ -1626,7 +1705,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doBuscarRucAdhoc}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:checkRuc('frmBusqueda:it_cal_mbase_rucpadhoc');"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckRuc('frmBusqueda:it_cal_mbase_rucpadhoc');"
                                         reRender="frmBusqueda, ot_cal_mbase_rsocialadhoc"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -1642,7 +1721,17 @@ xmlns:rich="http://richfaces.org/rich">
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcRazonSocial}" columnClasses="input-width-50"/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
-                            <h:outputText value=""/>
+                            <a4j:commandButton id="bt_cal_mbase_calcularMbaseadhoc2"
+                            value="btnadhoc"
+                            style="display:none;"
+                                reRender="frmMultaPreliminar, ot_cal_mbase_valoruitadhoc" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarAnioUITMultaAdhocYMultaBase}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaAdhoc();"
+                                        reRender="frmBusqueda, ot_cal_mbase_multabase2adhoc, ot_cal_mbase_multabase1adhoc, ot_cal_mbase_valoruitadhoc"
+                                        ></a4j:support>
+                            </a4j:commandButton>
                                 
 
                             <h:outputText id="ot_cal_mbase_factuadhoc" style="font-size:12px; display:block; width:200px;"
@@ -1651,8 +1740,9 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_facturacionadhoc"
+                                maxlength="13"
                                 converter="javax.faces.Double"
-                                onkeypress="ifEnterClick(event, 'frmBusqueda:bt_cal_factUitadhoc', 'frmBusqueda:cb_cal_mbase_anioUitadhoc', 'frmBusqueda:bt_cal_mbase_calcularMbaseadhoc');"
+                                onkeypress="fnIfEnterClick(event, 'frmBusqueda:bt_cal_factUitadhoc', 'frmBusqueda:cb_cal_mbase_anioUitadhoc', 'frmBusqueda:bt_cal_mbase_calcularMbaseadhoc2');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnualAdhoc}" columnClasses="input-width-50">
                                 <f:convertNumber pattern="###,###.##"/>
                                 </h:inputText>
@@ -1740,7 +1830,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_factorbadhoc"
                                 converter="javax.faces.Double"
-                                maxlength="6"
+                                maxlength="13"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorBAdhoc}" columnClasses="input-width-50"/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
@@ -1751,9 +1841,9 @@ xmlns:rich="http://richfaces.org/rich">
                             <a4j:commandLink id="button_ver_infraccionesadhoc" 
                                 action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
                                 oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
-                                    Richfaces.showModalPanel('modSeleccionarInfraccion');
+                                    Richfaces.showModalPanel('modSeleccionarInfraccionAdhoc');
                                    }#{rich:component('panProcesando')}.hide();"
-                                reRender="frmSeleccionarInfraccion"
+                                reRender="frmSeleccionarInfraccionAdhoc"
                                 >
                                 <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
                                 Seleccionar
@@ -1803,7 +1893,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doCalcularMbaseAdhoc}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaAdhoc();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaAdhoc();"
                                         reRender="frmBusqueda, ot_cal_mbase_multabase2adhoc, ot_cal_mbase_multabase1adhoc"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -1944,7 +2034,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onclick"
                                         action="#{clsCalculoMultaSrv.doCalcularMbaseBarreras}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
-                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fn_validaBarreras();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaBarreras();"
                                         reRender="frmBusqueda, ot_cal_mbase_multabasebar"
                                         ></a4j:support>
                             </a4j:commandButton>
@@ -2164,5 +2254,7 @@ xmlns:rich="http://richfaces.org/rich">
     <ui:include src="../procesos/modal/pgw_modalAtenAgrav.xhtml"/>
     <ui:include src="../procesos/modal/pgw_modalMPreliminar.xhtml"/>  
     <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccion.xhtml"/>  
+    <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccionAdhoc.xhtml"/>  
+    <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccionVentas.xhtml"/>  
     </body>
 </ui:composition>

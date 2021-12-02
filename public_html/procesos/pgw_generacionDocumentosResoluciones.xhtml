@@ -120,8 +120,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                     <rich:calendar id="cl_generacion_res_filtro_fechaInicio" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaInicio}"
                                                    locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" cellHeight="22px"
                                                    inputStyle="width:65px"
-                                                   isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                   isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                    >
                                     </rich:calendar>
                                                    
@@ -134,8 +134,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                     <rich:calendar id="cl_generacion_res_filtro_fechaFin" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaFin}"
                                                    locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" cellHeight="22px"
                                                    inputStyle="width:65px"
-                                                   isDayEnabled="isPresDayEnabled"
-                                                   dayStyleClass="getPresDisabledStyle"
+                                                   isDayEnabled="fnIsPresDayEnabled"
+                                                   dayStyleClass="fnGetPresDisabledStyle"
                                                    >
                                     </rich:calendar>
                                                    
@@ -408,8 +408,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                     <rich:calendar id="cl_conversion_res_filtro_fechaInicio" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaInicio}"
                                                    locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
                                                    cellHeight="22px" inputStyle="width:65px"
-                                                   isDayEnabled="isPresDayEnabled"
-                                                   dayStyleClass="getPresDisabledStyle"
+                                                   isDayEnabled="fnIsPresDayEnabled"
+                                                   dayStyleClass="fnGetPresDisabledStyle"
                                                    >
                                     </rich:calendar>
                                                    
@@ -421,8 +421,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                     <h:outputText id="ot_conversion_res_filtro_fechaFin" value="#{msgs['ot.conversion.res.filtro.fechaFin']}"/>
                                     <rich:calendar id="cl_conversion_res_filtro_fechaFin" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaFin}"
                                                    locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
-                                                   isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                   isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                    cellHeight="22px" inputStyle="width:65px">
                                     </rich:calendar>
                                     
@@ -903,8 +903,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                             <h:outputText id="ot_reporte_res_filtro_fechaInicio" value="#{msgs['ot.reporte.res.filtro.fechaInicio']}"/>
                                             <rich:calendar id="cl_reporte_res_filtro_fechaInicio" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaInicio}"
                                                            locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
-                                                           isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                           isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                            cellHeight="22px" inputStyle="width:65px">
                                             </rich:calendar>
                                             <h:outputText id="ot_reporte_res_filtro_nro_expe" value="#{msgs['ot.generacion.res.filtro.nroExpediente']}"/>
@@ -913,8 +913,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                             <h:outputText id="ot_reporte_res_filtro_fechaFin" value="#{msgs['ot.reporte.res.filtro.fechaFin']}"/>
                                             <rich:calendar id="cl_reporte_res_filtro_fechaFin" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaFin}"
                                                            locale="en/ES" datePattern="dd-MM-yyyy" 
-                                                           isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                           isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                            cellWidth="12px" cellHeight="22px" inputStyle="width:65px">
                                             </rich:calendar>
                                             <h:outputText id="ot_reporte_res_filtro_nro_resol" value="#{msgs['ot.generacion.res.filtro.nroResolucion']}"/>
@@ -1295,8 +1295,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                             <rich:calendar id="cl_reporte_res_filtro_fechaInicioGen" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaInicio}"
                                                            locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
                                                            cellHeight="22px" inputStyle="width:65px"
-                                                           isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                           isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                            >
                                             </rich:calendar>
                                             <h:outputText id="ot_reporte_res_filtro_nro_expedoc" value="#{msgs['ot.generacion.res.filtro.nroExpediente']}"/>
@@ -1307,8 +1307,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                             <rich:calendar id="cl_reporte_res_filtro_fechaFinGen" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaFin}"
                                                            locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
                                                            cellHeight="22px" inputStyle="width:65px"
-                                                           isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                           isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                            >
                                             </rich:calendar>
                                             <h:outputText id="ot_reporte_res_filtro_nro_resoldoc" value="#{msgs['ot.generacion.res.filtro.nroResolucion']}"/>
@@ -1603,8 +1603,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                             <rich:calendar id="cl_reporte_res_filtro_fechaInicioGenVe" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaInicio}"
                                                            locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px"
                                                            cellHeight="22px" inputStyle="width:65px"
-                                                           isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                           isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                            >
                                             </rich:calendar>
                                             <h:outputText id="ot_reporte_res_filtro_nro_expedocpdf" value="#{msgs['ot.generacion.res.filtro.nroExpediente']}"/>
@@ -1614,8 +1614,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                             <rich:calendar id="cl_reporte_res_filtro_fechaFinGenVe" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaFin}"
                                                            locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
                                                            cellHeight="22px" inputStyle="width:65px"
-                                                           isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                           isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                            >
                                             </rich:calendar>
                                             <h:outputText id="ot_reporte_res_filtro_nro_resoldocpdf" value="#{msgs['ot.generacion.res.filtro.nroResolucion']}"/>
@@ -1851,8 +1851,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                             <rich:calendar id="cl_reporte_res_filtro_fechaInicioGenNoti" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaInicio}"
                                                            locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px"
                                                            cellHeight="22px" inputStyle="width:65px"
-                                                           isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                           isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                            >
                                             <a4j:support event="onchanged" action="#{clsDocumentacionSrv.changeEndDate}" reRender="cl_reporte_res_filtro_fechaFinGenNoti"/>
                                             </rich:calendar>
@@ -1860,8 +1860,8 @@ xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
                                             <rich:calendar id="cl_reporte_res_filtro_fechaFinGenNoti" value="#{clsDocumentacionSrv.objFiltroBean.dtFechaFin}"
                                                            locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" 
                                                            cellHeight="22px" inputStyle="width:65px"
-                                                           isDayEnabled="isPresDayEnabled"
-                                                                dayStyleClass="getPresDisabledStyle"
+                                                           isDayEnabled="fnIsPresDayEnabled"
+                                                                dayStyleClass="fnGetPresDisabledStyle"
                                                            >
                                             </rich:calendar>
                                             

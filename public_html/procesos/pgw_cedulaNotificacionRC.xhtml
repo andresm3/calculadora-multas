@@ -156,8 +156,8 @@ xmlns:rich="http://richfaces.org/rich">
                                     <rich:calendar id="cl_conversion_not_filtro_fechaInicio" value="#{clsNotificacionRCSrv.objFiltroBean.dtFechaInicio}"
                                                    locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px"
                                                    cellHeight="22px" inputStyle="width:65px"
-                                                   isDayEnabled="isPresDayEnabled"
-                                                   dayStyleClass="getPresDisabledStyle"
+                                                   isDayEnabled="fnIsPresDayEnabled"
+                                                   dayStyleClass="fnGetPresDisabledStyle"
                                                    >
                                     </rich:calendar>
                                     
@@ -176,8 +176,8 @@ xmlns:rich="http://richfaces.org/rich">
                                     <rich:calendar id="cl_conversion_not_filtro_fechaFin" value="#{clsNotificacionRCSrv.objFiltroBean.dtFechaFin}"
                                                    locale="en/ES" datePattern="dd-MM-yyyy" cellWidth="12px" cellHeight="22px"
                                                    inputStyle="width:65px"
-                                                   sDayEnabled="isPresDayEnabled"
-                                                   dayStyleClass="getPresDisabledStyle"
+                                                   sDayEnabled="fnIsPresDayEnabled"
+                                                   dayStyleClass="fnGetPresDisabledStyle"
                                                    >
                                     </rich:calendar>
                                      
