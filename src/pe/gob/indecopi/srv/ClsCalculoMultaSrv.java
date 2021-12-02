@@ -9,6 +9,7 @@ import indecopi.gob.pe.utils.ClsResultDAO;
 import pe.gob.indecopi.bean.ClsUsuarioBean;
 import pe.gob.indecopi.dao.ClsCalculoMultaIDAO;
 import pe.gob.indecopi.dao.ClsCalculoMultaDAO;
+import pe.gob.indecopi.dao.ClsUsuarioDAO;
 
 import pe.gob.indecopi.bean.ClsPermisoUsuarioBean;
 import pe.gob.indecopi.bean.ClsMetodoCalculoBean;
@@ -54,6 +55,8 @@ import java.time.format.DateTimeFormatter;
 
 import javax.faces.context.ExternalContext;
 
+import pe.gob.indecopi.dao.ClsUsuarioIDAO;
+
 public class ClsCalculoMultaSrv {
   static Logger logger = Logger.getLogger(ClsCalculoMultaSrv.class);
 
@@ -98,6 +101,8 @@ public class ClsCalculoMultaSrv {
 
   private List<SelectItem> lstOrgano;
   private String valorArea;
+
+  private Map<String, String> lstAreas;
 
   private Map<String, String> lstAgravF1;
   private Map<String, String> lstAgravF2;
@@ -148,7 +153,8 @@ public class ClsCalculoMultaSrv {
     logger.debug("this.getObjUsuarioBean().getNuIdPerfil(): " + this.getObjUsuarioBean().getNuIdPerfil());
     logger.debug("this.getObjUsuarioBean().getNuIdRRHH(): " + this.getObjUsuarioBean().getNuIdRRHH()); */
     //inicializar(objUsuario, objUsuarioBean.getVcArea());
-    inicializaAreas();
+    //inicializaAreas();
+    this.doListarAreas();
     logger.info(">>FIN ClsCalculoMultaSrv");
   }
 
@@ -386,6 +392,8 @@ public class ClsCalculoMultaSrv {
     lstO.add(data18);
     this.setLstOrgano(lstO); */
     //////////////////////////////////
+    this.lstAreas= new LinkedHashMap<String, String>();
+
     this.lstAgravF1= new LinkedHashMap<String, String>();
     this.lstAgravF2= new LinkedHashMap<String, String>();
     this.lstAgravF3= new LinkedHashMap<String, String>();
@@ -1960,6 +1968,18 @@ public void doLimpiarRUC() {
             this.getObjFiltroBean().setLstAniosUIT(lstAniosUIT);
       }
       logger.info(">>FIN doListarMultaUITAnios");
+  }
+
+  public void doListarAreas() {
+    logger.info(">>doListarAreas");
+      ClsUsuarioIDAO objDAO = new ClsUsuarioDAO();
+      ClsResultDAO objResult = objDAO.doListarAreas();
+      if (objResult != null) {
+            //this.setLstMultaUITAnioBean((List<ClsMultaUITAnioBean>) objResult.get("SP_LST_MULTA_UIT_ANIOS"));
+            this.setLstAreas((Map<String, String>) objResult.get("SP_LST_AREAS"));
+            logger.debug(">this.lstAreas.size():" + this.lstAreas.size());
+      }
+      logger.info(">>FIN doListarAreas");
   }
 
   public void doListarProbabilidadBarreras() {
@@ -4318,5 +4338,13 @@ public void doReportePreliminar(){
 
     public String getValorArea() {
         return valorArea;
+    }
+
+    public void setLstAreas(Map<String, String> lstAreas) {
+        this.lstAreas = lstAreas;
+    }
+
+    public Map<String, String> getLstAreas() {
+        return lstAreas;
     }
 }
