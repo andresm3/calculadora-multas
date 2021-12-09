@@ -232,6 +232,9 @@ public class ClsCalculoBean implements Serializable {
     private double nuUmbralFactorAVentas;
     private double nuFactorAVentas;
     private double nuFactorGVentas;
+    private double nuFactorGDifVentas;
+    private double nuUmbralFactorGDifVentas;
+    private String vcFactorGDifAccion;
     private double nuMultaBaseVentas;
     private double nuMultaBaseVentasCompleto;
     private double nuMultaBaseUITVentas;
@@ -258,6 +261,9 @@ public class ClsCalculoBean implements Serializable {
     private double nuFactorBAdhoc;
     private double nuFactorPAdhoc;
     private String vcFactorPAdhoc;
+    private double nuFactorPDifAdhoc;
+    private double nuUmbralFactorPDifAdhoc;
+    private String vcFactorPDifAccion;
     private double nuMultaBaseAdhoc;
     private double nuMultaBaseAdhocCompleto;
     private double nuMultaBaseUITAdhoc;
@@ -298,6 +304,8 @@ public class ClsCalculoBean implements Serializable {
         this.lstAniosUIT = new ArrayList<SelectItem>();
         this.lstTipoAfectacion = new ArrayList<SelectItem>();
         this.lstProbabilidadBarreras = new ArrayList<SelectItem>();
+        this.lstMetodosCalculo = new ArrayList<SelectItem>();
+        this.lstInstanciasCalculo = new ArrayList<SelectItem>();
         //this.lstInfracciones=new LinkedHashMap<String, String>();
 
         df.setRoundingMode(RoundingMode.UP);
@@ -2110,5 +2118,53 @@ public class ClsCalculoBean implements Serializable {
 
     public boolean isIsBlLstAfectacion() {
         return isBlLstAfectacion;
+    }
+
+    public void setNuFactorPDifAdhoc(double nuFactorPDifAdhoc) {
+        this.nuFactorPDifAdhoc = nuFactorPDifAdhoc;
+    }
+
+    public double getNuFactorPDifAdhoc() {
+        return nuFactorPDifAdhoc;
+    }
+
+    public void setNuUmbralFactorPDifAdhoc(double nuUmbralFactorPDifAdhoc) {
+        this.nuUmbralFactorPDifAdhoc = nuUmbralFactorPDifAdhoc;
+    }
+
+    public double getNuUmbralFactorPDifAdhoc() {
+        return nuUmbralFactorPDifAdhoc;
+    }
+
+    public void setVcFactorPDifAccion(String vcFactorPDifAccion) {
+        this.vcFactorPDifAccion = vcFactorPDifAccion;
+    }
+
+    public String getVcFactorPDifAccion() {
+        return vcFactorPDifAccion;
+    }
+
+    public void setNuFactorGDifVentas(double nuFactorGDifVentas) {
+        this.nuFactorGDifVentas = nuFactorGDifVentas;
+    }
+
+    public double getNuFactorGDifVentas() {
+        return nuFactorGDifVentas;
+    }
+
+    public void setNuUmbralFactorGDifVentas(double nuUmbralFactorGDifVentas) {
+        this.nuUmbralFactorGDifVentas = nuUmbralFactorGDifVentas;
+    }
+
+    public double getNuUmbralFactorGDifVentas() {
+        return nuUmbralFactorGDifVentas;
+    }
+
+    public void setVcFactorGDifAccion(String vcFactorGDifAccion) {
+        this.vcFactorGDifAccion = vcFactorGDifAccion;
+    }
+
+    public String getVcFactorGDifAccion() {
+        return vcFactorGDifAccion;
     }
 }

@@ -55,10 +55,16 @@ import java.time.format.DateTimeFormatter;
 
 import javax.faces.context.ExternalContext;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import pe.gob.indecopi.dao.ClsUsuarioIDAO;
 
 public class ClsCalculoMultaSrv {
   static Logger logger = Logger.getLogger(ClsCalculoMultaSrv.class);
+
+  private String vcMuestraInicio;
+  private String vcMuestraFormPrincipal;
 
   private String vcMuestraPreestablecido;
   private String vcMuestraLibro;
@@ -71,6 +77,7 @@ public class ClsCalculoMultaSrv {
   private String vcMuestraPreestablecidoFirma;
   private String vcMuestraPorcentajeVentas;
     private String vcMuestraOrgano1raInstanciaVentas;
+    private String vcMuestraCLCVentas;
   private String vcMuestraAdHoc;
     private String vcMuestraOrgano1raInstanciaAdhoc;
     private String vcMuestraTamEmpresaAdHoc;
@@ -154,246 +161,25 @@ public class ClsCalculoMultaSrv {
     logger.debug("this.getObjUsuarioBean().getNuIdRRHH(): " + this.getObjUsuarioBean().getNuIdRRHH()); */
     //inicializar(objUsuario, objUsuarioBean.getVcArea());
     //inicializaAreas();
-    this.doListarAreas();
-    logger.info(">>FIN ClsCalculoMultaSrv");
-  }
 
-  public void inicializaAreas() {
-    logger.info(">>inicializaAreas");
-    this.lstOrgano = new ArrayList<SelectItem>();
-    List<SelectItem> lstO = new ArrayList<SelectItem>();
-    
-    SelectItem data = new SelectItem();
-    SelectItem data1 = new SelectItem();
-    SelectItem data11 = new SelectItem();
-    SelectItem data2 = new SelectItem();
-    SelectItem data3 = new SelectItem();
-    SelectItem data4 = new SelectItem();
-    SelectItem data5 = new SelectItem();
-    SelectItem data6 = new SelectItem();
-    SelectItem data7 = new SelectItem();
-    SelectItem data8 = new SelectItem();
-    SelectItem data9 = new SelectItem();
-    SelectItem data10 = new SelectItem();
-    SelectItem data12 = new SelectItem();
-    SelectItem data13 = new SelectItem();
-    SelectItem data14 = new SelectItem();
-    SelectItem data15 = new SelectItem();
-    SelectItem data16 = new SelectItem();
-    SelectItem data17 = new SelectItem();
-    SelectItem data18 = new SelectItem();
-    SelectItem data19 = new SelectItem();
-    SelectItem data20 = new SelectItem();
-    SelectItem data21 = new SelectItem();
-    data.setValue("PS0");
-    data.setLabel("PS0");
-    lstO.add(data);
-    data1.setValue("PS1");
-    data1.setLabel("PS1");
-    lstO.add(data1);
-    data11.setValue("PS2");
-    data11.setLabel("PS2");
-    lstO.add(data11);
-    data2.setValue("PS3");
-    data2.setLabel("PS3");
-    lstO.add(data2);
-    data3.setValue("CC1");
-    data3.setLabel("CC1");
-    lstO.add(data3);
-    data4.setValue("CC2");
-    data4.setLabel("CC2");
-    lstO.add(data4);
-    data5.setValue("CPC");
-    data5.setLabel("CPC");
-    lstO.add(data5);
-    data6.setValue("SPC");
-    data6.setLabel("SPC");
-    lstO.add(data6);
-    data7.setValue("CC3");
-    data7.setLabel("CC3");
-    lstO.add(data7);
-    data8.setValue("CEB");
-    data8.setLabel("CEB");
-    lstO.add(data8);
-    data9.setValue("SEL");
-    data9.setLabel("SEL");
-    lstO.add(data9);
-    data10.setValue("DDA");
-    data10.setLabel("DDA");
-    lstO.add(data10);
-    data12.setValue("DIN");
-    data12.setLabel("DIN");
-    lstO.add(data12);
-    data13.setValue("DSD");
-    data13.setLabel("DSD");
-    lstO.add(data13);
-    data14.setValue("SPI");
-    data14.setLabel("SPI");
-    lstO.add(data14);
-    
-    data15.setValue("CCD");
-    data15.setLabel("CCD");
-    lstO.add(data15);
-    data16.setValue("SDC");
-    data16.setLabel("SDC");
-    lstO.add(data16);
-    
-    data17.setValue("IOFE");
-    data17.setLabel("IOFE");
-    lstO.add(data17);
-
-    data18.setValue("CLC");
-    data18.setLabel("CLC");
-    lstO.add(data18);
-    
-    data19.setValue("CDA");
-    data19.setLabel("CDA");
-    lstO.add(data19);
-    data20.setValue("CIN");
-    data20.setLabel("CIN");
-    lstO.add(data20);
-    data21.setValue("CSD");
-    data21.setLabel("CSD");
-    lstO.add(data21);
-    this.setLstOrgano(lstO);
-    logger.info(">>FIN inicializaAreas");
-  }
-  public void doIniciar() {
-    logger.info(">>doIniciar");
-    //inicializar(objUsuario, objUsuarioBean.getVcArea());
-    try{
-      /* FacesContext context = FacesContext.getCurrentInstance();
-      HttpSession s = (HttpSession) context.getExternalContext().getSession(true);
-      HttpServletRequest sr = (HttpServletRequest) context.getExternalContext().getRequest();
-      String valor  = s.getAttribute("VS_IND_PAYMENT_ID"); */
-      inicializar(this.getValorArea());
-      FacesContext context = FacesContext.getCurrentInstance();
-      ExternalContext e = context.getExternalContext();
-      e.redirect(e.encodeResourceURL("pgw_calculoMulta.seam"));
-
-    }catch(Exception e){
-      e.printStackTrace();
-    }
-    logger.info(">>FIN doIniciar");
-  }
-
-  //public void inicializar(ClsUsuarioIndBean objUsuario, String vcOrgResolutivo) {
-  public void inicializar(String vcOrgResolutivo) {
-    logger.info(">>inicializar");
-    df.setRoundingMode(RoundingMode.UP);
-    
-    objResultDAO = new ClsResultDAO();
     objFiltroBean = new ClsCalculoBean();
-    objFiltroBean.setDtFechaInicio(new Date());
-    objFiltroBean.setDtFechaFin(new Date());
-    objFiltroBean.setDtFechaInicioCcd(new Date());
-    objFiltroBean.setDtFechaFinCcd(new Date());
 
-    //this.setObjUsuario(objUsuario);
-    //this.getObjFiltroBean().setNuIDTipoAplicacion(Integer.valueOf(vcTipoDoc)); //Indicador de aplicacion
-    
+    SelectItem data = new SelectItem();
+    List<SelectItem> lstMetodoCalc = new ArrayList<SelectItem>();
+    data.setValue(-1);
+    data.setLabel("Seleccionar Area");
+    lstMetodoCalc.add(data);
+    this.getObjFiltroBean().setLstMetodosCalculo(lstMetodoCalc);
+    this.getObjFiltroBean().setLstInstanciasCalculo(lstMetodoCalc);
+
+
     this.lstMetodoCalculoBean = new ArrayList<ClsMetodoCalculoBean>();
     this.lstInstanciaBean = new ArrayList<ClsInstanciasBean>();
     this.lstMultaUITAnioBean = new ArrayList<ClsMultaUITAnioBean>();
     this.lstAfectacionBean = new ArrayList<ClsTipoAfectacionBean>();
     this.lstProbabilidadBarrerasBean = new ArrayList<ClsProbabilidadBarrerasBean>();
 
-    this.getObjFiltroBean().setVcOrgResolutivo(vcOrgResolutivo);
-    this.doListarMetodosXOrgInstancia();
-    this.doListarMultaUITAnios();
-    this.doListarProbabilidadBarreras();
-    this.calculaFD();
-    
-    List<SelectItem> lstAfec = new ArrayList<SelectItem>();
-    this.getObjFiltroBean().setLstTipoAfectacion(lstAfec);
-
-    //////////////////////////////////////
-    /* this.lstOrgano = new ArrayList<SelectItem>();
-    List<SelectItem> lstO = new ArrayList<SelectItem>();
-    
-    SelectItem data = new SelectItem();
-    SelectItem data1 = new SelectItem();
-    SelectItem data11 = new SelectItem();
-    SelectItem data2 = new SelectItem();
-    SelectItem data3 = new SelectItem();
-    SelectItem data4 = new SelectItem();
-    SelectItem data5 = new SelectItem();
-    SelectItem data6 = new SelectItem();
-    SelectItem data7 = new SelectItem();
-    SelectItem data8 = new SelectItem();
-    SelectItem data9 = new SelectItem();
-    SelectItem data10 = new SelectItem();
-    SelectItem data12 = new SelectItem();
-    SelectItem data13 = new SelectItem();
-    SelectItem data14 = new SelectItem();
-    SelectItem data15 = new SelectItem();
-    SelectItem data16 = new SelectItem();
-    SelectItem data17 = new SelectItem();
-    SelectItem data18 = new SelectItem();
-    data.setValue("PS0");
-    data.setLabel("PS0");
-    lstO.add(data);
-    data1.setValue("PS1");
-    data1.setLabel("PS1");
-    lstO.add(data1);
-    data11.setValue("PS2");
-    data11.setLabel("PS2");
-    lstO.add(data11);
-    data2.setValue("PS3");
-    data2.setLabel("PS3");
-    lstO.add(data2);
-    data3.setValue("CC1");
-    data3.setLabel("CC1");
-    lstO.add(data3);
-    data4.setValue("CC2");
-    data4.setLabel("CC2");
-    lstO.add(data4);
-    data5.setValue("CPC");
-    data5.setLabel("CPC");
-    lstO.add(data5);
-    data6.setValue("SPC");
-    data6.setLabel("SPC");
-    lstO.add(data6);
-    data7.setValue("CC3");
-    data7.setLabel("CC3");
-    lstO.add(data7);
-    data8.setValue("CEB");
-    data8.setLabel("CEB");
-    lstO.add(data8);
-    data9.setValue("SEL");
-    data9.setLabel("SEL");
-    lstO.add(data9);
-    data10.setValue("DDA");
-    data10.setLabel("DDA");
-    lstO.add(data10);
-    data12.setValue("DIN");
-    data12.setLabel("DIN");
-    lstO.add(data12);
-    data13.setValue("DSD");
-    data13.setLabel("DSD");
-    lstO.add(data13);
-    data14.setValue("SPI");
-    data14.setLabel("SPI");
-    lstO.add(data14);
-    
-    data15.setValue("CCD");
-    data15.setLabel("CCD");
-    lstO.add(data15);
-    data16.setValue("SDC");
-    data16.setLabel("SDC");
-    lstO.add(data16);
-    
-    data17.setValue("DGI");
-    data17.setLabel("DGI");
-    lstO.add(data17);
-
-    data18.setValue("CLC");
-    data18.setLabel("CLC");
-    lstO.add(data18);
-    this.setLstOrgano(lstO); */
-    //////////////////////////////////
     this.lstAreas= new LinkedHashMap<String, String>();
-
     this.lstAgravF1= new LinkedHashMap<String, String>();
     this.lstAgravF2= new LinkedHashMap<String, String>();
     this.lstAgravF3= new LinkedHashMap<String, String>();
@@ -405,12 +191,112 @@ public class ClsCalculoMultaSrv {
     this.lstAtenF9= new LinkedHashMap<String, String>();
     this.lstAtenF10= new LinkedHashMap<String, String>();
     this.lstAtenF11= new LinkedHashMap<String, String>();
+
     this.doListarAgravF01();
     this.doListarAgravF02();
     this.doListarAgravF03();
     this.doListarAtenF01();
     this.doListarAtenF02();
     this.doListarAtenF03();
+
+
+    this.doListarAreas();
+    this.setVcMuestraInicio(" block;");
+    this.setVcMuestraFormPrincipal(" none;");
+    logger.info(">>FIN ClsCalculoMultaSrv");
+  }
+
+  public void doVolverInicio() {
+    logger.info(">>doVolverInicio");
+
+    this.doLimpiar();
+    this.getObjFiltroBean().setVcMetodo("-1");
+    this.setVcMuestraInicio(" block;");
+    this.setVcMuestraFormPrincipal(" none;");
+    logger.info(">>FIN doVolverInicio");
+  }
+
+  public void doIniciar() {
+    logger.info(">>doIniciar");
+    //inicializar(objUsuario, objUsuarioBean.getVcArea());
+    try{
+      /* FacesContext context = FacesContext.getCurrentInstance();
+      HttpSession s = (HttpSession) context.getExternalContext().getSession(true);
+      HttpServletRequest sr = (HttpServletRequest) context.getExternalContext().getRequest();
+      String valor  = s.getAttribute("VS_IND_PAYMENT_ID"); */
+      //inicializar(this.getValorArea());// otro srvlet
+
+      /* FacesContext context = FacesContext.getCurrentInstance();
+      HttpSession s = (HttpSession) context.getExternalContext().getSession(true);
+      s.setAttribute("VS_AREA", this.getValorArea()); */
+
+      //inicializar(s.getAttribute("VS_AREA").toString());
+
+      //ExternalContext e = context.getExternalContext();
+      //e.redirect(e.encodeResourceURL("pgw_calculoMulta_bienvenido.seam"));
+
+      this.getObjFiltroBean().setVcOrgResolutivo(this.getValorArea());
+      this.setVcMuestraInicio(" none;");
+      this.setVcMuestraFormPrincipal(" block;");
+      
+      inicializar();
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+    logger.info(">>FIN doIniciar");
+  }
+
+  //public void inicializar(ClsUsuarioIndBean objUsuario, String vcOrgResolutivo) {
+  public void inicializar() {
+    logger.info(">>inicializar: "+ this.getObjFiltroBean().getVcOrgResolutivo());
+    df.setRoundingMode(RoundingMode.UP);
+    
+    objResultDAO = new ClsResultDAO();
+    //objFiltroBean = new ClsCalculoBean();
+    objFiltroBean.setDtFechaInicio(new Date());
+    objFiltroBean.setDtFechaFin(new Date());
+    objFiltroBean.setDtFechaInicioCcd(new Date());
+    objFiltroBean.setDtFechaFinCcd(new Date());
+
+    
+    /* this.lstMetodoCalculoBean = new ArrayList<ClsMetodoCalculoBean>();
+    this.lstInstanciaBean = new ArrayList<ClsInstanciasBean>();
+    this.lstMultaUITAnioBean = new ArrayList<ClsMultaUITAnioBean>();
+    this.lstAfectacionBean = new ArrayList<ClsTipoAfectacionBean>();
+    this.lstProbabilidadBarrerasBean = new ArrayList<ClsProbabilidadBarrerasBean>(); */
+
+
+    /* FacesContext context = FacesContext.getCurrentInstance();
+    HttpSession s = (HttpSession) context.getExternalContext().getSession(true);
+    String v_area = s.getAttribute("VS_AREA").toString();
+    logger.info("v_area: "+v_area); */
+    this.getObjFiltroBean().setVcOrgResolutivo(this.getObjFiltroBean().getVcOrgResolutivo());
+    this.doListarMetodosXOrgInstancia();
+    this.doListarMultaUITAnios();
+    this.doListarProbabilidadBarreras();
+    this.calculaFD();
+    
+    List<SelectItem> lstAfec = new ArrayList<SelectItem>();
+    this.getObjFiltroBean().setLstTipoAfectacion(lstAfec);
+
+    /* this.lstAreas= new LinkedHashMap<String, String>();
+    this.lstAgravF1= new LinkedHashMap<String, String>();
+    this.lstAgravF2= new LinkedHashMap<String, String>();
+    this.lstAgravF3= new LinkedHashMap<String, String>();
+    this.lstAgravF4= new LinkedHashMap<String, String>();
+    this.lstAgravF5= new LinkedHashMap<String, String>();
+    this.lstAgravF6= new LinkedHashMap<String, String>();
+    this.lstAtenF7= new LinkedHashMap<String, String>();
+    this.lstAtenF8= new LinkedHashMap<String, String>();
+    this.lstAtenF9= new LinkedHashMap<String, String>();
+    this.lstAtenF10= new LinkedHashMap<String, String>();
+    this.lstAtenF11= new LinkedHashMap<String, String>(); */
+    /* this.doListarAgravF01();
+    this.doListarAgravF02();
+    this.doListarAgravF03();
+    this.doListarAtenF01();
+    this.doListarAtenF02();
+    this.doListarAtenF03(); */
 
     //////////////////////
     this.setVcMuestraPreestablecido(" none;");
@@ -424,6 +310,7 @@ public class ClsCalculoMultaSrv {
     this.setVcMuestraPreestablecidoFirma(" none;");
     this.setVcMuestraPorcentajeVentas(" none;");
     this.setVcMuestraOrgano1raInstanciaVentas(" none;");
+    this.setVcMuestraCLCVentas(" none;");
     this.setVcMuestraOrgano1raInstanciaAdhoc(" none;");
     this.setVcMuestraAdHoc(" none;");
     this.setVcMuestraTamEmpresaAdHoc(" none;");
@@ -449,13 +336,20 @@ public class ClsCalculoMultaSrv {
     this.getObjFiltroBean().setIsBlLstAfectacion(false);
 
     //////////////////////////////////////////OS-5
-    SelectItem data = new SelectItem();
+    /* SelectItem data = new SelectItem();
     List<SelectItem> lstMetodoCal = new ArrayList<SelectItem>();
 
     data.setValue(-1);
     data.setLabel("Seleccionar");
     lstMetodoCal.add(data);
-    this.getObjFiltroBean().setLstInstanciasCalculo(lstMetodoCal);
+    this.getObjFiltroBean().setLstInstanciasCalculo(lstMetodoCal); */
+
+    /* try{
+    ExternalContext e = context.getExternalContext();
+    e.redirect(e.encodeResourceURL("pgw_calculoMulta.seam"));
+    }catch(Exception e){
+      e.printStackTrace();
+    } */
   }
 
   /* public void doListarParametros() {
@@ -932,11 +826,26 @@ public List<SelectItem> getAtenF0(){
       logger.debug("this.getObjFiltroBean().getNuFactorAVentas() " + this.getObjFiltroBean().getNuFactorAVentas());
       logger.debug("this.getObjFiltroBean().getNuUmbralFactorAVentas() " + this.getObjFiltroBean().getNuUmbralFactorAVentas());
       logger.debug("this.getObjFiltroBean().getNuFactorGVentas() " + this.getObjFiltroBean().getNuFactorGVentas());
+      logger.debug("this.getObjFiltroBean().getVcFactorGDifAccion() " + this.getObjFiltroBean().getVcFactorGDifAccion());
+      logger.debug("this.getObjFiltroBean().getNuUmbralFactorGDifVentas() " + this.getObjFiltroBean().getNuUmbralFactorGDifVentas());
+      logger.debug("this.getObjFiltroBean().getNuFactorGDifVentas() " + this.getObjFiltroBean().getNuFactorGDifVentas());
 
+      double nuFactorP = 0;
       if(!this.getObjFiltroBean().getVcInstanciaVentas().equals("-1") && !this.getObjFiltroBean().getVcRucVentas().equals("")&&!this.getObjFiltroBean().getVcRazonSocial().equals("")&&!this.getObjFiltroBean().getVcRazonSocial().equals("RUC no encontrado")
           && this.getObjFiltroBean().getNuFacturacionAnualVentas()!=0 && this.getObjFiltroBean().getNuFacturacionAnualProductoVentas()!=0 && !this.getObjFiltroBean().getVcAnioResolucionVentas().equals("-1") && !this.getObjFiltroBean().getVcTipoAfectacionVentas().equals("") && this.getObjFiltroBean().getNuFactorAVentas()!=0){
-      this.getObjFiltroBean().setNuMultaBaseVentas(round(this.getObjFiltroBean().getNuFacturacionAnualProductoVentas()*(this.getObjFiltroBean().getNuFactorAVentas()/100)*this.getObjFiltroBean().getNuFactorGVentas(), 2));
-      this.getObjFiltroBean().setNuMultaBaseVentasCompleto(this.getObjFiltroBean().getNuFacturacionAnualProductoVentas()*(this.getObjFiltroBean().getNuFactorAVentas()/100)*this.getObjFiltroBean().getNuFactorGVentas());
+      
+          //if(this.getObjFiltroBean().getVcOrgResolutivo().equals("CLC") || this.getObjFiltroBean().getVcOrgResolutivo().equals("CCD")){
+            if(this.getObjFiltroBean().getVcFactorGDifAccion()!=null && this.getObjFiltroBean().getVcFactorGDifAccion().equals("restar")){
+              nuFactorP = this.getObjFiltroBean().getNuFactorGVentas() - this.getObjFiltroBean().getNuFactorGDifVentas();
+            } else {
+              nuFactorP = this.getObjFiltroBean().getNuFactorGVentas() + this.getObjFiltroBean().getNuFactorGDifVentas();
+            }
+          /* } else {
+            nuFactorP = this.getObjFiltroBean().getNuFactorGVentas();
+          } */
+      logger.debug("ACTUAL-nuFactorP : " + nuFactorP);
+      this.getObjFiltroBean().setNuMultaBaseVentas(round(this.getObjFiltroBean().getNuFacturacionAnualProductoVentas()*(this.getObjFiltroBean().getNuFactorAVentas()/100)*nuFactorP, 2));
+      this.getObjFiltroBean().setNuMultaBaseVentasCompleto(this.getObjFiltroBean().getNuFacturacionAnualProductoVentas()*(this.getObjFiltroBean().getNuFactorAVentas()/100)*nuFactorP);
       logger.debug("this.getObjFiltroBean().getNuMultaBaseVentas() " + this.getObjFiltroBean().getNuMultaBaseVentas());
       this.getObjFiltroBean().setNuMultaBaseUITVentas(round(this.getObjFiltroBean().getNuMultaBaseVentasCompleto()/this.getObjFiltroBean().getNuAnioUIT(), 2));
       this.getObjFiltroBean().setNuMultaBaseUITVentasCompleto(this.getObjFiltroBean().getNuMultaBaseVentasCompleto()/this.getObjFiltroBean().getNuAnioUIT());
@@ -951,12 +860,26 @@ public List<SelectItem> getAtenF0(){
       logger.debug("this.getObjFiltroBean().getNuFacturacionAnualAdhoc() " + this.getObjFiltroBean().getNuFacturacionAnualAdhoc());
       logger.debug("this.getObjFiltroBean().getNuFactorBAdhoc() " + this.getObjFiltroBean().getNuFactorBAdhoc());
       logger.debug("this.getObjFiltroBean().getNuFactorPAdhoc() " + this.getObjFiltroBean().getNuFactorPAdhoc());
+      logger.debug("this.getObjFiltroBean().getVcFactorPDifAccion() " + this.getObjFiltroBean().getVcFactorPDifAccion());
+      logger.debug("this.getObjFiltroBean().getNuUmbralFactorPDifAdhoc() " + this.getObjFiltroBean().getNuUmbralFactorPDifAdhoc());
+      logger.debug("this.getObjFiltroBean().getNuFactorPDifAdhoc() " + this.getObjFiltroBean().getNuFactorPDifAdhoc());
 
+      double nuFactorP = 0;
       if(!this.getObjFiltroBean().getVcInstanciaAdhoc().equals("-1") && !this.getObjFiltroBean().getVcRucAdhoc().equals("")&&!this.getObjFiltroBean().getVcRazonSocial().equals("")&&!this.getObjFiltroBean().getVcRazonSocial().equals("RUC no encontrado")
           && this.getObjFiltroBean().getNuFacturacionAnualAdhoc()!=0 && !this.getObjFiltroBean().getVcAnioResolucionAdhoc().equals("-1") && !this.getObjFiltroBean().getVcTipoAfectacionAdhoc().equals("") && this.getObjFiltroBean().getNuFactorBAdhoc()!=0){
 
-      this.getObjFiltroBean().setNuMultaBaseAdhoc(round(this.getObjFiltroBean().getNuFactorBAdhoc()/(this.getObjFiltroBean().getNuFactorPAdhoc()/100), 2));
-      this.getObjFiltroBean().setNuMultaBaseAdhocCompleto(this.getObjFiltroBean().getNuFactorBAdhoc()/(this.getObjFiltroBean().getNuFactorPAdhoc()/100));
+            if(this.getObjFiltroBean().getVcOrgResolutivo().equals("CLC") || this.getObjFiltroBean().getVcOrgResolutivo().equals("SDC")){
+              if(this.getObjFiltroBean().getVcFactorPDifAccion() != null && this.getObjFiltroBean().getVcFactorPDifAccion().equals("restar")){
+                nuFactorP = this.getObjFiltroBean().getNuFactorPAdhoc() - this.getObjFiltroBean().getNuFactorPDifAdhoc();
+              } else {
+                nuFactorP = this.getObjFiltroBean().getNuFactorPAdhoc() + this.getObjFiltroBean().getNuFactorPDifAdhoc();
+              }
+            } else {
+              nuFactorP = this.getObjFiltroBean().getNuFactorPAdhoc();
+            }
+      logger.debug("ACTUAL-nuFactorP : " + nuFactorP);
+      this.getObjFiltroBean().setNuMultaBaseAdhoc(round(this.getObjFiltroBean().getNuFactorBAdhoc()/(nuFactorP/100), 2));
+      this.getObjFiltroBean().setNuMultaBaseAdhocCompleto(this.getObjFiltroBean().getNuFactorBAdhoc()/(nuFactorP/100));
       this.getObjFiltroBean().setNuMultaBaseUITAdhoc(round(this.getObjFiltroBean().getNuMultaBaseAdhocCompleto()/this.getObjFiltroBean().getNuAnioUIT(), 2));
       this.getObjFiltroBean().setNuMultaBaseUITAdhocCompleto(this.getObjFiltroBean().getNuMultaBaseAdhocCompleto()/this.getObjFiltroBean().getNuAnioUIT());
       this.getObjFiltroBean().setIsBlMultaBaseAdhoc(true);
@@ -1013,6 +936,10 @@ public List<SelectItem> getAtenF0(){
             //OJO
             this.getObjFiltroBean().setNuMultaBase(this.getObjFiltroBean().getNuMultaBaseLibro());
       
+            //REQ ID90 de la 3ra pantalla
+            //BigDecimal nuMultaAA = new BigDecimal(this.getObjFiltroBean().getNuMultaRefLibro() * this.getObjFiltroBean().getNuFactorFci() ).setScale(2, RoundingMode.HALF_UP);
+            //this.getObjFiltroBean().setNuMultaAALibro(nuMultaAA.doubleValue());
+
             this.getObjFiltroBean().setIsBlMultaBaseLibro(true);
       }
       }
@@ -1330,8 +1257,7 @@ public List<SelectItem> getAtenF0(){
         SelectItem data = new SelectItem();
         List<SelectItem> lstMetodoCal = new ArrayList<SelectItem>();
 
-          if(this.lstMetodoCalculoBean.size() > 1){
-            //Item 1 Otorgado
+          /* if(this.lstMetodoCalculoBean.size() > 1){
             data.setValue(-1);
             data.setLabel("Seleccionar");
             lstMetodoCal.add(data);
@@ -1346,6 +1272,18 @@ public List<SelectItem> getAtenF0(){
             }
             this.getObjFiltroBean().setLstMetodosCalculo(lstMetodoCal);
 
+          }else if(this.lstMetodoCalculoBean.size() == 1){
+            for (ClsMetodoCalculoBean objSerie : lstMetodoCalculoBean) {
+              data = new SelectItem();
+              data.setLabel("" + objSerie.getVcMetodoCalculo());
+              data.setValue("" + objSerie.getNuIdMetodoCalculo());
+              logger.debug(">>objSerie.getVcMetodoCalculo(): " + objSerie.getVcMetodoCalculo());
+              logger.debug(">>objSerie.getNuIdMetodoCalculo(): " + objSerie.getNuIdMetodoCalculo());
+              lstMetodoCal.add(data);
+            }
+            this.getObjFiltroBean().setLstMetodosCalculo(lstMetodoCal);
+            this.getObjFiltroBean().setVcMetodo(String.valueOf(data.getValue()));
+            this.doSeleccionarMetodo();
           }else{
             for (ClsMetodoCalculoBean objSerie : lstMetodoCalculoBean) {
               data = new SelectItem();
@@ -1357,8 +1295,28 @@ public List<SelectItem> getAtenF0(){
             }
             this.getObjFiltroBean().setLstMetodosCalculo(lstMetodoCal);
             this.getObjFiltroBean().setVcMetodo(String.valueOf(data.getValue()));
+          } */
+            data.setValue(-1);
+            data.setLabel("Seleccionar");
+            lstMetodoCal.add(data);
 
-          }
+            for (ClsMetodoCalculoBean objSerie : lstMetodoCalculoBean) {
+              data = new SelectItem();
+              data.setLabel("" + objSerie.getVcMetodoCalculo());
+              data.setValue("" + objSerie.getNuIdMetodoCalculo());
+              logger.debug(">>objSerie.getVcMetodoCalculo(): " + objSerie.getVcMetodoCalculo());
+              logger.debug(">>objSerie.getNuIdMetodoCalculo(): " + objSerie.getNuIdMetodoCalculo());
+              lstMetodoCal.add(data);
+            }
+            this.getObjFiltroBean().setLstMetodosCalculo(lstMetodoCal);
+
+    }else{
+      SelectItem data = new SelectItem();
+      List<SelectItem> lstMetodoCal = new ArrayList<SelectItem>();
+      data.setValue(-1);
+      data.setLabel("Seleccionar Area");
+      lstMetodoCal.add(data);
+      this.getObjFiltroBean().setLstMetodosCalculo(lstMetodoCal);
     }
     logger.info(">>FIN doListarMetodosXOrgInstancia");
   }
@@ -1597,6 +1555,11 @@ public void doLimpiarRUC() {
     this.getObjFiltroBean().setNuFactorFirma(0);
     this.getObjFiltroBean().setNuFactorPFirma(0);
 
+    this.getObjFiltroBean().setNuFactorPDifAdhoc(0);
+    this.getObjFiltroBean().setVcFactorPDifAccion("0");
+    this.getObjFiltroBean().setNuFactorGDifVentas(0);
+    this.getObjFiltroBean().setVcFactorGDifAccion("0");
+
     //
     this.getObjFiltroBean().setIsBlMultaBase(false);
     this.getObjFiltroBean().setIsBlMultaBaseLibro(false);
@@ -1663,7 +1626,14 @@ public void doLimpiarRUC() {
             logger.info("----------->>this.getObjFiltroBean().getNuUmbralFactorAVentas(): "+ this.getObjFiltroBean().getNuUmbralFactorAVentas());
         }
       }
-      
+      if(this.getObjFiltroBean().getVcOrgResolutivo().equals("CLC") || this.getObjFiltroBean().getVcOrgResolutivo().equals("CCD")){
+      ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+      ClsResultDAO objResult = objDAO.doGetValorDescripcion(253, this.getObjFiltroBean().getVcOrgResolutivo(), 0);
+        if (objResult != null) {
+            this.getObjFiltroBean().setNuUmbralFactorGDifVentas(Double.parseDouble((String) objResult.get("GET_VALOR_PARAMETRO")));
+            logger.info("----------->>this.getObjFiltroBean().getNuUmbralFactorGDifVentas(): "+ this.getObjFiltroBean().getNuUmbralFactorGDifVentas());
+        }
+      }
       /*if(this.getObjFiltroBean().getVcInstanciaVentas().equals("2") && this.getObjFiltroBean().getVcOrgResolutivo().equals("SDC")){
         this.doListarOrganosMetodo(this.getObjFiltroBean().getVcMetodo(), Integer.parseInt(this.getObjFiltroBean().getVcInstanciaVentas()));
         this.setVcMuestraOrgano1raInstanciaVentas(" block;");
@@ -1680,6 +1650,12 @@ public void doLimpiarRUC() {
       this.setVcMuestraPreestablecidoFirma(" none;");
       this.setVcMuestraPorcentajeVentas(" block;");
       this.setVcMuestraAdHoc(" none;");
+
+      if(this.getObjFiltroBean().getVcOrgResolutivo().equals("CLC")){
+        this.setVcMuestraCLCVentas(" block;");
+      }else{
+        this.setVcMuestraCLCVentas(" none;");
+      }
 
     }else if(this.getObjFiltroBean().getVcMetodo().equals("4")){ //ADHOC
 
@@ -1698,6 +1674,12 @@ public void doLimpiarRUC() {
       }
 
     }else if(this.getObjFiltroBean().getVcOrgResolutivo().equals("CLC") || this.getObjFiltroBean().getVcOrgResolutivo().equals("SDC")){
+      ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+      ClsResultDAO objResult = objDAO.doGetValorDescripcion(251, "CLC", 0);
+      if (objResult != null) {
+          this.getObjFiltroBean().setNuUmbralFactorPDifAdhoc(Double.parseDouble((String) objResult.get("GET_VALOR_PARAMETRO")));
+          logger.info("----------->>this.getObjFiltroBean().getNuUmbralFactorPDifAdhoc(): "+ this.getObjFiltroBean().getNuUmbralFactorPDifAdhoc());
+      }
       this.getObjFiltroBean().setVcCategoriaAdhoc("CLC");
       this.setVcMuestraTamEmpresaAdHoc(" none;");
       this.setVcMuestraGravedad1AdHoc(" block;");
@@ -2173,6 +2155,21 @@ public void doLimpiarRUC() {
       ClsResultDAO objResult = objDAO.doGetValorDescripcion(248, this.getObjFiltroBean().getVcOrgano1raInstanciaVentas(), 0);
       if (objResult != null) {
           this.getObjFiltroBean().setNuUmbralFactorAVentas(Double.parseDouble((String) objResult.get("GET_VALOR_PARAMETRO")));
+      }
+
+      //if(this.getObjFiltroBean().getVcOrgResolutivo().equals("CLC") || this.getObjFiltroBean().getVcOrgResolutivo().equals("CCD")){
+      //ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+      objResult = objDAO.doGetValorDescripcion(253, this.getObjFiltroBean().getVcOrgano1raInstanciaVentas(), 0);
+        if (objResult != null) {
+            this.getObjFiltroBean().setNuUmbralFactorGDifVentas(Double.parseDouble((String) objResult.get("GET_VALOR_PARAMETRO")));
+            logger.info("----------->>this.getObjFiltroBean().getNuUmbralFactorGDifVentas(): "+ this.getObjFiltroBean().getNuUmbralFactorGDifVentas());
+        }
+      //}
+
+      if(this.getObjFiltroBean().getVcOrgano1raInstanciaVentas().equals("CLC")){
+        this.setVcMuestraCLCVentas(" block;");
+      }else{
+        this.setVcMuestraCLCVentas(" none;");
       }
       logger.info(">>Fin doSeleccionarOrgano1raInstanciaVentas");
   }
@@ -4346,5 +4343,29 @@ public void doReportePreliminar(){
 
     public Map<String, String> getLstAreas() {
         return lstAreas;
+    }
+
+    public void setVcMuestraCLCVentas(String vcMuestraCLCVentas) {
+        this.vcMuestraCLCVentas = vcMuestraCLCVentas;
+    }
+
+    public String getVcMuestraCLCVentas() {
+        return vcMuestraCLCVentas;
+    }
+
+    public void setVcMuestraInicio(String vcMuestraInicio) {
+        this.vcMuestraInicio = vcMuestraInicio;
+    }
+
+    public String getVcMuestraInicio() {
+        return vcMuestraInicio;
+    }
+
+    public void setVcMuestraFormPrincipal(String vcMuestraFormPrincipal) {
+        this.vcMuestraFormPrincipal = vcMuestraFormPrincipal;
+    }
+
+    public String getVcMuestraFormPrincipal() {
+        return vcMuestraFormPrincipal;
     }
 }
