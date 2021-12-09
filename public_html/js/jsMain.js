@@ -662,6 +662,56 @@ function fnCheckFactorAValido(field1, field2, field3,organo) {
     return mNuError;
 }
 
+function fnCheckFactorPDifValido(field1, field2, field3) {
+    console.log("nuUmbral: "+document.getElementById(field1).value);
+    console.log("nuFactorDif: "+document.getElementById(field2).value);
+    mNuError = 0;
+    var vcMensaje;
+    var nuUmbral = document.getElementById(field1).value;
+    var nuFactorDif = document.getElementById(field2).value;
+
+    if(Math.floor(nuFactorDif*100) > Math.floor(nuUmbral*100) ){
+        mNuError++;
+        document.getElementById(field3).style.color = 'red';
+        vcMensaje = 'Por favor valide los siguientes datos: \n-El factor ingresado debe ser menor a: '+nuUmbral+ '.\n';
+        document.getElementById('frmBusqueda:bt_cal_mbase_calcularMbaseadhoc').disabled = "true";
+
+    }else{
+        document.getElementById(field3).style.color = 'black';
+        document.getElementById('frmBusqueda:bt_cal_mbase_calcularMbaseadhoc').removeAttribute("disabled");
+    }
+
+    if(mNuError>0)
+        alert(vcMensaje);
+
+    return mNuError;
+}
+
+function fnCheckFactorGDifValido(field1, field2, field3) {
+    console.log("nuUmbral: "+document.getElementById(field1).value);
+    console.log("nuFactorDif: "+document.getElementById(field2).value);
+    mNuError = 0;
+    var vcMensaje;
+    var nuUmbral = document.getElementById(field1).value;
+    var nuFactorDif = document.getElementById(field2).value;
+
+    if(Math.floor(nuFactorDif*100) > Math.floor(nuUmbral*100) ){
+        mNuError++;
+        document.getElementById(field3).style.color = 'red';
+        vcMensaje = 'Por favor valide los siguientes datos: \n-El factor ingresado debe ser menor a: '+nuUmbral+ '.\n';
+        document.getElementById('frmBusqueda:bt_cal_mbase_calcularMbasepventas').disabled = "true";
+
+    }else{
+        document.getElementById(field3).style.color = 'black';
+        document.getElementById('frmBusqueda:bt_cal_mbase_calcularMbasepventas').removeAttribute("disabled");
+    }
+
+    if(mNuError>0)
+        alert(vcMensaje);
+
+    return mNuError;
+}
+
 function fnCheckRuc(field1) {
     console.log("ruc: "+document.getElementById(field1).value);
     var vMensaje;

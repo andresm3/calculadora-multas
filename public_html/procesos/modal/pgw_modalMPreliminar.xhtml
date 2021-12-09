@@ -517,6 +517,15 @@ xmlns:rich="http://richfaces.org/rich">
                     readonly="true"
                     value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
 
+                    <h:outputText id="ot_cal_mprelim_mulfinsolespventas" 
+                    style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraCLCVentas}" 
+                    value="#{msgs['ot.prelim.mulfinsoles']}"/>        
+                    <h:inputText 
+                    style="width:300px; display:#{clsCalculoMultaSrv.vcMuestraCLCVentas}" 
+                    id="it_cal_mprelim_mulfinsolespventas"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinalSoles}" columnClasses="input-width-50"/>
+
                 </h:panelGrid>
 
                 <h:panelGrid id="pgBusqueda_filtros3_adhoc" columns="2" style="display:#{clsCalculoMultaSrv.vcMuestraAdHoc}">  
@@ -579,6 +588,14 @@ xmlns:rich="http://richfaces.org/rich">
                     readonly="true"
                     value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinal}" columnClasses="input-width-50"/>
 
+                    <h:outputText id="ot_cal_mprelim_mulfinsolesadhoc" 
+                    style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" 
+                    value="#{msgs['ot.prelim.mulfinsoles']}"/>        
+                    <h:inputText 
+                    style="width:300px; display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" 
+                    id="it_cal_mprelim_mulfinsolesadhoc"
+                    readonly="true"
+                    value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaFinalSoles}" columnClasses="input-width-50"/>
                     
                 </h:panelGrid>
 

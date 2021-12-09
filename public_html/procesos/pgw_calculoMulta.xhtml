@@ -9,14 +9,69 @@ xmlns:rich="http://richfaces.org/rich">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta http-equiv="X-UA-Compatible" content="IE=8"/>
         <script language="JavaScript" charset="ISO-8859-1" type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jsMain.js?v=11"></script>
-        <link type="text/css" rel="stylesheet" href="css/main.css"/>
-        <link type="text/css" rel="stylesheet" href="css/style_expediente_electronico.css"/>
+        <!-- <link type="text/css" rel="stylesheet" href="css/main.css"/> -->
+        <!-- <link type="text/css" rel="stylesheet" href="css/style_expediente_electronico.css"/> -->
         <title>"#{msgs['ot.general.res.titulo']}"</title>
     </head>
-    <body onload="if(#{clsCalculoMultaSrv.objFiltroBean.lstMetodosCalculo.size()==1}){
+    <!-- <body onload="if(#{clsCalculoMultaSrv.objFiltroBean.lstMetodosCalculo.size()==1}){
         javaScript:document.getElementById('frmBusqueda:btn_selecciona_metodo').click();
-       }">
-    <rich:panel styleClass="top">
+       }"> -->
+    <body>
+
+    <rich:panel id="rich1" styleClass="top" style="display:#{clsCalculoMultaSrv.vcMuestraInicio}">
+        <a4j:form id="frmInicio" ajaxsubmit="true">
+            <!-- Busqueda Electronica -->
+            <h:panelGrid id="pgBusqueda_filtros" columns="3" cellpadding="1">
+                <h:outputText value="Seleccion Area" style="font-size:12px;"/>
+                <h:selectOneMenu id="cb_temp" 
+                        required="true" 
+                        style="display:block;width:300px"
+                        autoWidth="false"
+                        value="#{clsCalculoMultaSrv.valorArea}">
+                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                    <f:selectItems value="#{clsCalculoMultaSrv.lstAreas}"/>
+                    <a4j:support event="onchange"
+                    action="#{clsCalculoMultaSrv.doSeleccionarO()}" 
+                    onsubmit="#{rich:component('panProcesando')}.show();"
+                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                    reRender="frmInicio" />
+                </h:selectOneMenu>
+                <h:outputText value=""/>
+            </h:panelGrid>
+            <rich:separator height="2" style="margin-top:8px;margin-bottom:8px;"></rich:separator>
+
+            <a4j:commandButton id="bt_cal_mbase_inicializar"
+                value="#{msgs['bt.general.inicio.boton']}"
+                reRender="frmInicio"
+                >
+                <a4j:support event="onclick"
+                        action="#{clsCalculoMultaSrv.doIniciar}"
+                        onsubmit="#{rich:component('panProcesando')}.show();"
+                        oncomplete="#{rich:component('panProcesando')}.hide();"
+                        reRender="frmInicio, frmBusqueda, rich1, rich2, frmVolver, 
+                                    cb_cal_mbase_metodos, 
+                                    pgBusqueda_preestab1, pgBusqueda_preestab2, pgBusqueda_firma, 
+                                    ot_cal_mbase_factor, ot_cal_mbase_factorccd, ot_cal_mbase_organopi, cb_cal_mbase_organopi, ot_cal_mbase_organoccd, cb_cal_mbase_organoccd, ot_cal_mbase_organopventas, cb_cal_mbase_organopventas, ot_cal_mbase_organoadhoc, cb_cal_mbase_organoadhoc"
+                        ></a4j:support>
+            </a4j:commandButton>
+                
+        </a4j:form>
+    </rich:panel>
+
+    <a4j:form id="frmVolver" ajaxsubmit="true" style="display:#{clsCalculoMultaSrv.vcMuestraFormPrincipal}">
+        <a4j:commandButton id="bt_cal_volver"
+            value="#{msgs['bt.general.inicio.volver']}"
+            reRender="frmInicio, frmBusqueda, rich1, rich2" >
+            <a4j:support event="onclick"
+                    action="#{clsCalculoMultaSrv.doVolverInicio}"
+                    onsubmit="#{rich:component('panProcesando')}.show();"
+                    oncomplete="#{rich:component('panProcesando')}.hide();"
+                    reRender="frmInicio, frmBusqueda, rich1, rich2, frmVolver"
+                    ></a4j:support>
+        </a4j:commandButton>
+    </a4j:form>
+
+    <rich:panel id="rich2" styleClass="top" style="display:#{clsCalculoMultaSrv.vcMuestraFormPrincipal}">
      <f:facet name="header">
       <h:outputText id="ot_DeterminacionMulta" value="#{msgs['ot.general.res.titulo']}"/>
      </f:facet>
@@ -454,7 +509,7 @@ xmlns:rich="http://richfaces.org/rich">
                                         action="#{clsCalculoMultaSrv.doCalcularMRefLibro}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
                                         oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaLibro();"
-                                        reRender="frmBusqueda, ot_cal_mbase_valmatriz"
+                                        reRender="frmBusqueda, ot_cal_mbase_valmatriz, ot_cal_mbase_multabaselib"
                                         ></a4j:support>
                             </a4j:commandButton>
                             <h:outputText value=""/>
@@ -1636,6 +1691,32 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
+                            <h:outputText id="ot_cal_mbase_factorgSignopventas" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.factorgsignopventas']}"/>
+                            <h:selectOneRadio value="#{clsCalculoMultaSrv.objFiltroBean.vcFactorGDifAccion}">
+                                <f:selectItem itemValue="sumar" itemLabel="+" />
+                                <f:selectItem itemValue="restar" itemLabel="-" />
+                            </h:selectOneRadio>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_factorgdifpventas" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.factorgdifpventas']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_factorgdifpventas"
+                                onkeyup="fnCheckFactorGDifValido('frmBusqueda:it_cal_mbase_umbralfactorgdifpventas','frmBusqueda:it_cal_mbase_factorgdifpventas','frmBusqueda:ot_cal_mbase_factorgdifpventas');"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorGDifVentas}" columnClasses="input-width-50">
+                                </h:inputText>
+                            <h:inputText 
+                                style="display:none;"
+                                id="it_cal_mbase_umbralfactorgdifpventas"
+                                converter="javax.faces.Double"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorGDifVentas}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
                             <h:outputText value=""/>
                             <a4j:commandButton id="bt_cal_mbase_calcularMbasepventas"
                                 value="#{msgs['bt.cal_mbase.calcularMbase']}"
@@ -1886,6 +1967,35 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
+                            <h:outputText id="ot_cal_mbase_factorpSignoadhoc" 
+                            style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"
+                                        value="#{msgs['ot.cal_mbase.factorpsignoadhoc']}"/>
+                            <h:selectOneRadio style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" 
+                                            value="#{clsCalculoMultaSrv.objFiltroBean.vcFactorPDifAccion}">
+                                <f:selectItem itemValue="sumar" itemLabel="+" />
+                                <f:selectItem itemValue="restar" itemLabel="-" />
+                            </h:selectOneRadio>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"/>
+
+                            <h:outputText id="ot_cal_mbase_factorpdifadhoc"
+                                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"
+                                        value="#{msgs['ot.cal_mbase.factorpdifadhoc']}"/>
+                            <h:inputText 
+                                style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" 
+                                id="it_cal_mbase_factorpdifadhoc"
+                                onkeyup="fnCheckFactorPDifValido('frmBusqueda:it_cal_mbase_umbralfactorpdifadhoc','frmBusqueda:it_cal_mbase_factorpdifadhoc','frmBusqueda:ot_cal_mbase_factorpdifadhoc');"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorPDifAdhoc}" columnClasses="input-width-50">
+                                </h:inputText>
+                            <h:inputText 
+                                style="display:none;"
+                                id="it_cal_mbase_umbralfactorpdifadhoc"
+                                converter="javax.faces.Double"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorPDifAdhoc}" columnClasses="input-width-50"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" />
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" />
+
                             <h:outputText value=""/>
                             <a4j:commandButton id="bt_cal_mbase_calcularMbaseadhoc"
                                 value="#{msgs['bt.cal_mbase.calcularMbase']}"
@@ -1981,6 +2091,15 @@ xmlns:rich="http://richfaces.org/rich">
                                 id="ot_cal_mbase_valfactorfci"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorFci}" columnClasses="input-width-50"/>
+                            <h:outputText value=""/>
+
+                            <h:outputText id="ot_cal_mbase_mbaselib" style="font-size:12px;"
+                                        value="#{msgs['ot.cal_mbase.multabase']}"/>   
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="ot_cal_mbase_multabaselib"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBase}" columnClasses="input-width-50"/>
                             <h:outputText value=""/>
 
                             <h:outputText value=""/>
