@@ -22,12 +22,12 @@ xmlns:rich="http://richfaces.org/rich">
         <a4j:form id="frmInicio" ajaxsubmit="true">
             <!-- Busqueda Electronica -->
             <h:panelGrid id="pgBusqueda_filtros" columns="3" cellpadding="1">
-                <h:outputText value="Seleccion Area" style="font-size:12px;"/>
+                <h:outputText value="#{msgs['ot.general.inicio.titulo']}" style="font-size:12px;"/>
                 <h:selectOneMenu id="cb_temp" 
                         required="true" 
                         style="display:block;width:300px"
                         autoWidth="false"
-                        value="#{clsCalculoMultaSrv.valorArea}">
+                        value="#{clsCalculoMultaSrv.vcAreaSeleccion}">
                     <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
                     <f:selectItems value="#{clsCalculoMultaSrv.lstAreas}"/>
                     <a4j:support event="onchange"
