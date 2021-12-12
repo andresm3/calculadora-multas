@@ -107,7 +107,7 @@ public class ClsCalculoMultaSrv {
   private List<ClsTipoAfectacionBean> lstAfectacionBean;
 
   private List<SelectItem> lstOrgano;
-  private String valorArea;
+  private String vcAreaSeleccion;
 
   private Map<String, String> lstAreas;
 
@@ -224,18 +224,18 @@ public class ClsCalculoMultaSrv {
       HttpSession s = (HttpSession) context.getExternalContext().getSession(true);
       HttpServletRequest sr = (HttpServletRequest) context.getExternalContext().getRequest();
       String valor  = s.getAttribute("VS_IND_PAYMENT_ID"); */
-      //inicializar(this.getValorArea());// otro srvlet
+      //inicializar(this.getVcAreaSeleccion());// otro srvlet
 
       /* FacesContext context = FacesContext.getCurrentInstance();
       HttpSession s = (HttpSession) context.getExternalContext().getSession(true);
-      s.setAttribute("VS_AREA", this.getValorArea()); */
+      s.setAttribute("VS_AREA", this.getVcAreaSeleccion()); */
 
       //inicializar(s.getAttribute("VS_AREA").toString());
 
       //ExternalContext e = context.getExternalContext();
       //e.redirect(e.encodeResourceURL("pgw_calculoMulta_bienvenido.seam"));
 
-      this.getObjFiltroBean().setVcOrgResolutivo(this.getValorArea());
+      this.getObjFiltroBean().setVcOrgResolutivo(this.getVcAreaSeleccion());
       this.setVcMuestraInicio(" none;");
       this.setVcMuestraFormPrincipal(" block;");
       
@@ -1238,7 +1238,7 @@ public List<SelectItem> getAtenF0(){
       logger.info(">>doSeleccionarO ");
       //this.doListarInstanciasXOrg();
       //this.doListarMetodosXOrgInstancia();
-      logger.debug("this.getValorArea(): "+ this.getValorArea());
+      logger.debug("this.getVcAreaSeleccion(): "+ this.getVcAreaSeleccion());
       logger.info(">>FIN doSeleccionarO");
   }
   /////////////////
@@ -4329,14 +4329,6 @@ public void doReportePreliminar(){
         return vcTituloModalInfraccion;
     }
     
-    public void setValorArea(String valorArea) {
-        this.valorArea = valorArea;
-    }
-
-    public String getValorArea() {
-        return valorArea;
-    }
-
     public void setLstAreas(Map<String, String> lstAreas) {
         this.lstAreas = lstAreas;
     }
@@ -4367,5 +4359,13 @@ public void doReportePreliminar(){
 
     public String getVcMuestraFormPrincipal() {
         return vcMuestraFormPrincipal;
+    }
+
+    public void setVcAreaSeleccion(String vcAreaSeleccion) {
+        this.vcAreaSeleccion = vcAreaSeleccion;
+    }
+
+    public String getVcAreaSeleccion() {
+        return vcAreaSeleccion;
     }
 }
