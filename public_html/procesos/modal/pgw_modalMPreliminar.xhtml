@@ -259,6 +259,55 @@ xmlns:rich="http://richfaces.org/rich">
                     readonly="true"
                     value="#{clsCalculoMultaSrv.objFiltroBean.nuGravedadTope}" columnClasses="input-width-50"/>
 
+                    <h:outputText id="ot_cal_mprelim_factu" style="font-size:12px;"
+                                    value="#{msgs['ot.cal_mprelim.facturacion']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_facturacion"
+                        converter="javax.faces.Double"
+                        maxlength="13"
+                        onkeypress="fnIfEnterClick(event, null, 'frmMultaPreliminar:ot_cal_mprelim_chk', 'frmMultaPreliminar:bt_cal_mprelim_calcularTopeMbase');"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnual}" columnClasses="input-width-50">
+                    </h:inputText>
+
+                    <rich:toolTip for="it_cal_mprelim_facturacion" styleClass="tooltip">
+                        <span style="white-space:nowrap">
+                        <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact2']}" styleClass="label" escape="false"/>
+                        </span>
+                    </rich:toolTip>
+                    <a4j:commandButton id="bt_cal_mprelim_calcularTopeMbase"
+                    value="btnPre"
+                    style="display:none;"
+                        reRender="frmMultaPreliminar" >
+                        <a4j:support event="onclick"
+                                action="#{clsCalculoMultaSrv.doCalculaTopeYMultaBase}"
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckUITLimites('frmMultaPreliminar:ot_cal_mprelim_factu','frmMultaPreliminar:it_cal_mprelim_facturacion','frmMultaPreliminar:it_cal_mprelim_minuit','frmMultaPreliminar:it_cal_mprelim_maxuit');"
+                                reRender="frmMultaPreliminar, it_cal_mprelim_toplegaling, it_cal_mprelim_mulfinuit"
+                                ></a4j:support>
+                    </a4j:commandButton>
+
+                    <h:outputText id="ot_cal_mprelim_chk" style="font-size:12px;"
+                                    value="#{msgs['ot.cal_mprelim.chk']}"/> 
+                    <h:selectBooleanCheckbox  id="ch_cal_mprelim_chk"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.isBlCheckUIT}">
+                        <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doClickCheckUIT()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckMultaFinal('frmMultaPreliminar:it_cal_mprelim_mulfinuit');"
+                            reRender="frmMultaPreliminar, it_cal_mprelim_toplegaling, it_cal_mprelim_mulfinuit" />
+                    </h:selectBooleanCheckbox>
+                    <h:inputText 
+                        style="display:none;"
+                        id="it_cal_mprelim_minuit"
+                        converter="javax.faces.Double"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMinUIT}" columnClasses="input-width-50"/>
+                    <h:inputText 
+                        style="display:none;"
+                        id="it_cal_mprelim_maxuit"
+                        converter="javax.faces.Double"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMaxUIT}" columnClasses="input-width-50"/>
+
                     <h:outputText id="ot_cal_mprelim_toplegaling" style="font-size:12px;"
                     value="#{msgs['ot.prelim.toplegaling']}"/>        
                     <h:inputText 
@@ -380,7 +429,7 @@ xmlns:rich="http://richfaces.org/rich">
                         action="#{clsCalculoMultaSrv.doSeleccionarGravedadSubtipoPi()}" 
                         onsubmit="#{rich:component('panProcesando')}.show();"
                         oncomplete="#{rich:component('panProcesando')}.hide()"
-                        reRender="frmBusqueda,it_cal_mprelim_toplegalgravpi,it_cal_mprelim_mulfinuitpi,it_cal_mprelim_mulsolespi"/>
+                        reRender="frmBusqueda,it_cal_mprelim_toplegalgravpi,it_cal_mprelim_mulfinuitpi"/>
                     </h:selectOneMenu>
 
                     <h:outputText id="ot_cal_mprelim_toplegalgravpi" style="font-size:12px;"
@@ -427,6 +476,55 @@ xmlns:rich="http://richfaces.org/rich">
                     readonly="true"
                     value="#{clsCalculoMultaSrv.objFiltroBean.nuGravedadTope}" columnClasses="input-width-50"/>
 
+                    <h:outputText id="ot_cal_mprelim_factuccd" style="font-size:12px;"
+                                    value="#{msgs['ot.cal_mprelim.facturacion']}"/> 
+                    <h:inputText 
+                        style="display:block;width:300px"
+                        id="it_cal_mprelim_facturacionccd"
+                        converter="javax.faces.Double"
+                        maxlength="13"
+                        onkeypress="fnIfEnterClick(event, null, 'frmMultaPreliminar:ot_cal_mprelim_chkccd', 'frmMultaPreliminar:bt_cal_mprelim_calcularTopeMbaseccd');"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuFacturacionAnual}" columnClasses="input-width-50">
+                    </h:inputText>
+
+                    <rich:toolTip for="it_cal_mprelim_facturacionccd" styleClass="tooltip">
+                        <span style="white-space:nowrap">
+                        <h:outputText value="#{msgs['ot.cal_mbase.tooltipEnterFact2']}" styleClass="label" escape="false"/>
+                        </span>
+                    </rich:toolTip>
+                    <a4j:commandButton id="bt_cal_mprelim_calcularTopeMbaseccd"
+                    value="btnPre"
+                    style="display:none;"
+                        reRender="frmMultaPreliminar" >
+                        <a4j:support event="onclick"
+                                action="#{clsCalculoMultaSrv.doCalculaTopeYMultaBaseCcd}"
+                                onsubmit="#{rich:component('panProcesando')}.show();"
+                                oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckUITLimites('frmMultaPreliminar:ot_cal_mprelim_factuccd','frmMultaPreliminar:it_cal_mprelim_facturacionccd','frmMultaPreliminar:it_cal_mprelim_minuitccd','frmMultaPreliminar:it_cal_mprelim_maxuitccd');"
+                                reRender="frmMultaPreliminar, it_cal_mprelim_toplegalingccd, it_cal_mprelim_mulfinuitccd"
+                                ></a4j:support>
+                    </a4j:commandButton>
+
+                    <h:outputText id="ot_cal_mprelim_chkccd" style="font-size:12px;"
+                                    value="#{msgs['ot.cal_mprelim.chk']}"/> 
+                    <h:selectBooleanCheckbox  id="ch_cal_mprelim_chkccd"
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.isBlCheckUITCcd}">
+                        <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doClickCheckUITCcd()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnCheckMultaFinal('frmMultaPreliminar:it_cal_mprelim_mulfinuitccd');"
+                            reRender="frmMultaPreliminar, it_cal_mprelim_toplegalingccd, it_cal_mprelim_mulfinuitccd" />
+                    </h:selectBooleanCheckbox>
+                    <h:inputText 
+                        style="display:none;"
+                        id="it_cal_mprelim_minuitccd"
+                        converter="javax.faces.Double"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMinUIT}" columnClasses="input-width-50"/>
+                    <h:inputText 
+                        style="display:none;"
+                        id="it_cal_mprelim_maxuitccd"
+                        converter="javax.faces.Double"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.nuMaxUIT}" columnClasses="input-width-50"/>
+                        
                     <h:outputText id="ot_cal_mprelim_toplegalingccd" style="font-size:12px;"
                     value="#{msgs['ot.prelim.toplegaling']}"/>        
                     <h:inputText 

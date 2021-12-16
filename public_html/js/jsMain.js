@@ -36,20 +36,20 @@ function fnValidaPreestablecido(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsoc','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factu','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_factu','Red');
-    }
-    if(vTamempresa.length > 0){
+    } */
+    /* if(vTamempresa.length > 0){
         fnColorea('frmBusqueda','ot_cal_mbase_aniof','Black');
     }else{
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniof','Red');
-    }
+    } */
     if(vAfectacion!= ""){
         fnColorea('frmBusqueda','ot_cal_mbase_afectacion','Black');
     }else{
@@ -105,7 +105,7 @@ function fnValidaCcd(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsocccd','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factuccd','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
@@ -118,7 +118,7 @@ function fnValidaCcd(){
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniofccd','Red');
-    }
+    } */
     if(vAfectacion!= ""){
         fnColorea('frmBusqueda','ot_cal_mbase_afectacionccd','Black');
     }else{
@@ -781,6 +781,55 @@ function fnCheckNumerosDecimal(e){
     return patron.test(tecla_final);
 }
 
+function fnCheckUITLimites(label, field1, field2, field3) {
+    console.log("fnCheckUITLimites");
+    console.log("nuFactu: "+document.getElementById(field1).value);
+    console.log("nuMinUIT: "+document.getElementById(field2).value);
+    console.log("nuMaxUIT: "+document.getElementById(field3).value);
+    mNuError = 0;
+    var vcMensaje;
+    var nuFactu = document.getElementById(field1).value;
+    var nuMinUIT = document.getElementById(field2).value;
+    var nuMaxUIT = document.getElementById(field3).value;
+
+    if(Math.floor(nuFactu*100) > Math.floor(nuMaxUIT*100)){
+        mNuError++;
+        document.getElementById(label).style.color = 'red';
+        vcMensaje = 'Por favor valide los siguientes datos: \n-El valor UIT ingresado debe ser mayor a: '+nuMinUIT+ ' y menor a: '+nuMaxUIT+ '.\n';
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').disabled = "true";
+
+    }else if(Math.floor(nuFactu*100) < Math.floor(nuMinUIT*100)){
+        mNuError++;
+        document.getElementById(label).style.color = 'red';
+        vcMensaje = 'Por favor valide los siguientes datos: \n-El valor UIT ingresado debe ser mayor a: '+nuMinUIT+ ' y menor a: '+nuMaxUIT+ '.\n';
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').disabled = "true";
+    }else{
+        document.getElementById(label).style.color = 'black';
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').removeAttribute("disabled");
+    }
+
+    if(mNuError>0)
+        alert(vcMensaje);
+
+    return mNuError;
+}
+
+function fnCheckMultaFinal(field1) {
+    console.log("ingreso: "+document.getElementById(field1).value);
+    mNuError = 0;
+    var vcMensaje;
+    var nuMulta = document.getElementById(field1).value;
+
+    if(nuMulta > 0){
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').removeAttribute("disabled");
+
+    }else{
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').disabled = "true";
+    }
+
+    return mNuError;
+}
+
 function fnIfEnterClick(event, targetElement, valid, targetElement2) {
     event = event || window.event;
     if (event.keyCode == 13) {
@@ -816,7 +865,7 @@ function fnIfEnterClick(event, targetElement, valid, targetElement2) {
             event.cancelBubble = true;
             event.returnValue = false;
         }
-        if(document.getElementById(valid).value!=-1){
+        if(!document.getElementById(valid).value){
             //document.getElementById(targetElement).click();
             document.getElementById(targetElement2).click();
         }else{

@@ -10,6 +10,7 @@ public interface ClsCalculoMultaIDAO {
     public ClsResultDAO doListarParametros(int nuTablaPadre);
     public ClsResultDAO doGetValorDescripcion(int nuTablaPadre, String vcParametro, int nuValor);
     public ClsResultDAO doListarMultaUITAnios();
+    public ClsResultDAO doListarTamanoEmpresa(int nuIdMetodo);
     public ClsResultDAO doListarInstancias(String vcIdMetodo, String vcOrgResolutivo);
     public ClsResultDAO doListarMetodos(String vcInstancia, String vcOrgResolutivo);
     public ClsResultDAO doListarInfracciones(String vcMetodo, String vcInstancia, String vcOrgResolutivo);

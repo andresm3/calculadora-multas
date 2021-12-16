@@ -57,6 +57,10 @@ public class ClsCalculoBean implements Serializable {
     private List<SelectItem> lstTipoAfectacion;
     private List<SelectItem> lstMetodosCalculo;
     private List<SelectItem> lstInstanciasCalculo;
+    
+    private List<SelectItem> lstTamanoEmpresa;
+    private String vcTamEmpresaSeleccion;
+    private String vcTamEmpresaSeleccionCcd;
         
     private String vcInfraccion;
 
@@ -277,6 +281,11 @@ public class ClsCalculoBean implements Serializable {
     private double nuGravedadPorcTopeAdhoc;
     private double nuAjusteIngAdhoc;
     
+    private double nuMinUIT;
+    private double nuMaxUIT;    
+    private boolean isBlCheckUIT;
+    private boolean isBlCheckUITCcd;
+    
     private boolean isBlMultaBase;
     private boolean isBlMultaBaseLibro;
     private boolean isBlMultaBasePi;
@@ -307,6 +316,7 @@ public class ClsCalculoBean implements Serializable {
         this.lstMetodosCalculo = new ArrayList<SelectItem>();
         this.lstInstanciasCalculo = new ArrayList<SelectItem>();
         //this.lstInfracciones=new LinkedHashMap<String, String>();
+        this.lstTamanoEmpresa = new ArrayList<SelectItem>();
 
         df.setRoundingMode(RoundingMode.UP);
         
@@ -2166,5 +2176,61 @@ public class ClsCalculoBean implements Serializable {
 
     public String getVcFactorGDifAccion() {
         return vcFactorGDifAccion;
+    }
+
+    public void setLstTamanoEmpresa(List<SelectItem> lstTamanoEmpresa) {
+        this.lstTamanoEmpresa = lstTamanoEmpresa;
+    }
+
+    public List<SelectItem> getLstTamanoEmpresa() {
+        return lstTamanoEmpresa;
+    }
+
+    public void setVcTamEmpresaSeleccion(String vcTamEmpresaSeleccion) {
+        this.vcTamEmpresaSeleccion = vcTamEmpresaSeleccion;
+    }
+
+    public String getVcTamEmpresaSeleccion() {
+        return vcTamEmpresaSeleccion;
+    }
+
+    public void setNuMinUIT(double nuMinUIT) {
+        this.nuMinUIT = nuMinUIT;
+    }
+
+    public double getNuMinUIT() {
+        return nuMinUIT;
+    }
+
+    public void setNuMaxUIT(double nuMaxUIT) {
+        this.nuMaxUIT = nuMaxUIT;
+    }
+
+    public double getNuMaxUIT() {
+        return nuMaxUIT;
+    }
+
+    public void setIsBlCheckUIT(boolean isBlCheckUIT) {
+        this.isBlCheckUIT = isBlCheckUIT;
+    }
+
+    public boolean isIsBlCheckUIT() {
+        return isBlCheckUIT;
+    }
+
+    public void setIsBlCheckUITCcd(boolean isBlCheckUITCcd) {
+        this.isBlCheckUITCcd = isBlCheckUITCcd;
+    }
+
+    public boolean isIsBlCheckUITCcd() {
+        return isBlCheckUITCcd;
+    }
+
+    public void setVcTamEmpresaSeleccionCcd(String vcTamEmpresaSeleccionCcd) {
+        this.vcTamEmpresaSeleccionCcd = vcTamEmpresaSeleccionCcd;
+    }
+
+    public String getVcTamEmpresaSeleccionCcd() {
+        return vcTamEmpresaSeleccionCcd;
     }
 }

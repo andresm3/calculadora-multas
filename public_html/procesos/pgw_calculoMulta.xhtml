@@ -180,10 +180,10 @@ xmlns:rich="http://richfaces.org/rich">
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
 
-                                <h:outputText id="ot_cal_mbase_factu" style="font-size:12px;"
+                                <h:outputText id="ot_cal_mbase_factu" style="display:none;"
                                               value="#{msgs['ot.cal_mbase.facturacion']}"/> 
                                 <h:inputText 
-                                    style="display:block;width:300px"
+                                style="display:none;"
                                     id="it_cal_mbase_facturacion"
                                     converter="javax.faces.Double"
                                     maxlength="13"
@@ -219,11 +219,11 @@ xmlns:rich="http://richfaces.org/rich">
                                             ></a4j:support>
                                 </a4j:commandButton>
 
-                                <h:outputText id="ot_cal_mbase_aniof" style="font-size:12px;"
+                                <h:outputText id="ot_cal_mbase_aniof" style="display:none;"
                                                 value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
                                 <h:selectOneMenu id="cb_cal_mbase_anioUit" 
                                                 required="true" 
-                                                style="display:block;width:300px"
+                                                style="display:none;"
                                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucion}">
                                     <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
                                     <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
@@ -233,28 +233,46 @@ xmlns:rich="http://richfaces.org/rich">
                                     oncomplete="#{rich:component('panProcesando')}.hide()"
                                     reRender="frmBusqueda,ot_cal_mbase_valoruit, ot_cal_mbase_tamempresa, it_cal_mbase_facturacion" />
                                 </h:selectOneMenu>
-                                <h:outputText value=""/>
-                                <h:outputText value=""/>
-                                <h:outputText value=""/>
+                                <h:outputText style="display:none;" value=""/>
+                                <h:outputText style="display:none;" value=""/>
+                                <h:outputText style="display:none;" value=""/>
 
-                                <h:outputText id="ot_cal_mbase_valuit" style="font-size:12px;"
+                                <h:outputText id="ot_cal_mbase_valuit" style="display:none;"
                                               value="#{msgs['ot.cal_mbase.uitfacturacion_pre']}"/> 
                                 <h:inputText 
-                                    style="display:block;width:300px"
+                                style="display:none;"
                                     id="ot_cal_mbase_valoruit"
                                     readonly="true"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
-                                <h:outputText value=""/>
-                                <h:outputText value=""/>
-                                <h:outputText value=""/>
+                                <h:outputText style="display:none;" value=""/>
+                                <h:outputText style="display:none;" value=""/>
+                                <h:outputText style="display:none;" value=""/>
 
-                                <h:outputText id="ot_cal_mbase_tamemp" style="font-size:12px;"
+                                <h:outputText id="ot_cal_mbase_tamemp" style="display:none;"
                                               value="#{msgs['ot.cal_mbase.tamempresa']}"/> 
                                 <h:inputText 
-                                    style="display:block;width:300px"
+                                style="display:none;"
                                     id="ot_cal_mbase_tamempresa"
                                     readonly="true"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresa}" columnClasses="input-width-50"/>
+                                <h:outputText style="display:none;" value=""/>
+                                <h:outputText style="display:none;" value=""/>
+                                <h:outputText style="display:none;" value=""/>
+
+                                <h:outputText id="ot_cal_mbase_lsttamemp" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.tamempresa']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_lsttamemp" 
+                                                required="true" 
+                                                style="display:block;width:300px"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresaSeleccion}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTamanoEmpresa}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarTamanoEmpresa()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="frmBusqueda" />
+                                </h:selectOneMenu>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
@@ -1127,6 +1145,24 @@ xmlns:rich="http://richfaces.org/rich">
                                     id="ot_cal_mbase_tamempresaccd"
                                     readonly="true"
                                     value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresa}" columnClasses="input-width-50"/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+                                <h:outputText value=""/>
+
+                                <h:outputText id="ot_cal_mbase_lsttamempccd" style="font-size:12px;"
+                                                value="#{msgs['ot.cal_mbase.tamempresa']}"/>
+                                <h:selectOneMenu id="cb_cal_mbase_lsttamempccd" 
+                                                required="true" 
+                                                style="display:block;width:300px"
+                                                value="#{clsCalculoMultaSrv.objFiltroBean.vcTamEmpresaSeleccionCcd}">
+                                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                                    <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstTamanoEmpresa}"/>
+                                    <a4j:support event="onchange"
+                                    action="#{clsCalculoMultaSrv.doSeleccionarTamanoEmpresaCcd()}" 
+                                    onsubmit="#{rich:component('panProcesando')}.show();"
+                                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                                    reRender="frmBusqueda" />
+                                </h:selectOneMenu>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>

@@ -17,6 +17,7 @@ import pe.gob.indecopi.bean.ClsInstanciasBean;
 import pe.gob.indecopi.bean.ClsTipoAfectacionBean;
 import pe.gob.indecopi.bean.ClsCalculoBean;
 import pe.gob.indecopi.bean.ClsMultaUITAnioBean;
+import pe.gob.indecopi.bean.ClsTamanioEmpresaBean;
 import pe.gob.indecopi.bean.ClsProbabilidadBarrerasBean;
 
 import java.io.File;
@@ -106,6 +107,7 @@ public class ClsCalculoMultaSrv {
   private List<ClsInstanciasBean> lstInstanciaBean;
   
   private List<ClsMultaUITAnioBean> lstMultaUITAnioBean;
+  private List<ClsTamanioEmpresaBean> lstTamanoEmpresaBean;
   private List<ClsTipoAfectacionBean> lstAfectacionBean;
 
   private List<SelectItem> lstOrgano;
@@ -339,6 +341,8 @@ public class ClsCalculoMultaSrv {
     
     this.getObjFiltroBean().setIsBlLstAfectacion(false);
 
+    this.getObjFiltroBean().setIsBlCheckUIT(false);
+    this.getObjFiltroBean().setIsBlCheckUITCcd(false);
     //////////////////////////////////////////OS-5
     /* SelectItem data = new SelectItem();
     List<SelectItem> lstMetodoCal = new ArrayList<SelectItem>();
@@ -745,11 +749,15 @@ public List<SelectItem> getAtenF0(){
       logger.debug("this.getObjFiltroBean().getVcTamEmpresa() " + this.getObjFiltroBean().getVcTamEmpresa());
       //logger.info("this.getObjFiltroBean().getVcIdTamEmpresa() " + this.getObjFiltroBean().getVcIdTamEmpresa());
       logger.debug("this.getNuIdTamEmpresa() " + this.getNuIdTamEmpresa());
+      logger.debug("this.getObjFiltroBean().getVcTamEmpresaSeleccion() " + this.getObjFiltroBean().getVcTamEmpresaSeleccion());
+      ///this.setNuIdTamEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcTamEmpresaSeleccion()));
+      //logger.debug("this.getNuIdTamEmpresa() " + this.getNuIdTamEmpresa());
       logger.debug("this.getObjFiltroBean().getVcIdNivelAfectacion() " + this.getObjFiltroBean().getVcIdNivelAfectacion());
       if(!this.getObjFiltroBean().getVcInstancia().equals("-1") && !this.getObjFiltroBean().getVcRuc().equals("")&&!this.getObjFiltroBean().getVcRazonSocial().equals("")&&!this.getObjFiltroBean().getVcRazonSocial().equals("RUC no encontrado")
-          && this.getObjFiltroBean().getNuFacturacionAnual()!=0 && !this.getObjFiltroBean().getVcAnioResolucion().equals("-1") && !this.getObjFiltroBean().getVcTipoAfectacion().equals("") && this.getObjFiltroBean().getNuFactorDuracion()!=0){
+          //&& this.getObjFiltroBean().getNuFacturacionAnual()!=0 && !this.getObjFiltroBean().getVcAnioResolucion().equals("-1") 
+          && !this.getObjFiltroBean().getVcTipoAfectacion().equals("") && this.getObjFiltroBean().getNuFactorDuracion()!=0){
         ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
-        ClsResultDAO objResult = objDAO.doGetValorMatriz(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), this.getObjFiltroBean().getVcOrgResolutivo(), Integer.parseInt(this.getObjFiltroBean().getVcInstancia()), this.getNuIdTamEmpresa(), Integer.parseInt(this.getObjFiltroBean().getVcIdNivelAfectacion()));
+        ClsResultDAO objResult = objDAO.doGetValorMatriz(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), this.getObjFiltroBean().getVcOrgResolutivo(), Integer.parseInt(this.getObjFiltroBean().getVcInstancia()), Integer.parseInt(this.getObjFiltroBean().getVcTamEmpresaSeleccion()), Integer.parseInt(this.getObjFiltroBean().getVcIdNivelAfectacion()));
         if (objResult != null) {
               this.getObjFiltroBean().setNuValorMatriz((Double) objResult.get("GET_VALOR_MATRIZ"));
               this.getObjFiltroBean().setNuMultaBase((Double) round(this.getObjFiltroBean().getNuValorMatriz()*this.getObjFiltroBean().getNuFactorDuracion(),2));
@@ -790,10 +798,13 @@ public List<SelectItem> getAtenF0(){
       logger.debug("this.getObjFiltroBean().getVcInstancia() " + this.getObjFiltroBean().getVcInstanciaCcd());
       logger.debug("this.getNuIdTamEmpresa() " + this.getNuIdTamEmpresa());
       logger.debug("this.getObjFiltroBean().getVcIdNivelAfectacion() " + this.getObjFiltroBean().getVcIdNivelAfectacionCcd());
+      logger.debug("this.getObjFiltroBean().getVcTamEmpresaSeleccionCcd() " + this.getObjFiltroBean().getVcTamEmpresaSeleccionCcd());
+
       if(!this.getObjFiltroBean().getVcInstanciaCcd().equals("-1") && !this.getObjFiltroBean().getVcRucCcd().equals("")&&!this.getObjFiltroBean().getVcRazonSocial().equals("")&&!this.getObjFiltroBean().getVcRazonSocial().equals("RUC no encontrado")
-          && this.getObjFiltroBean().getNuFacturacionAnualCcd()!=0 && !this.getObjFiltroBean().getVcAnioResolucionCcd().equals("-1") && !this.getObjFiltroBean().getVcTipoAfectacionCcd().equals("") && this.getObjFiltroBean().getNuFactorDuracion()!=0){
+          //&& this.getObjFiltroBean().getNuFacturacionAnualCcd()!=0 && !this.getObjFiltroBean().getVcAnioResolucionCcd().equals("-1") 
+          && !this.getObjFiltroBean().getVcTipoAfectacionCcd().equals("") && this.getObjFiltroBean().getNuFactorDuracion()!=0){
         ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
-        ClsResultDAO objResult = objDAO.doGetValorMatriz(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), this.getObjFiltroBean().getVcOrgResolutivo(), Integer.parseInt(this.getObjFiltroBean().getVcInstanciaCcd()), this.getNuIdTamEmpresa(), Integer.parseInt(this.getObjFiltroBean().getVcIdNivelAfectacionCcd()));
+        ClsResultDAO objResult = objDAO.doGetValorMatriz(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()), this.getObjFiltroBean().getVcOrgResolutivo(), Integer.parseInt(this.getObjFiltroBean().getVcInstanciaCcd()), Integer.parseInt(this.getObjFiltroBean().getVcTamEmpresaSeleccionCcd()), Integer.parseInt(this.getObjFiltroBean().getVcIdNivelAfectacionCcd()));
         if (objResult != null) {
               this.getObjFiltroBean().setNuValorMatriz((Double) objResult.get("GET_VALOR_MATRIZ"));
               this.getObjFiltroBean().setNuMultaBaseCcd((Double) round((Double) objResult.get("GET_VALOR_MATRIZ")*this.getObjFiltroBean().getNuFactorDuracion(), 2));
@@ -950,11 +961,117 @@ public List<SelectItem> getAtenF0(){
       logger.info(">>FIN doCalcularMRefLibro");
   }
 
+  public void doCalculaTopeYMultaBase() {
+    logger.info(">>doCalculaTopeYMultaBase");
+    double nuAuxIngTope = getTopeXIngresos(this.getObjFiltroBean().getNuPorcTope(), this.getObjFiltroBean().getNuFacturacionAnual());
+    this.getObjFiltroBean().setNuIngresosTope(round(nuAuxIngTope, 2));
+  
+    List<Double> list = new ArrayList<>();
+
+    // add element in ArrayList object list
+    list.add(this.getObjFiltroBean().getNuMultaPreUIT());
+    list.add(this.getObjFiltroBean().getNuGravedadTope());
+    list.add(nuAuxIngTope);
+
+    logger.debug("Min: " + findMin(list));    
+    
+    logger.debug("this.getObjFiltroBean().getNuAnioUIT(): "+ this.getObjFiltroBean().getNuAnioUIT());
+    this.getObjFiltroBean().setNuMultaFinal(round(findMin(list), 2));
+    logger.debug("this.getObjFiltroBean().getNuMultaFinal(): "+ this.getObjFiltroBean().getNuMultaFinal());
+    this.getObjFiltroBean().setNuMultaFinalSoles(round(findMin(list)*this.getObjFiltroBean().getNuAnioUIT(), 2));
+    logger.info(">>FIN doCalculaTopeYMultaBase");
+  }
+
+  public void doCalculaNoTopeYMultaBase() {
+    logger.info(">>doCalculaNoTopeYMultaBase");
+    List<Double> list = new ArrayList<>();
+
+    // add element in ArrayList object list
+    list.add(this.getObjFiltroBean().getNuMultaPreUIT());
+    list.add(this.getObjFiltroBean().getNuGravedadTope());
+
+    logger.debug("Min: " + findMin(list));    
+    
+    logger.debug("this.getObjFiltroBean().getNuAnioUIT(): "+ this.getObjFiltroBean().getNuAnioUIT());
+    this.getObjFiltroBean().setNuMultaFinal(round(findMin(list), 2));
+    logger.debug("this.getObjFiltroBean().getNuMultaFinal(): "+ this.getObjFiltroBean().getNuMultaFinal());
+    this.getObjFiltroBean().setNuMultaFinalSoles(round(findMin(list)*this.getObjFiltroBean().getNuAnioUIT(), 2));
+    logger.info(">>FIN doCalculaNoTopeYMultaBase");
+  }
+
+  public void doClickCheckUIT() {
+    logger.info(">>doClickCheckUIT");
+    logger.debug("this.getObjFiltroBean().isIsBlCheckUIT():" + this.getObjFiltroBean().isIsBlCheckUIT());
+    if(this.getObjFiltroBean().isIsBlCheckUIT()){
+      this.doCalculaNoTopeYMultaBase();
+      this.getObjFiltroBean().setNuFacturacionAnual(0);
+      this.getObjFiltroBean().setNuIngresosTope(0);
+    }else{
+      this.getObjFiltroBean().setNuMultaFinal(0);
+    }
+    logger.info(">>FIN doClickCheckUIT");
+  }
+
+public void doCalculaTopeYMultaBaseCcd() {//TODO
+    logger.info(">>doCalculaTopeYMultaBaseCcd");
+    double nuAuxIngTope = getTopeXIngresos(this.getObjFiltroBean().getNuPorcTope(), this.getObjFiltroBean().getNuFacturacionAnual());
+    this.getObjFiltroBean().setNuIngresosTope(round(nuAuxIngTope, 2));
+  
+    List<Double> list = new ArrayList<>();
+
+    // add element in ArrayList object list
+    list.add(this.getObjFiltroBean().getNuMultaPreUIT());
+    list.add(this.getObjFiltroBean().getNuGravedadTope());
+    list.add(nuAuxIngTope);
+
+    logger.debug("Min: " + findMin(list));    
+    
+    logger.debug("this.getObjFiltroBean().getNuAnioUIT(): "+ this.getObjFiltroBean().getNuAnioUIT());
+    this.getObjFiltroBean().setNuMultaFinal(round(findMin(list), 2));
+    logger.debug("this.getObjFiltroBean().getNuMultaFinal(): "+ this.getObjFiltroBean().getNuMultaFinal());
+    this.getObjFiltroBean().setNuMultaFinalSoles(round(findMin(list)*this.getObjFiltroBean().getNuAnioUIT(), 2));
+    logger.info(">>FIN doCalculaTopeYMultaBaseCcd");
+  }
+
+  public void doCalculaNoTopeYMultaBaseCcd() {
+    logger.info(">>doCalculaNoTopeYMultaBaseCcd");
+    List<Double> list = new ArrayList<>();
+
+    // add element in ArrayList object list
+    list.add(this.getObjFiltroBean().getNuMultaPreUIT());
+    list.add(this.getObjFiltroBean().getNuGravedadTope());
+
+    logger.debug("Min: " + findMin(list));    
+    
+    logger.debug("this.getObjFiltroBean().getNuAnioUIT(): "+ this.getObjFiltroBean().getNuAnioUIT());
+    this.getObjFiltroBean().setNuMultaFinal(round(findMin(list), 2));
+    logger.debug("this.getObjFiltroBean().getNuMultaFinal(): "+ this.getObjFiltroBean().getNuMultaFinal());
+    this.getObjFiltroBean().setNuMultaFinalSoles(round(findMin(list)*this.getObjFiltroBean().getNuAnioUIT(), 2));
+    logger.info(">>FIN doCalculaNoTopeYMultaBaseCcd");
+  }
+
+  public void doClickCheckUITCcd() {
+    logger.info(">>doClickCheckUITCcd");
+    logger.debug("this.getObjFiltroBean().isIsBlCheckUITCcd():" + this.getObjFiltroBean().isIsBlCheckUITCcd());
+    if(this.getObjFiltroBean().isIsBlCheckUITCcd()){
+      this.doCalculaNoTopeYMultaBase();
+      this.getObjFiltroBean().setNuFacturacionAnual(0);
+      this.getObjFiltroBean().setNuIngresosTope(0);
+    }else{
+      this.getObjFiltroBean().setNuMultaFinal(0);
+    }
+    logger.info(">>FIN doClickCheckUITCcd");
+  }
 
   public void doCalcularMpreliminar() { // Abre 3ra pantalla
       logger.info(">>doCalcularMpreliminar");
       BigDecimal bdMPrelimUIT;
       if(this.getObjFiltroBean().getVcMetodo().equals("1")){ //PREESTABLECIDO
+
+      this.getObjFiltroBean().setNuMultaFinal(0);
+      this.getObjFiltroBean().setNuIngresosTope(0);
+      this.getObjFiltroBean().setNuFacturacionAnual(0);
+
         bdMPrelimUIT = new BigDecimal(this.getObjFiltroBean().getNuMultaBaseCompleto() * this.getObjFiltroBean().getNuValorFactorAA()).setScale(2, RoundingMode.HALF_UP);
         logger.debug("multa preliminar: "+ bdMPrelimUIT.doubleValue());
 
@@ -964,7 +1081,24 @@ public List<SelectItem> getAtenF0(){
         this.getObjFiltroBean().setNuMultaPreUIT(bdMPrelimUIT.doubleValue());
         this.getObjFiltroBean().setVcGravedadMulta(objResult.get("GET_GRAVEDAD")+"");
         this.getObjFiltroBean().setNuGravedadTope((Double) objResult.get("GET_GRAVEDAD_TOPE"));
-        double nuAuxIngTope = getTopeXIngresos(this.getObjFiltroBean().getNuPorcTope(), this.getObjFiltroBean().getNuValorUIT());
+
+
+        ClsTamanioEmpresaBean obj = this.lstTamanoEmpresaBean.stream()
+                                    .filter(p -> this.getObjFiltroBean().getVcTamEmpresaSeleccion().equals(p.getVcIdTamanioEmpresa()))
+                                    .findAny()
+                                    .orElse(null);
+        if(obj != null){
+          logger.debug("obj.getVcTamanioEmpresa(): " + obj.getVcTamanioEmpresa());
+          logger.debug("obj.getNuMinUIT(): " + obj.getNuMinUIT());
+          logger.debug("obj.getNuMaxUIT(): " + obj.getNuMaxUIT());
+          logger.debug("obj.getNuPorcTope(): " + obj.getNuPorcTope());
+
+          this.getObjFiltroBean().setNuPorcTope((Double) obj.getNuPorcTope());
+          this.getObjFiltroBean().setNuMaxUIT(obj.getNuMaxUIT());
+          this.getObjFiltroBean().setNuMinUIT(obj.getNuMinUIT());
+
+
+        /* double nuAuxIngTope = getTopeXIngresos(this.getObjFiltroBean().getNuPorcTope(), this.getObjFiltroBean().getNuValorUIT());
         this.getObjFiltroBean().setNuIngresosTope(round(nuAuxIngTope, 2));
       
         List<Double> list = new ArrayList<>();
@@ -979,7 +1113,9 @@ public List<SelectItem> getAtenF0(){
         logger.debug("this.getObjFiltroBean().getNuAnioUIT(): "+ this.getObjFiltroBean().getNuAnioUIT());
         this.getObjFiltroBean().setNuMultaFinal(round(findMin(list), 2));
         logger.debug("this.getObjFiltroBean().getNuMultaFinal(): "+ this.getObjFiltroBean().getNuMultaFinal());
-        this.getObjFiltroBean().setNuMultaFinalSoles(round(findMin(list)*this.getObjFiltroBean().getNuAnioUIT(), 2));
+        this.getObjFiltroBean().setNuMultaFinalSoles(round(findMin(list)*this.getObjFiltroBean().getNuAnioUIT(), 2)); */
+
+        }
 
       }
 
@@ -1051,7 +1187,23 @@ public List<SelectItem> getAtenF0(){
 
         logger.debug("this.getObjFiltroBean().getNuPorcTope(): "+ this.getObjFiltroBean().getNuPorcTope());
         logger.debug("this.getObjFiltroBean().getNuPorcVtasCcd(): "+ this.getObjFiltroBean().getNuPorcVtasCcd());
-        double nuAuxIngTope = getTopeXIngresos(this.getObjFiltroBean().getNuPorcVtasCcd(), this.getObjFiltroBean().getNuValorUIT());
+
+        ClsTamanioEmpresaBean obj = this.lstTamanoEmpresaBean.stream()
+                                    .filter(p -> this.getObjFiltroBean().getVcTamEmpresaSeleccionCcd().equals(p.getVcIdTamanioEmpresa()))
+                                    .findAny()
+                                    .orElse(null);
+        if(obj != null){
+          logger.debug("obj.getVcTamanioEmpresa(): " + obj.getVcTamanioEmpresa());
+          logger.debug("obj.getNuMinUIT(): " + obj.getNuMinUIT());
+          logger.debug("obj.getNuMaxUIT(): " + obj.getNuMaxUIT());
+          logger.debug("obj.getNuPorcTope(): " + obj.getNuPorcTope());
+
+          this.getObjFiltroBean().setNuPorcTope((Double) obj.getNuPorcTope());
+          this.getObjFiltroBean().setNuMaxUIT(obj.getNuMaxUIT());
+          this.getObjFiltroBean().setNuMinUIT(obj.getNuMinUIT());
+        }
+
+        /* double nuAuxIngTope = getTopeXIngresos(this.getObjFiltroBean().getNuPorcVtasCcd(), this.getObjFiltroBean().getNuValorUIT());
         this.getObjFiltroBean().setNuIngresosTope(round(nuAuxIngTope, 2));
       
         List<Double> list = new ArrayList<>();
@@ -1063,7 +1215,7 @@ public List<SelectItem> getAtenF0(){
 
         logger.debug("Min: " + findMin(list));    
         this.getObjFiltroBean().setNuMultaFinal(round(findMin(list), 2));
-        this.getObjFiltroBean().setNuMultaFinalSoles(round(findMin(list)*this.getObjFiltroBean().getNuAnioUIT(), 2));
+        this.getObjFiltroBean().setNuMultaFinalSoles(round(findMin(list)*this.getObjFiltroBean().getNuAnioUIT(), 2)); */
 
         }
         
@@ -1578,8 +1730,13 @@ public void doLimpiarRUC() {
     this.setLstAfectacionBean(null);// manejar con IsBlLstAfectacion
     this.getObjFiltroBean().setIsBlLstAfectacion(false);
 
+    this.getObjFiltroBean().setIsBlCheckUIT(false);
+    this.getObjFiltroBean().setIsBlCheckUITCcd(false);
+    this.getObjFiltroBean().setVcTamEmpresaSeleccion("-1");
+    this.getObjFiltroBean().setVcTamEmpresaSeleccionCcd("-1");
     logger.info(">>FIN doLimpiar");
   }
+
   public void doSeleccionarMetodo() {
     logger.info(">>doSeleccionarMetodo(): "+ this.getObjFiltroBean().getVcMetodo());
     this.doLimpiar();
@@ -1587,6 +1744,7 @@ public void doLimpiarRUC() {
     if(this.getObjFiltroBean().getVcMetodo().equals(ClsConstantes.VC_ID_METODO_PREESTABLECIDO)){ //PREESTABLECIDO
       this.doListarInstanciasXOrg();
       this.calculaFD();
+      this.doListarTamanoEmpresa();
       //this.doListarInfraccionesXOrgInstancia(); //se cargara al seleccionar INSTANCIA
       this.setVcMuestraPreestablecido(" block;");
       this.setVcMuestraLibro(" none;");
@@ -1750,6 +1908,7 @@ public void doLimpiarRUC() {
     }else if(this.getObjFiltroBean().getVcMetodo().equals("6")){ //PREESTABLECIDO PI
       this.doListarInstanciasXOrg();
       this.doSeleccionarInstanciaPi();
+      this.doListarTamanoEmpresa();
       //this.doListarInfraccionesXOrgInstancia();
       this.setVcMuestraOrgano1raInstanciaPi(" none;");
       this.setVcMuestraPreestablecidoPi(" block;");
@@ -1775,6 +1934,7 @@ public void doLimpiarRUC() {
       this.doListarInstanciasXOrg();
       this.doSeleccionarInstanciaCcd();
       this.calculaFD();
+      this.doListarTamanoEmpresa();
       //this.doListarInfraccionesXOrgInstancia();
       this.setVcMuestraOrgano1raInstanciaCcd(" none;");
       this.setVcMuestraPreestablecidoCcd(" block;");
@@ -1965,6 +2125,29 @@ public void doLimpiarRUC() {
             this.getObjFiltroBean().setLstAniosUIT(lstAniosUIT);
       }
       logger.info(">>FIN doListarMultaUITAnios");
+  }
+
+  public void doListarTamanoEmpresa() {
+    logger.info(">>doListarTamanoEmpresa");
+      ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
+      ClsResultDAO objResult = objDAO.doListarTamanoEmpresa(Integer.parseInt(this.getObjFiltroBean().getVcMetodo()));
+      if (objResult != null) {
+            this.setLstTamanoEmpresaBean((List<ClsTamanioEmpresaBean>) objResult.get("SP_LST_TAM_EMPRESA"));
+            logger.debug(">this.lstTamanoEmpresaBean.size():" + this.lstTamanoEmpresaBean.size());
+            List<SelectItem> lstTamanoEmpresa = new ArrayList<SelectItem>();
+            SelectItem data = new SelectItem();
+            /* data.setValue("-1");
+            data.setLabel("Seleccione");
+            lstTamanoEmpresa.add(data); */
+            for (ClsTamanioEmpresaBean objCoord : lstTamanoEmpresaBean) {
+                data = new SelectItem();
+                data.setLabel("" + objCoord.getVcTamanioEmpresa());
+                data.setValue("" + objCoord.getVcIdTamanioEmpresa());
+                lstTamanoEmpresa.add(data);
+            }
+            this.getObjFiltroBean().setLstTamanoEmpresa(lstTamanoEmpresa);
+      }
+      logger.info(">>FIN doListarTamanoEmpresa");
   }
 
   public void doListarAreas() {
@@ -2572,6 +2755,17 @@ public void doLimpiarRUC() {
       logger.info(">>Fin doSeleccionarF01");
   }
 
+  public void doSeleccionarTamanoEmpresa(){
+      logger.info(">>doSeleccionarTamanoEmpresa ");
+      logger.debug("this.getObjFiltroBean().getVcTamEmpresaSeleccion(): " + this.getObjFiltroBean().getVcTamEmpresaSeleccion());
+      logger.info(">>Fin doSeleccionarTamanoEmpresa");
+  }
+  public void doSeleccionarTamanoEmpresaCcd(){
+      logger.info(">>doSeleccionarTamanoEmpresaCcd ");
+      logger.debug("this.getObjFiltroBean().getVcTamEmpresaSeleccionCcd(): " + this.getObjFiltroBean().getVcTamEmpresaSeleccionCcd());
+      logger.info(">>Fin doSeleccionarTamanoEmpresaCcd");
+  }
+
   public void doSeleccionarAnioUITMulta(){
       logger.info(">>doSeleccionarAnioUITMulta ");
       logger.debug("this.lstMultaUITAnioBean.size(): " + this.lstMultaUITAnioBean.size());
@@ -2586,7 +2780,7 @@ public void doLimpiarRUC() {
                                   .orElse(null);
       if(obj != null){
         logger.debug("obj.getVcMultaUIT(): " + obj.getVcMultaUIT());
-        logger.debug("obj.getNuUIT(): " + obj.getNuUIT());
+        logger.debug("obj.getNuUIT(): " + obj.getNuUIT());//valor de UIT de ese Anio
         this.getObjFiltroBean().setNuAnioUIT(obj.getNuUIT());
         //obtengo UIT del anio seleccionado
         //con la facturacion ingresada / uit = uitD  
@@ -4398,5 +4592,13 @@ public void doReportePreliminar(){
 
     public String getVcMuestraFactorGVariacion() {
         return vcMuestraFactorGVariacion;
+    }
+    
+    public void setLstTamanoEmpresaBean(List<ClsTamanioEmpresaBean> lstTamanoEmpresaBean) {
+        this.lstTamanoEmpresaBean = lstTamanoEmpresaBean;
+    }
+
+    public List<ClsTamanioEmpresaBean> getLstTamanoEmpresaBean() {
+        return lstTamanoEmpresaBean;
     }
 }
