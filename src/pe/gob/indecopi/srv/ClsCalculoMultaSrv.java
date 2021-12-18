@@ -84,10 +84,12 @@ public class ClsCalculoMultaSrv {
     private String vcMuestraGravedad1AdHoc;//output text
     private String vcMuestraGravedad2AdHoc;//cb
     private String vcMuestraTopelegalNoPIAdHoc;//cb
+    private String vcMuestraFactorPVariacion;
   private String vcMuestraAtenuanteF8;
   private String vcMuestraAtenuanteF10;
   private String vcMuestraAtenuanteF7;
   
+    private String vcMuestraFactorGVariacion;
 
   private String vcError;
   private String vcMensaje;
@@ -322,6 +324,8 @@ public class ClsCalculoMultaSrv {
     this.setVcMuestraAtenuanteF10(" none;");
     this.setVcMuestraAtenuanteF7(" block;");
 
+    this.setVcMuestraFactorGVariacion(" none;");
+    this.setVcMuestraFactorPVariacion(" none;");
     /////
     this.getObjFiltroBean().setIsBlMultaBase(false);
     this.getObjFiltroBean().setIsBlMultaBaseLibro(false);
@@ -1618,6 +1622,9 @@ public void doLimpiarRUC() {
     }else if(this.getObjFiltroBean().getVcMetodo().equals("3")){ //%VENTAS
       this.doListarInstanciasXOrg();
       this.doListarInfraccionesXOrgInstancia(); //INFRACCIONES CCD Y CLC SON IGUALES
+
+    this.setVcMuestraFactorGVariacion(" none;");
+
       if(!this.getObjFiltroBean().getVcOrgResolutivo().equals("SDC")){
         ClsCalculoMultaIDAO objDAO = new ClsCalculoMultaDAO();
         ClsResultDAO objResult = objDAO.doGetValorDescripcion(248, this.getObjFiltroBean().getVcOrgResolutivo(), 0);
@@ -1634,6 +1641,11 @@ public void doLimpiarRUC() {
             logger.info("----------->>this.getObjFiltroBean().getNuUmbralFactorGDifVentas(): "+ this.getObjFiltroBean().getNuUmbralFactorGDifVentas());
         }
       }
+      if(this.getObjFiltroBean().getVcOrgResolutivo().equals("CLC") || this.getObjFiltroBean().getVcOrgResolutivo().equals("CCD")
+      || this.getObjFiltroBean().getVcOrgResolutivo().equals("SDC")){
+        this.setVcMuestraFactorGVariacion(" block;");
+      }
+
       /*if(this.getObjFiltroBean().getVcInstanciaVentas().equals("2") && this.getObjFiltroBean().getVcOrgResolutivo().equals("SDC")){
         this.doListarOrganosMetodo(this.getObjFiltroBean().getVcMetodo(), Integer.parseInt(this.getObjFiltroBean().getVcInstanciaVentas()));
         this.setVcMuestraOrgano1raInstanciaVentas(" block;");
@@ -1658,7 +1670,7 @@ public void doLimpiarRUC() {
       }
 
     }else if(this.getObjFiltroBean().getVcMetodo().equals("4")){ //ADHOC
-
+    this.setVcMuestraFactorPVariacion(" none;");
     if(this.getObjFiltroBean().getVcOrgResolutivo().equals("CC1") || this.getObjFiltroBean().getVcOrgResolutivo().equals("CC2") 
     || this.getObjFiltroBean().getVcOrgResolutivo().equals("CC3") || this.getObjFiltroBean().getVcOrgResolutivo().equals("CPC")
     || this.getObjFiltroBean().getVcOrgResolutivo().equals("SPC")){
@@ -1680,6 +1692,9 @@ public void doLimpiarRUC() {
           this.getObjFiltroBean().setNuUmbralFactorPDifAdhoc(Double.parseDouble((String) objResult.get("GET_VALOR_PARAMETRO")));
           logger.info("----------->>this.getObjFiltroBean().getNuUmbralFactorPDifAdhoc(): "+ this.getObjFiltroBean().getNuUmbralFactorPDifAdhoc());
       }
+      
+      this.setVcMuestraFactorPVariacion(" block;");
+
       this.getObjFiltroBean().setVcCategoriaAdhoc("CLC");
       this.setVcMuestraTamEmpresaAdHoc(" none;");
       this.setVcMuestraGravedad1AdHoc(" block;");
@@ -4367,5 +4382,21 @@ public void doReportePreliminar(){
 
     public String getVcAreaSeleccion() {
         return vcAreaSeleccion;
+    }
+
+    public void setVcMuestraFactorPVariacion(String vcMuestraFactorPVariacion) {
+        this.vcMuestraFactorPVariacion = vcMuestraFactorPVariacion;
+    }
+
+    public String getVcMuestraFactorPVariacion() {
+        return vcMuestraFactorPVariacion;
+    }
+
+    public void setVcMuestraFactorGVariacion(String vcMuestraFactorGVariacion) {
+        this.vcMuestraFactorGVariacion = vcMuestraFactorGVariacion;
+    }
+
+    public String getVcMuestraFactorGVariacion() {
+        return vcMuestraFactorGVariacion;
     }
 }
