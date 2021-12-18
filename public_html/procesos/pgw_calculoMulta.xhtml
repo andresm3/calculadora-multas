@@ -1629,16 +1629,16 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_factorapventas"
-                                maxlength="6"
-                                converter="javax.faces.Double"
+                                maxlength="5"
+                                onkeypress="return fnCheckNumerosDecimal(event)"
                                 onkeyup="fnCheckFactorAValido('frmBusqueda:it_cal_mbase_umbralfactorapventas','frmBusqueda:it_cal_mbase_factorapventas','frmBusqueda:lblot_cal_mbase_factorapventas','frmBusqueda:it_cal_mbase_org');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorAVentas}" columnClasses="input-width-50"/>
+                            <h:outputText value="%" style="font-size:12px; float:left;" />
                             <h:inputText 
                                 style="display:none;"
                                 id="it_cal_mbase_umbralfactorapventas"
                                 converter="javax.faces.Double"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorAVentas}" columnClasses="input-width-50"/>
-                            <h:outputText value=""/>
                             <h:outputText value=""/>
                             
 
@@ -1691,21 +1691,25 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
-                            <h:outputText id="ot_cal_mbase_factorgSignopventas" style="font-size:12px;"
+                            <h:outputText id="ot_cal_mbase_factorgSignopventas" 
+                                        style="font-size:12px;display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"
                                         value="#{msgs['ot.cal_mbase.factorgsignopventas']}"/>
-                            <h:selectOneRadio value="#{clsCalculoMultaSrv.objFiltroBean.vcFactorGDifAccion}">
+                            <h:selectOneRadio style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.vcFactorGDifAccion}">
                                 <f:selectItem itemValue="sumar" itemLabel="+" />
                                 <f:selectItem itemValue="restar" itemLabel="-" />
                             </h:selectOneRadio>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
 
-                            <h:outputText id="ot_cal_mbase_factorgdifpventas" style="font-size:12px;"
+                            <h:outputText id="ot_cal_mbase_factorgdifpventas" style="font-size:12px;display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"
                                         value="#{msgs['ot.cal_mbase.factorgdifpventas']}"/>
                             <h:inputText 
-                                style="display:block;width:300px"
+                                style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion};width:300px"
                                 id="it_cal_mbase_factorgdifpventas"
+                                maxlength="4"
+                                onkeypress="return fnCheckNumerosDecimal(event)"
                                 onkeyup="fnCheckFactorGDifValido('frmBusqueda:it_cal_mbase_umbralfactorgdifpventas','frmBusqueda:it_cal_mbase_factorgdifpventas','frmBusqueda:ot_cal_mbase_factorgdifpventas');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorGDifVentas}" columnClasses="input-width-50">
                                 </h:inputText>
@@ -1714,8 +1718,8 @@ xmlns:rich="http://richfaces.org/rich">
                                 id="it_cal_mbase_umbralfactorgdifpventas"
                                 converter="javax.faces.Double"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorGDifVentas}" columnClasses="input-width-50"/>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
 
                             <h:outputText value=""/>
                             <a4j:commandButton id="bt_cal_mbase_calcularMbasepventas"
@@ -1910,7 +1914,7 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:inputText 
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_factorbadhoc"
-                                converter="javax.faces.Double"
+                                onkeypress="return fnCheckNumerosDecimal(event)"
                                 maxlength="13"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorBAdhoc}" columnClasses="input-width-50"/>
                             <h:outputText value=""/>
@@ -1968,33 +1972,35 @@ xmlns:rich="http://richfaces.org/rich">
                             <h:outputText value=""/>
 
                             <h:outputText id="ot_cal_mbase_factorpSignoadhoc" 
-                            style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"
+                            style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"
                                         value="#{msgs['ot.cal_mbase.factorpsignoadhoc']}"/>
-                            <h:selectOneRadio style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" 
+                            <h:selectOneRadio style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}" 
                                             value="#{clsCalculoMultaSrv.objFiltroBean.vcFactorPDifAccion}">
                                 <f:selectItem itemValue="sumar" itemLabel="+" />
                                 <f:selectItem itemValue="restar" itemLabel="-" />
                             </h:selectOneRadio>
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"/>
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"/>
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"/>
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"/>
 
                             <h:outputText id="ot_cal_mbase_factorpdifadhoc"
-                                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}"
+                                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"
                                         value="#{msgs['ot.cal_mbase.factorpdifadhoc']}"/>
                             <h:inputText 
-                                style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" 
+                                style="width:300px; display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}" 
+                                maxlength="4"
                                 id="it_cal_mbase_factorpdifadhoc"
+                                onkeypress="return fnCheckNumerosDecimal(event)"
                                 onkeyup="fnCheckFactorPDifValido('frmBusqueda:it_cal_mbase_umbralfactorpdifadhoc','frmBusqueda:it_cal_mbase_factorpdifadhoc','frmBusqueda:ot_cal_mbase_factorpdifadhoc');"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorPDifAdhoc}" columnClasses="input-width-50">
                                 </h:inputText>
+                            <h:outputText value="%" style="font-size:12px; float:left; display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}" />
                             <h:inputText 
                                 style="display:none;"
                                 id="it_cal_mbase_umbralfactorpdifadhoc"
                                 converter="javax.faces.Double"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorPDifAdhoc}" columnClasses="input-width-50"/>
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" />
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraGravedad1AdHoc}" />
+                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}" />
 
                             <h:outputText value=""/>
                             <a4j:commandButton id="bt_cal_mbase_calcularMbaseadhoc"

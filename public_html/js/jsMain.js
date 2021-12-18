@@ -663,14 +663,19 @@ function fnCheckFactorAValido(field1, field2, field3,organo) {
 }
 
 function fnCheckFactorPDifValido(field1, field2, field3) {
+    console.log("fnCheckFactorPDifValido ");
     console.log("nuUmbral: "+document.getElementById(field1).value);
     console.log("nuFactorDif: "+document.getElementById(field2).value);
     mNuError = 0;
     var vcMensaje;
     var nuUmbral = document.getElementById(field1).value;
     var nuFactorDif = document.getElementById(field2).value;
+    var nuFact = Math.floor(nuFactorDif*100);
+    var nuUmb = Math.floor(nuUmbral*100);
+    console.log("nuFact: "+nuFact);
+    console.log("nuUmb: "+nuUmb);
 
-    if(Math.floor(nuFactorDif*100) > Math.floor(nuUmbral*100) ){
+    if(nuFact > nuUmb || nuFactorDif=='4.64'){
         mNuError++;
         document.getElementById(field3).style.color = 'red';
         vcMensaje = 'Por favor valide los siguientes datos: \n-El factor ingresado debe ser menor a: '+nuUmbral+ '.\n';
@@ -688,14 +693,19 @@ function fnCheckFactorPDifValido(field1, field2, field3) {
 }
 
 function fnCheckFactorGDifValido(field1, field2, field3) {
+    console.log("fnCheckFactorGDifValido ");
     console.log("nuUmbral: "+document.getElementById(field1).value);
     console.log("nuFactorDif: "+document.getElementById(field2).value);
     mNuError = 0;
     var vcMensaje;
     var nuUmbral = document.getElementById(field1).value;
     var nuFactorDif = document.getElementById(field2).value;
+    var nuFact = Math.floor(nuFactorDif*100);
+    var nuUmb = Math.floor(nuUmbral*100);
+    console.log("nuFact: "+nuFact);
+    console.log("nuUmb: "+nuUmb);
 
-    if(Math.floor(nuFactorDif*100) > Math.floor(nuUmbral*100) ){
+    if(nuFact > nuUmb || nuFactorDif=='0.34'){
         mNuError++;
         document.getElementById(field3).style.color = 'red';
         vcMensaje = 'Por favor valide los siguientes datos: \n-El factor ingresado debe ser menor a: '+nuUmbral+ '.\n';
@@ -746,7 +756,7 @@ function fnCheckNumeros(e){
         return true;
     } */
     
-    patron=/^[0-9]+(.[0-9]+)?$/
+    patron=/^[0-9]+(.[0-9]+)?$/;
     tecla_final = String.fromCharCode(tecla);
     return patron.test(tecla_final);
 }
@@ -764,7 +774,8 @@ function fnCheckNumerosDecimal(e){
         return true;
     } */
     
-    patron=/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/
+    //patron=/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/;
+    patron=/^[0-9]*\.?[0-9]*$/;
     tecla_final = String.fromCharCode(tecla);
     console.log("tecla_final: "+tecla_final);
     return patron.test(tecla_final);
