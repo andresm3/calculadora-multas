@@ -148,8 +148,8 @@ function fnValidaPi(){
     var vInstancia = document.getElementById('frmBusqueda:cb_cal_mbase_instanciaspi').value;
     var vRuc = document.getElementById('frmBusqueda:it_cal_mbase_rucpi').value;
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialpi').value;
-    var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionpi').value;
-    var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresapi').value;
+    //var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionpi').value;
+    //var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresapi').value;
     var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionpi').value;
     //var vFd = document.getElementById('frmBusqueda:ot_cal_mbase_factor').value;
     
@@ -174,7 +174,7 @@ function fnValidaPi(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsocpi','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factupi','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
@@ -187,7 +187,7 @@ function fnValidaPi(){
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniofpi','Red');
-    }
+    } */
     if(vAfectacion!= ""){
         fnColorea('frmBusqueda','ot_cal_mbase_afectacionpi','Black');
     }else{
@@ -292,8 +292,8 @@ function fnValidaAdhoc(){
     var vInstancia = document.getElementById('frmBusqueda:cb_cal_mbase_instanciasadhoc').value;
     var vRuc = document.getElementById('frmBusqueda:it_cal_mbase_rucpadhoc').value;
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialadhoc').value;
-    var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value;
-    var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaadhoc').value;
+    //var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value;
+    //var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaadhoc').value;
     var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionadhoc').value;
     var vFb = document.getElementById('frmBusqueda:it_cal_mbase_factorbadhoc').value;
     
@@ -318,7 +318,7 @@ function fnValidaAdhoc(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsocadhoc','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factuadhoc','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
@@ -331,7 +331,7 @@ function fnValidaAdhoc(){
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniofadhoc','Red');
-    }
+    } */
     if(vAfectacion!= ""){
         fnColorea('frmBusqueda','ot_cal_mbase_afectacionadhoc','Black');
     }else{

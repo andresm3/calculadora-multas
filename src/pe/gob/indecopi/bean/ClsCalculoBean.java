@@ -61,6 +61,7 @@ public class ClsCalculoBean implements Serializable {
     private List<SelectItem> lstTamanoEmpresa;
     private String vcTamEmpresaSeleccion;
     private String vcTamEmpresaSeleccionCcd;
+    private String vcTamEmpresaSeleccionPi;
         
     private String vcInfraccion;
 
@@ -285,6 +286,7 @@ public class ClsCalculoBean implements Serializable {
     private double nuMaxUIT;    
     private boolean isBlCheckUIT;
     private boolean isBlCheckUITCcd;
+    private boolean isBlCheckUITAdhoc;
     
     private boolean isBlMultaBase;
     private boolean isBlMultaBaseLibro;
@@ -2232,5 +2234,21 @@ public class ClsCalculoBean implements Serializable {
 
     public String getVcTamEmpresaSeleccionCcd() {
         return vcTamEmpresaSeleccionCcd;
+    }
+
+    public void setVcTamEmpresaSeleccionPi(String vcTamEmpresaSeleccionPi) {
+        this.vcTamEmpresaSeleccionPi = vcTamEmpresaSeleccionPi;
+    }
+
+    public String getVcTamEmpresaSeleccionPi() {
+        return vcTamEmpresaSeleccionPi;
+    }
+
+    public void setIsBlCheckUITAdhoc(boolean isBlCheckUITAdhoc) {
+        this.isBlCheckUITAdhoc = isBlCheckUITAdhoc;
+    }
+
+    public boolean isIsBlCheckUITAdhoc() {
+        return isBlCheckUITAdhoc;
     }
 }
