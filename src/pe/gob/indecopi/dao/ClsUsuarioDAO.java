@@ -29,7 +29,9 @@ public class ClsUsuarioDAO implements ClsUsuarioIDAO{
     static Logger logger = Logger.getLogger(ClsUsuarioDAO.class);
     
     private static final String SP_LST_AREAS =
-        "{call PKG_GENERAL.SP_LST_AREAS(" + ClsSQLUtils.sqlParams(3) + ")}";
+        "{call PKG_GENERAL.SP_LST_AREAS(" + ClsSQLUtils.sqlParams(4) + ")}";    
+    private static final String SP_LST_MATERIAS =
+        "{call PKG_GENERAL.SP_LST_MATERIAS(" + ClsSQLUtils.sqlParams(3) + ")}";
 
     private static final String SP_GET_USR_GLOBALES  =
             "{call PKG_GENERAL.SP_GET_USR_GLOBALES(" + ClsSQLUtils.sqlParams(5) + ")}";
@@ -40,8 +42,49 @@ public class ClsUsuarioDAO implements ClsUsuarioIDAO{
         super();
     }
     
-    public ClsResultDAO doListarAreas() {
-        logger.info(">>doListarAreas ");
+    public ClsResultDAO doListarMaterias() {
+        logger.info(">>doListarMaterias ");
+        ClsResultDAO response = null;
+        ClsConectionDB conne = null;
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        Map<String, String> lstParametros = null;
+
+        try {
+            conne = new ClsConectionDB();
+            conn = conne.f_getConn();
+            conn.setAutoCommit(false);
+            stmt = conn.prepareCall(SP_LST_MATERIAS);
+            int i = 0;
+            stmt.registerOutParameter(++i, OracleTypes.CURSOR);
+            stmt.registerOutParameter(++i, OracleTypes.NUMERIC);
+            stmt.registerOutParameter(++i, OracleTypes.VARCHAR);
+            stmt.execute();
+
+            rs = (ResultSet) stmt.getObject(i - 2);
+
+            if (rs != null) {
+                lstParametros = new LinkedHashMap<String, String>();
+                while (rs.next()) {
+                    lstParametros.put(rs.getString("VC_NOMBRE"), rs.getString("VC_VALOR"));
+                }
+            }
+
+            response = new ClsResultDAO();
+            response.put("SP_LST_MATERIAS", lstParametros);
+            response.put(ClsResultDAO.CODIGO_ERROR, stmt.getInt(i - 1));
+            response.put(ClsResultDAO.MENSAJE_ERROR, stmt.getString(i));
+        } catch (Throwable e) {
+            logger.info(e);
+        } finally {
+            conne.f_endConn();
+        }
+        return response;
+    }
+
+    public ClsResultDAO doListarAreas(int nuMateria) {
+        logger.info(">>doListarAreas "+ nuMateria);
         ClsResultDAO response = null;
         ClsConectionDB conne = null;
         Connection conn = null;
@@ -56,11 +99,12 @@ public class ClsUsuarioDAO implements ClsUsuarioIDAO{
             stmt = conn.prepareCall(SP_LST_AREAS);
             int i = 0;
             stmt.registerOutParameter(++i, OracleTypes.CURSOR);
+            stmt.setInt(++i, nuMateria);
             stmt.registerOutParameter(++i, OracleTypes.NUMERIC);
             stmt.registerOutParameter(++i, OracleTypes.VARCHAR);
             stmt.execute();
 
-            rs = (ResultSet) stmt.getObject(i - 2);
+            rs = (ResultSet) stmt.getObject(i - 3);
 
             if (rs != null) {
                 lstParametros = new LinkedHashMap<String, String>();

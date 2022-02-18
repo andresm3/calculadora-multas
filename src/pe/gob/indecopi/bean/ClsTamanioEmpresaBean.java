@@ -9,6 +9,9 @@ public class ClsTamanioEmpresaBean implements Serializable {
 
     private String vcIdTamanioEmpresa;
     private String vcTamanioEmpresa;
+    private int nuMinUIT;
+    private int nuMaxUIT;
+    private double nuPorcTope;
         
     public ClsTamanioEmpresaBean() {
         super();
@@ -29,5 +32,29 @@ public class ClsTamanioEmpresaBean implements Serializable {
 
     public String getVcTamanioEmpresa() {
         return vcTamanioEmpresa;
+    }
+
+    public void setNuMinUIT(int nuMinUIT) {
+        this.nuMinUIT = nuMinUIT;
+    }
+
+    public int getNuMinUIT() {
+        return nuMinUIT;
+    }
+
+    public void setNuMaxUIT(int nuMaxUIT) {
+        this.nuMaxUIT = nuMaxUIT;
+    }
+
+    public int getNuMaxUIT() {
+        return nuMaxUIT;
+    }
+
+    public void setNuPorcTope(double nuPorcTope) {
+        this.nuPorcTope = nuPorcTope;
+    }
+
+    public double getNuPorcTope() {
+        return nuPorcTope;
     }
 }

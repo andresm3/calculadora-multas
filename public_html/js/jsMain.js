@@ -4,15 +4,15 @@ function fnColorea(mFormulario, mElementId, mTipo) {
 
 function fnValidaPreestablecido(){
     console.log(">>fnValidaPreestablecido<<");
-    console.log("factu: "+document.getElementById('frmBusqueda:it_cal_mbase_facturacion').value);
+    //console.log("factu: "+document.getElementById('frmBusqueda:it_cal_mbase_facturacion').value);
 
     var vMensaje = 'Por favor valide los siguientes datos: \n';
     var nuError = 0;
     var vInstancia = document.getElementById('frmBusqueda:cb_cal_mbase_instancias').value;
     var vRuc = document.getElementById('frmBusqueda:it_cal_mbase_ruc').value;
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocial').value;
-    var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacion').value;
-    var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresa').value;
+    //var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacion').value;
+    //var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresa').value;
     var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacion').value;
     
     if(vInstancia!= "-1"){
@@ -36,20 +36,20 @@ function fnValidaPreestablecido(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsoc','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factu','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_factu','Red');
-    }
-    if(vTamempresa.length > 0){
+    } */
+    /* if(vTamempresa.length > 0){
         fnColorea('frmBusqueda','ot_cal_mbase_aniof','Black');
     }else{
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniof','Red');
-    }
+    } */
     if(vAfectacion!= ""){
         fnColorea('frmBusqueda','ot_cal_mbase_afectacion','Black');
     }else{
@@ -79,8 +79,8 @@ function fnValidaCcd(){
     var vInstancia = document.getElementById('frmBusqueda:cb_cal_mbase_instanciasccd').value;
     var vRuc = document.getElementById('frmBusqueda:it_cal_mbase_rucccd').value;
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialccd').value;
-    var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionccd').value;
-    var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaccd').value;
+    //var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionccd').value;
+    //var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaccd').value;
     var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionccd').value;
     //var vFd = document.getElementById('frmBusqueda:ot_cal_mbase_factor').value;
     
@@ -105,7 +105,7 @@ function fnValidaCcd(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsocccd','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factuccd','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
@@ -118,7 +118,7 @@ function fnValidaCcd(){
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniofccd','Red');
-    }
+    } */
     if(vAfectacion!= ""){
         fnColorea('frmBusqueda','ot_cal_mbase_afectacionccd','Black');
     }else{
@@ -148,8 +148,8 @@ function fnValidaPi(){
     var vInstancia = document.getElementById('frmBusqueda:cb_cal_mbase_instanciaspi').value;
     var vRuc = document.getElementById('frmBusqueda:it_cal_mbase_rucpi').value;
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialpi').value;
-    var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionpi').value;
-    var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresapi').value;
+    //var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionpi').value;
+    //var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresapi').value;
     var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionpi').value;
     //var vFd = document.getElementById('frmBusqueda:ot_cal_mbase_factor').value;
     
@@ -174,7 +174,7 @@ function fnValidaPi(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsocpi','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factupi','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
@@ -187,7 +187,7 @@ function fnValidaPi(){
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniofpi','Red');
-    }
+    } */
     if(vAfectacion!= ""){
         fnColorea('frmBusqueda','ot_cal_mbase_afectacionpi','Black');
     }else{
@@ -280,20 +280,20 @@ function fnValidaFirma(){
 
 function fnValidaAdhoc(){
     console.log(">>fnValidaAdhoc<<");
-    console.log("factu: "+document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value);
-    console.log("ruc: "+document.getElementById('frmBusqueda:it_cal_mbase_rucpadhoc').value);
-    console.log("rz: "+document.getElementById('frmBusqueda:ot_cal_mbase_rsocialadhoc').value);
-    console.log("instancia: "+document.getElementById('frmBusqueda:cb_cal_mbase_instanciasadhoc').value);
-    console.log("afect: "+document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionadhoc').value);
-    console.log("fb: "+document.getElementById('frmBusqueda:it_cal_mbase_factorbadhoc').value);
+    //console.log("factu: "+document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value);
+    //console.log("ruc: "+document.getElementById('frmBusqueda:it_cal_mbase_rucpadhoc').value);
+    //console.log("rz: "+document.getElementById('frmBusqueda:ot_cal_mbase_rsocialadhoc').value);
+    //console.log("instancia: "+document.getElementById('frmBusqueda:cb_cal_mbase_instanciasadhoc').value);
+    //console.log("afect: "+document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionadhoc').value);
+    //console.log("fb: "+document.getElementById('frmBusqueda:it_cal_mbase_factorbadhoc').value);
     
     var vMensaje = 'Por favor valide los siguientes datos: \n';
     var nuError = 0;
     var vInstancia = document.getElementById('frmBusqueda:cb_cal_mbase_instanciasadhoc').value;
     var vRuc = document.getElementById('frmBusqueda:it_cal_mbase_rucpadhoc').value;
     var vRsocial = document.getElementById('frmBusqueda:ot_cal_mbase_rsocialadhoc').value;
-    var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value;
-    var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaadhoc').value;
+    //var vFactu = document.getElementById('frmBusqueda:it_cal_mbase_facturacionadhoc').value;
+    //var vTamempresa = document.getElementById('frmBusqueda:ot_cal_mbase_tamempresaadhoc').value;
     var vAfectacion = document.getElementById('frmBusqueda:it_cal_mbase_tipfectacionadhoc').value;
     var vFb = document.getElementById('frmBusqueda:it_cal_mbase_factorbadhoc').value;
     
@@ -318,7 +318,7 @@ function fnValidaAdhoc(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsocadhoc','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factuadhoc','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
@@ -331,7 +331,7 @@ function fnValidaAdhoc(){
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniofadhoc','Red');
-    }
+    } */
     if(vAfectacion!= ""){
         fnColorea('frmBusqueda','ot_cal_mbase_afectacionadhoc','Black');
     }else{
@@ -381,13 +381,13 @@ function fnValidaVentas(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_instanciapventas','Red');
     }
-    if(vAnio!= "-1"){
+    /* if(vAnio!= "-1"){
         fnColorea('frmBusqueda','ot_cal_mbase_aniofpventas','Black');
     }else{
         vMensaje+= '-Debe seleccionar A\u00F1o de facturaci\u00F3n.\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_aniofpventas','Red');
-    }
+    } */
     if(vRuc.length > 0){
         fnColorea('frmBusqueda','ot_cal_mbase_rucpventas','Black');
     }else{
@@ -402,13 +402,13 @@ function fnValidaVentas(){
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_rsocpventas','Red');
     }
-    if(vFactu!= 0){
+    /* if(vFactu!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factupventas','Black');
     }else{
         vMensaje+= '-Debe ingresar Facturaci\u00F3n anual (S/).\n'; 
         nuError += 1;
         fnColorea('frmBusqueda','ot_cal_mbase_factupventas','Red');
-    }
+    } */
     if(vFactuProd!= 0){
         fnColorea('frmBusqueda','ot_cal_mbase_factuprodpventas','Black');
     }else{
@@ -763,7 +763,7 @@ function fnCheckNumeros(e){
 
 function fnCheckNumerosDecimal(e){
     tecla = (document.all) ? e.keyCode : e.which;
-    console.log("tecla: "+tecla);
+    //console.log("tecla: "+tecla);
     if (tecla == 8) {
         return true;
     }
@@ -777,12 +777,64 @@ function fnCheckNumerosDecimal(e){
     //patron=/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/;
     patron=/^[0-9]*\.?[0-9]*$/;
     tecla_final = String.fromCharCode(tecla);
-    console.log("tecla_final: "+tecla_final);
+    //console.log("tecla_final: "+tecla_final);
     return patron.test(tecla_final);
 }
 
+function fnCheckUITLimites(label, field1, field2, field3) {
+    console.log("fnCheckUITLimites");
+    console.log("nuMinUIT: "+document.getElementById(field2).value);
+    console.log("nuMaxUIT: "+document.getElementById(field3).value);
+    console.log("nuFactu: "+document.getElementById(field1).value);
+    mNuError = 0;
+    var vcMensaje;
+    var nuFactu = document.getElementById(field1).value;
+    var nuMinUIT = document.getElementById(field2).value;
+    var nuMaxUIT = document.getElementById(field3).value;
+
+    if(Math.floor(nuFactu*100) > Math.floor(nuMaxUIT*100)){
+        mNuError++;
+        document.getElementById(label).style.color = 'red';
+        vcMensaje = 'Por favor valide los siguientes datos: \n-El valor UIT ingresado debe ser mayor a: '+nuMinUIT+ ' y menor a: '+nuMaxUIT+ '.\n';
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').disabled = "true";
+
+    }else if(Math.floor(nuFactu*100) < Math.floor(nuMinUIT*100)){
+        mNuError++;
+        document.getElementById(label).style.color = 'red';
+        vcMensaje = 'Por favor valide los siguientes datos: \n-El valor UIT ingresado debe ser mayor a: '+nuMinUIT+ ' y menor a: '+nuMaxUIT+ '.\n';
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').disabled = "true";
+    }else{
+        document.getElementById(label).style.color = 'black';
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').removeAttribute("disabled");
+    }
+
+    if(mNuError>0)
+        alert(vcMensaje);
+
+    return mNuError;
+}
+
+function fnCheckMultaFinal(field1) {
+    console.log("ingreso: "+document.getElementById(field1).value);
+    mNuError = 0;
+    var vcMensaje;
+    var nuMulta = document.getElementById(field1).value;
+
+    if(nuMulta > 0){
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').removeAttribute("disabled");
+
+    }else{
+        document.getElementById('frmAuxiliar:btn_descargar_reporte').disabled = "true";
+    }
+
+    return mNuError;
+}
+
 function fnIfEnterClick(event, targetElement, valid, targetElement2) {
+    console.log(">>fnIfEnterClick");
     event = event || window.event;
+    //var nuFactu = document.getElementById('frmMultaPreliminar:it_cal_mprelim_facturacionccd').value;
+
     if (event.keyCode == 13) {
         // normalize event target, so it looks the same for all browsers
         if (!event.target) {
@@ -816,7 +868,7 @@ function fnIfEnterClick(event, targetElement, valid, targetElement2) {
             event.cancelBubble = true;
             event.returnValue = false;
         }
-        if(document.getElementById(valid).value!=-1){
+        if(!document.getElementById(valid).value){
             //document.getElementById(targetElement).click();
             document.getElementById(targetElement2).click();
         }else{
@@ -829,4 +881,86 @@ function fnIfEnterClick(event, targetElement, valid, targetElement2) {
         }
         
     }
+}
+
+function fnIfEnterClick2(event, targetElement, valid, targetElement2) {
+    console.log(">>fnIfEnterClick2");
+    event = event || window.event;
+    //var nuFactu = document.getElementById('frmMultaPreliminar:it_cal_mprelim_facturacionccd').value;
+
+    if (event.keyCode == 13) {
+        // normalize event target, so it looks the same for all browsers
+        if (!event.target) {
+            event.target = event.srcElement;
+        }
+
+        // don't do anything if the element handles the enter key on its own
+        if (event.target.nodeName == 'A') {
+            return;
+        }
+        if (event.target.nodeName == 'INPUT') {
+            if (event.target.type == 'button' || event.target.type == 'submit') {
+                if (strEndsWith(event.target.id, 'focusKeeper')) {
+                    // inside some Richfaces component such as rich:listShuttle
+                } else {
+                    return;
+                }
+            }
+        }
+
+        // swallow event
+        if (event.preventDefault) {
+            // Firefox
+            event.stopPropagation();
+            event.preventDefault();
+        } else {
+            // IE
+            event.cancelBubble = true;
+            event.returnValue = false;
+        }
+
+        console.log("it_cal_mprelim_facturacionadhoc: "+document.getElementById('frmMultaPreliminar:it_cal_mprelim_facturacionadhoc').value);
+        //console.log("valid: "+document.getElementById(valid).checked);
+        document.getElementById(valid).checked = false;
+        console.log("valid: "+document.getElementById(valid).checked);
+        document.getElementById(targetElement2).click();
+        
+    }
+}
+
+function fnCheckPressed(field2, field3) {
+    console.log(">>fnCheckPressed");
+    console.log("field2: "+document.getElementById(field2).checked);
+    console.log("field3: "+document.getElementById(field3).value);
+
+
+    //document.getElementById(field2).checked = !document.getElementById(field2).checked;
+    //console.log("field2: "+document.getElementById(field2).checked);
+
+    if(document.getElementById(field2).checked == true){
+        console.log("--disable factu");
+        document.getElementById(field3).disabled = "true";
+    }else{
+        console.log("--habilita factu");
+        document.getElementById(field3).removeAttribute("disabled");
+    }
+
+}
+
+function fnCheckChanged(field2, field3) {
+    console.log(">>fnCheckChanged");
+    console.log("field2: "+document.getElementById(field2).checked);
+    console.log("field3: "+document.getElementById(field3).value);
+
+    //if(document.getElementById(field1).value > 0){
+
+    //document.getElementById(field2).checked = !document.getElementById(field2).checked;
+
+    if(document.getElementById(field2).checked == true){
+        document.getElementById(field3).disabled = "true";
+    }else{
+        document.getElementById(field3).removeAttribute("disabled");
+    }
+    //}
+
 }

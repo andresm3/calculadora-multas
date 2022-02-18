@@ -57,6 +57,11 @@ public class ClsCalculoBean implements Serializable {
     private List<SelectItem> lstTipoAfectacion;
     private List<SelectItem> lstMetodosCalculo;
     private List<SelectItem> lstInstanciasCalculo;
+    
+    private List<SelectItem> lstTamanoEmpresa;
+    private String vcTamEmpresaSeleccion;
+    private String vcTamEmpresaSeleccionCcd;
+    private String vcTamEmpresaSeleccionPi;
         
     private String vcInfraccion;
 
@@ -233,6 +238,7 @@ public class ClsCalculoBean implements Serializable {
     private double nuFactorAVentas;
     private double nuFactorGVentas;
     private double nuFactorGDifVentas;
+    private double nuFactorGFinalVentas;
     private double nuUmbralFactorGDifVentas;
     private String vcFactorGDifAccion;
     private double nuMultaBaseVentas;
@@ -259,6 +265,7 @@ public class ClsCalculoBean implements Serializable {
     private String vcIdNivelAfectacionAdhoc;
     private String vcNivelAfectacionAdhoc;
     private double nuFactorBAdhoc;
+    private double nuFactorPFinalAdhoc;
     private double nuFactorPAdhoc;
     private String vcFactorPAdhoc;
     private double nuFactorPDifAdhoc;
@@ -277,6 +284,13 @@ public class ClsCalculoBean implements Serializable {
     private double nuGravedadPorcTopeAdhoc;
     private double nuAjusteIngAdhoc;
     
+    private double nuMinUIT;
+    private double nuMaxUIT;    
+    private boolean isBlCheckUIT;
+    private boolean isBlCheckUITCcd;
+    private boolean isBlCheckUITAdhoc;
+    private boolean isBlCheckUITVentas;
+    
     private boolean isBlMultaBase;
     private boolean isBlMultaBaseLibro;
     private boolean isBlMultaBasePi;
@@ -287,6 +301,13 @@ public class ClsCalculoBean implements Serializable {
     private boolean isBlMultaBaseFirma;
 
     private boolean isBlLstAfectacion;
+    
+
+    private boolean isBlInfraccionCustomAdhoc;
+    private boolean isBlInfraccionCustomVentas;
+    
+
+    private String vcAnioResol;
     
     public ClsCalculoBean() {
         super();
@@ -307,6 +328,7 @@ public class ClsCalculoBean implements Serializable {
         this.lstMetodosCalculo = new ArrayList<SelectItem>();
         this.lstInstanciasCalculo = new ArrayList<SelectItem>();
         //this.lstInfracciones=new LinkedHashMap<String, String>();
+        this.lstTamanoEmpresa = new ArrayList<SelectItem>();
 
         df.setRoundingMode(RoundingMode.UP);
         
@@ -320,6 +342,15 @@ public class ClsCalculoBean implements Serializable {
         return vcOrgResolutivo;
     }
 
+    public String getVcOrgResolutivo2() {
+        if(vcOrgResolutivo != null){
+        if(vcOrgResolutivo.equals("CLC")){
+            return "DLC";
+        }
+        }
+        return vcOrgResolutivo;
+    }
+    
     public void setVcInstancia(String vcInstancia) {
         this.vcInstancia = vcInstancia;
     }
@@ -2166,5 +2197,125 @@ public class ClsCalculoBean implements Serializable {
 
     public String getVcFactorGDifAccion() {
         return vcFactorGDifAccion;
+    }
+
+    public void setLstTamanoEmpresa(List<SelectItem> lstTamanoEmpresa) {
+        this.lstTamanoEmpresa = lstTamanoEmpresa;
+    }
+
+    public List<SelectItem> getLstTamanoEmpresa() {
+        return lstTamanoEmpresa;
+    }
+
+    public void setVcTamEmpresaSeleccion(String vcTamEmpresaSeleccion) {
+        this.vcTamEmpresaSeleccion = vcTamEmpresaSeleccion;
+    }
+
+    public String getVcTamEmpresaSeleccion() {
+        return vcTamEmpresaSeleccion;
+    }
+
+    public void setNuMinUIT(double nuMinUIT) {
+        this.nuMinUIT = nuMinUIT;
+    }
+
+    public double getNuMinUIT() {
+        return nuMinUIT;
+    }
+
+    public void setNuMaxUIT(double nuMaxUIT) {
+        this.nuMaxUIT = nuMaxUIT;
+    }
+
+    public double getNuMaxUIT() {
+        return nuMaxUIT;
+    }
+
+    public void setIsBlCheckUIT(boolean isBlCheckUIT) {
+        this.isBlCheckUIT = isBlCheckUIT;
+    }
+
+    public boolean isIsBlCheckUIT() {
+        return isBlCheckUIT;
+    }
+
+    public void setIsBlCheckUITCcd(boolean isBlCheckUITCcd) {
+        this.isBlCheckUITCcd = isBlCheckUITCcd;
+    }
+
+    public boolean isIsBlCheckUITCcd() {
+        return isBlCheckUITCcd;
+    }
+
+    public void setVcTamEmpresaSeleccionCcd(String vcTamEmpresaSeleccionCcd) {
+        this.vcTamEmpresaSeleccionCcd = vcTamEmpresaSeleccionCcd;
+    }
+
+    public String getVcTamEmpresaSeleccionCcd() {
+        return vcTamEmpresaSeleccionCcd;
+    }
+
+    public void setVcTamEmpresaSeleccionPi(String vcTamEmpresaSeleccionPi) {
+        this.vcTamEmpresaSeleccionPi = vcTamEmpresaSeleccionPi;
+    }
+
+    public String getVcTamEmpresaSeleccionPi() {
+        return vcTamEmpresaSeleccionPi;
+    }
+
+    public void setIsBlCheckUITAdhoc(boolean isBlCheckUITAdhoc) {
+        this.isBlCheckUITAdhoc = isBlCheckUITAdhoc;
+    }
+
+    public boolean isIsBlCheckUITAdhoc() {
+        return isBlCheckUITAdhoc;
+    }
+
+    public void setNuFactorGFinalVentas(double nuFactorGFinalVentas) {
+        this.nuFactorGFinalVentas = nuFactorGFinalVentas;
+    }
+
+    public double getNuFactorGFinalVentas() {
+        return nuFactorGFinalVentas;
+    }
+
+    public void setNuFactorPFinalAdhoc(double nuFactorPFinalAdhoc) {
+        this.nuFactorPFinalAdhoc = nuFactorPFinalAdhoc;
+    }
+
+    public double getNuFactorPFinalAdhoc() {
+        return nuFactorPFinalAdhoc;
+    }
+
+    public void setIsBlInfraccionCustomAdhoc(boolean isBlInfraccionCustomAdhoc) {
+        this.isBlInfraccionCustomAdhoc = isBlInfraccionCustomAdhoc;
+    }
+
+    public boolean isIsBlInfraccionCustomAdhoc() {
+        return isBlInfraccionCustomAdhoc;
+    }
+
+    public void setIsBlInfraccionCustomVentas(boolean isBlInfraccionCustomVentas) {
+        this.isBlInfraccionCustomVentas = isBlInfraccionCustomVentas;
+    }
+
+    public boolean isIsBlInfraccionCustomVentas() {
+        return isBlInfraccionCustomVentas;
+    }
+
+    public void setVcAnioResol(String vcAnioResol) {
+        this.vcAnioResol = vcAnioResol;
+    }
+
+    public String getVcAnioResol() {
+        return vcAnioResol;
+    }
+
+    public void setIsBlCheckUITVentas(boolean isBlCheckUITVentas) {
+        this.isBlCheckUITVentas = isBlCheckUITVentas;
+    }
+
+    public boolean isIsBlCheckUITVentas() {
+        return isBlCheckUITVentas;
     }
 }

@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Weblogic-Application-Version: 1.1.30_f20211217110000
+Weblogic-Application-Version: 1.1.49_f20220217160000
 Built-By: uds
 Created-By: Apache Maven 3.5.2
 Build-Jdk: 1.8.0_131

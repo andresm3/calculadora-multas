@@ -11,6 +11,8 @@ import pe.gob.indecopi.bean.ClsProbabilidadBarrerasBean;
 import indecopi.gob.pe.utils.ClsResultDAO;
 import indecopi.gob.pe.utils.ClsSQLUtils;
 
+import java.math.BigDecimal;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -29,6 +31,7 @@ import org.apache.log4j.Priority;
 
 import pe.gob.indecopi.bean.ClsInstanciasBean;
 import pe.gob.indecopi.bean.ClsMetodoCalculoBean;
+import pe.gob.indecopi.bean.ClsTamanioEmpresaBean;
 import pe.gob.indecopi.bean.ClsTipoAfectacionBean;
 import pe.gob.indecopi.dao.ClsConectionDB;
 import pe.gob.indecopi.dao.ClsCalculoMultaIDAO;
@@ -43,6 +46,8 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
         "{call USR_CALMULTA.PKG_CALCULADORA_MULTAS.SP_GET_PARAMETRO(" + ClsSQLUtils.sqlParams(8) + ")}";   
     private static final String SP_LST_MULTA_UIT_ANIOS =
         "{call USR_CALMULTA.PKG_CALCULADORA_MULTAS.SP_LST_MULTA_UIT_ANIOS(" + ClsSQLUtils.sqlParams(3) + ")}";
+    private static final String SP_LST_TAM_EMPRESA =
+        "{call USR_CALMULTA.PKG_CALCULADORA_MULTAS.SP_LST_TAM_EMPRESA(" + ClsSQLUtils.sqlParams(4) + ")}";
     private static final String SP_LST_INSTANCIAS =
         "{call USR_CALMULTA.PKG_CALCULADORA_MULTAS.SP_LST_INSTANCIAS(" + ClsSQLUtils.sqlParams(5) + ")}";
     private static final String SP_LST_METODOS =
@@ -236,6 +241,59 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
         return response;
     }
 
+    @Override
+    public ClsResultDAO doListarTamanoEmpresa(int nuIdMetodo) {
+        logger.info(">>doListarTamanoEmpresa "+nuIdMetodo);
+        ClsResultDAO response = null;
+        ClsConectionDB conne = null;
+        Connection conn = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        //Map<String, String> lstParametros = null;
+        List<ClsTamanioEmpresaBean> lstMultaAnios = null;
+
+        try {
+            conne = new ClsConectionDB();
+            conn = conne.f_getConn();
+            conn.setAutoCommit(false);
+            stmt = conn.prepareCall(SP_LST_TAM_EMPRESA);
+            int i = 0;
+            stmt.setInt(++i, nuIdMetodo);
+            stmt.registerOutParameter(++i, OracleTypes.CURSOR);
+            stmt.registerOutParameter(++i, OracleTypes.NUMERIC);
+            stmt.registerOutParameter(++i, OracleTypes.VARCHAR);
+            stmt.execute();
+
+            rs = (ResultSet) stmt.getObject(i - 2);
+
+            if (rs != null) {
+                lstMultaAnios = new ArrayList<ClsTamanioEmpresaBean>();
+                ClsTamanioEmpresaBean objBean = null;
+                while (rs.next()) {
+                objBean = new ClsTamanioEmpresaBean();
+                objBean.setVcIdTamanioEmpresa(rs.getString("Nu_Id_Tam_Empresa"));
+                objBean.setVcTamanioEmpresa(rs.getString("VC_TAM_EMPRESA"));
+                objBean.setNuMinUIT(rs.getInt("NU_MIN_UIT"));
+                objBean.setNuMaxUIT(rs.getInt("NU_MAX_UIT"));
+                objBean.setNuPorcTope(rs.getDouble("NU_PORC_TOPE"));
+
+                lstMultaAnios.add(objBean);
+                }
+                logger.debug(">lstTamEmpresa.size:" + lstMultaAnios.size());
+            }
+
+            response = new ClsResultDAO();
+            response.put("SP_LST_TAM_EMPRESA", lstMultaAnios);
+            response.put(ClsResultDAO.CODIGO_ERROR, stmt.getInt(i - 1));
+            response.put(ClsResultDAO.MENSAJE_ERROR, stmt.getString(i));
+        } catch (Throwable e) {
+            logger.info(e);
+        } finally {
+            conne.f_endConn();
+        }
+        return response;
+    }
+    
     /*@Override
     public ClsResultDAO doListarInstancias(String vcIdMetodo, String vcOrgResolutivo) {
         logger.info(">>doListarInstancias");
@@ -468,6 +526,7 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
                 ClsTipoAfectacionBean objBean = null;
                 while (rs.next()) {
                 objBean = new ClsTipoAfectacionBean();
+                //logger.debug(">rs.getString(NU_ID_AFECTACION):" + rs.getString("NU_ID_AFECTACION"));
                 objBean.setVcIdTipoAfectacion(rs.getString("NU_ID_AFECTACION"));
                 objBean.setVcTipoAfectacion(rs.getString("VC_AFECTACION"));
                 objBean.setVcIdNivelAfectacion(rs.getString("VC_ID_NIVEL_AFECT"));
@@ -497,6 +556,8 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
     @Override
     public ClsResultDAO doGetTamEmpresa(int nuIdMetodo, int facturacionUIT) {
         logger.info(">>doGetTamEmpresa ");
+        logger.debug("nuIdMetodo>>" + nuIdMetodo);
+        logger.debug("facturacionUIT>>" + facturacionUIT);
         ClsResultDAO response = null;
         ClsConectionDB conne = null;
         Connection conn = null;
@@ -681,6 +742,11 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
     @Override
     public ClsResultDAO doGetValorMatriz(int nuIdMetodo, String vcOrgano, int vcIdInstancia, int vcIdTamanoEmpresa, int vcIdNivelAfectacion) {
         logger.info(">>doGetValorMatriz ");
+        logger.debug("nuIdMetodo>>" + nuIdMetodo);
+        logger.debug("vcOrgano>>" + vcOrgano);
+        logger.debug("vcIdInstancia>>" + vcIdInstancia);
+        logger.debug("vcIdTamanoEmpresa>>" + vcIdTamanoEmpresa);
+        logger.debug("vcIdNivelAfectacion>>" + vcIdNivelAfectacion);
         ClsResultDAO response = null;
         ClsConectionDB conne = null;
         Connection conn = null;
@@ -699,12 +765,12 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
             stmt.setInt(++i, vcIdInstancia);
             stmt.setInt(++i, vcIdTamanoEmpresa);
             stmt.setInt(++i, vcIdNivelAfectacion);
-            stmt.registerOutParameter(++i, OracleTypes.VARCHAR);
+            stmt.registerOutParameter(++i, OracleTypes.NUMERIC);
             stmt.registerOutParameter(++i, OracleTypes.NUMERIC);
             stmt.registerOutParameter(++i, OracleTypes.VARCHAR);
             stmt.execute();
 
-            nuValorMatriz = stmt.getDouble(i - 2); //
+            nuValorMatriz = stmt.getDouble(6); //
             logger.debug("doGetValorMatriz>>" + nuValorMatriz);
 
             response = new ClsResultDAO();

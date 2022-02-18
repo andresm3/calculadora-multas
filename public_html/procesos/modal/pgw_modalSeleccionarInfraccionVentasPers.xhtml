@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:a4j="http://richfaces.org/a4j" 
+xmlns:rich="http://richfaces.org/rich">
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        
+        <rich:modalPanel id="modSeleccionarInfraccionVentasPers" autosized="true" width="750" >
+            
+            <f:facet name="controls">
+                <h:panelGroup>
+                    <h:graphicImage id="hidePanelModSeleccionarInfraccionVentasPers" value="/imagenes/btnCerrar.png"/>
+                    <rich:componentControl for="modSeleccionarInfraccionVentasPers" attachTo="hidePanelModSeleccionarInfraccionVentasPers" 
+                                        operation="hide" event="onclick"/>
+                </h:panelGroup>
+            </f:facet>
+            <f:facet name="header">
+                <h:outputText value="#{msgs['ot.mod_infraccion.tituloVentas2']}"/>
+            </f:facet>
+            
+            <a4j:form id="frmSeleccionarInfraccionVentasPers" ajaxSubmit="true">
+                <h:panelGrid id="pginfraccionpventas" columns="2" cellpadding="1">
+                    
+                    <h:outputText id="ot_cal_11" style="font-size:12px;"
+                                        value="Característica del nivel de disuasión"/>
+                    <h:inputTextarea 
+                        style="display:block; height:40px; width:400px; resize:none"
+                        maxlength="2000" 
+                        id="it_infraccion_tipo_pventas"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcTipoAfectacionVentas}" columnClasses="input-width-50"/>
+
+                    <h:outputText id="ot_cal_22" style="font-size:12px;"
+                        value="Nivel de disuasión"/>
+                    <h:selectOneMenu id="cb_infraccion_nivel_pventas" 
+                        required="true" 
+                        style="display:block;width:90px"
+                        autoWidth="false"
+                        value="#{clsCalculoMultaSrv.objFiltroBean.vcNivelAfectacionVentas}">
+                        <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                        <f:selectItems value="#{clsCalculoMultaSrv.lstNivelInfraccion}"/>
+                        <a4j:support event="onchange"
+                            action="#{clsCalculoMultaSrv.doSeleccionarNivelInfraccionVentas()}" 
+                            onsubmit="#{rich:component('panProcesando')}.show();"
+                            oncomplete="#{rich:component('panProcesando')}.hide()" />
+                    </h:selectOneMenu>
+
+                    <a4j:commandButton id="button_seleccionar_especialista2"
+                                value="Ingresar nivel de disuasión"
+                                reRender="frmBusqueda" >
+                                <a4j:support event="onclick"
+                                        action="#{clsCalculoMultaSrv.doSeleccionarInfraccionModalCustom()}"
+                                        onsubmit="#{rich:component('panProcesando')}.show();"
+                                        oncomplete="#{rich:component('panProcesando')}.hide();
+										if(#{clsCalculoMultaSrv.objFiltroBean.isBlInfraccionCustomVentas}){
+										#{rich:component('modSeleccionarInfraccionVentasPers')}.hide();}"
+                                        reRender="frmBusqueda"
+                                        ></a4j:support>
+                            </a4j:commandButton>
+                </h:panelGrid>
+            </a4j:form>
+        </rich:modalPanel>     
+    </body>
+</html>
