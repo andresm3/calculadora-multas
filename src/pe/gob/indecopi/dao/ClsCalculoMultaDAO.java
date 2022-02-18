@@ -526,6 +526,7 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
                 ClsTipoAfectacionBean objBean = null;
                 while (rs.next()) {
                 objBean = new ClsTipoAfectacionBean();
+                //logger.debug(">rs.getString(NU_ID_AFECTACION):" + rs.getString("NU_ID_AFECTACION"));
                 objBean.setVcIdTipoAfectacion(rs.getString("NU_ID_AFECTACION"));
                 objBean.setVcTipoAfectacion(rs.getString("VC_AFECTACION"));
                 objBean.setVcIdNivelAfectacion(rs.getString("VC_ID_NIVEL_AFECT"));
@@ -555,6 +556,8 @@ public class ClsCalculoMultaDAO implements ClsCalculoMultaIDAO {
     @Override
     public ClsResultDAO doGetTamEmpresa(int nuIdMetodo, int facturacionUIT) {
         logger.info(">>doGetTamEmpresa ");
+        logger.debug("nuIdMetodo>>" + nuIdMetodo);
+        logger.debug("facturacionUIT>>" + facturacionUIT);
         ClsResultDAO response = null;
         ClsConectionDB conne = null;
         Connection conn = null;

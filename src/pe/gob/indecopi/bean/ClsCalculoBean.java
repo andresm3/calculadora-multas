@@ -238,6 +238,7 @@ public class ClsCalculoBean implements Serializable {
     private double nuFactorAVentas;
     private double nuFactorGVentas;
     private double nuFactorGDifVentas;
+    private double nuFactorGFinalVentas;
     private double nuUmbralFactorGDifVentas;
     private String vcFactorGDifAccion;
     private double nuMultaBaseVentas;
@@ -264,6 +265,7 @@ public class ClsCalculoBean implements Serializable {
     private String vcIdNivelAfectacionAdhoc;
     private String vcNivelAfectacionAdhoc;
     private double nuFactorBAdhoc;
+    private double nuFactorPFinalAdhoc;
     private double nuFactorPAdhoc;
     private String vcFactorPAdhoc;
     private double nuFactorPDifAdhoc;
@@ -287,6 +289,7 @@ public class ClsCalculoBean implements Serializable {
     private boolean isBlCheckUIT;
     private boolean isBlCheckUITCcd;
     private boolean isBlCheckUITAdhoc;
+    private boolean isBlCheckUITVentas;
     
     private boolean isBlMultaBase;
     private boolean isBlMultaBaseLibro;
@@ -298,6 +301,13 @@ public class ClsCalculoBean implements Serializable {
     private boolean isBlMultaBaseFirma;
 
     private boolean isBlLstAfectacion;
+    
+
+    private boolean isBlInfraccionCustomAdhoc;
+    private boolean isBlInfraccionCustomVentas;
+    
+
+    private String vcAnioResol;
     
     public ClsCalculoBean() {
         super();
@@ -332,6 +342,15 @@ public class ClsCalculoBean implements Serializable {
         return vcOrgResolutivo;
     }
 
+    public String getVcOrgResolutivo2() {
+        if(vcOrgResolutivo != null){
+        if(vcOrgResolutivo.equals("CLC")){
+            return "DLC";
+        }
+        }
+        return vcOrgResolutivo;
+    }
+    
     public void setVcInstancia(String vcInstancia) {
         this.vcInstancia = vcInstancia;
     }
@@ -2250,5 +2269,53 @@ public class ClsCalculoBean implements Serializable {
 
     public boolean isIsBlCheckUITAdhoc() {
         return isBlCheckUITAdhoc;
+    }
+
+    public void setNuFactorGFinalVentas(double nuFactorGFinalVentas) {
+        this.nuFactorGFinalVentas = nuFactorGFinalVentas;
+    }
+
+    public double getNuFactorGFinalVentas() {
+        return nuFactorGFinalVentas;
+    }
+
+    public void setNuFactorPFinalAdhoc(double nuFactorPFinalAdhoc) {
+        this.nuFactorPFinalAdhoc = nuFactorPFinalAdhoc;
+    }
+
+    public double getNuFactorPFinalAdhoc() {
+        return nuFactorPFinalAdhoc;
+    }
+
+    public void setIsBlInfraccionCustomAdhoc(boolean isBlInfraccionCustomAdhoc) {
+        this.isBlInfraccionCustomAdhoc = isBlInfraccionCustomAdhoc;
+    }
+
+    public boolean isIsBlInfraccionCustomAdhoc() {
+        return isBlInfraccionCustomAdhoc;
+    }
+
+    public void setIsBlInfraccionCustomVentas(boolean isBlInfraccionCustomVentas) {
+        this.isBlInfraccionCustomVentas = isBlInfraccionCustomVentas;
+    }
+
+    public boolean isIsBlInfraccionCustomVentas() {
+        return isBlInfraccionCustomVentas;
+    }
+
+    public void setVcAnioResol(String vcAnioResol) {
+        this.vcAnioResol = vcAnioResol;
+    }
+
+    public String getVcAnioResol() {
+        return vcAnioResol;
+    }
+
+    public void setIsBlCheckUITVentas(boolean isBlCheckUITVentas) {
+        this.isBlCheckUITVentas = isBlCheckUITVentas;
+    }
+
+    public boolean isIsBlCheckUITVentas() {
+        return isBlCheckUITVentas;
     }
 }

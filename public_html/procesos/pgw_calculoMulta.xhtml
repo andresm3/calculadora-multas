@@ -22,6 +22,22 @@ xmlns:rich="http://richfaces.org/rich">
         <a4j:form id="frmInicio" ajaxsubmit="true">
             <!-- Busqueda Electronica -->
             <h:panelGrid id="pgBusqueda_filtros" columns="3" cellpadding="1">
+                <h:outputText value="Materia" style="font-size:12px;"/>
+                <h:selectOneMenu id="cb_temp1" 
+                        required="true" 
+                        style="display:block;width:300px"
+                        autoWidth="false"
+                        value="#{clsCalculoMultaSrv.vcMateriaSeleccion}">
+                    <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
+                    <f:selectItems value="#{clsCalculoMultaSrv.lstMaterias}"/>
+                    <a4j:support event="onchange"
+                    action="#{clsCalculoMultaSrv.doSeleccionarMateria()}" 
+                    onsubmit="#{rich:component('panProcesando')}.show();"
+                    oncomplete="#{rich:component('panProcesando')}.hide()"
+                    reRender="frmInicio, cb_temp" />
+                </h:selectOneMenu>
+                <h:outputText value=""/>
+
                 <h:outputText value="#{msgs['ot.general.inicio.titulo']}" style="font-size:12px;"/>
                 <h:selectOneMenu id="cb_temp" 
                         required="true" 
@@ -87,7 +103,7 @@ xmlns:rich="http://richfaces.org/rich">
                                     style="display:block;width:300px"
                                     id="it_cal_mbase_org"
                                     readonly="true"
-                                    value="#{clsCalculoMultaSrv.objFiltroBean.vcOrgResolutivo}" columnClasses="input-width-50"/>
+                                    value="#{clsCalculoMultaSrv.objFiltroBean.getVcOrgResolutivo2()}" columnClasses="input-width-50"/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
@@ -273,7 +289,8 @@ xmlns:rich="http://richfaces.org/rich">
                                     oncomplete="#{rich:component('panProcesando')}.hide()"
                                     reRender="frmBusqueda" />
                                 </h:selectOneMenu>
-                                <h:outputText value=""/>
+                                <a target="_blank" 
+                                    href="https://indecopi-my.sharepoint.com/:x:/g/personal/vlanoire_indecopi_gob_pe1/EbQDGMLKkX9Ephc6WAVGAdIBNseQPcjgG333GnLIeELC3Q?e=7yAA22">#{msgs['ot.cal_mbase.vertamanoemp']}</a>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
 
@@ -957,7 +974,8 @@ xmlns:rich="http://richfaces.org/rich">
                                     oncomplete="#{rich:component('panProcesando')}.hide()"
                                     reRender="frmBusqueda" />
                                 </h:selectOneMenu>
-                                <h:outputText value=""/>
+                                <a target="_blank" 
+                                    href="https://indecopi-my.sharepoint.com/:x:/g/personal/vlanoire_indecopi_gob_pe1/EbQDGMLKkX9Ephc6WAVGAdIBNseQPcjgG333GnLIeELC3Q?e=7yAA22">#{msgs['ot.cal_mbase.vertamanoemp']}</a>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
 
@@ -965,13 +983,14 @@ xmlns:rich="http://richfaces.org/rich">
                                                 value="#{msgs['ot.cal_mbase.afectacion']}"/>
                                 <a4j:commandLink id="button_ver_infraccionespi" 
                                     action="#{clsCalculoMultaSrv.doCargarModalListaInfracciones()}"
+                                    disabled="true"
                                     oncomplete="if(#{clsCalculoMultaSrv.objFiltroBean.isBlLstAfectacion}){
                                         Richfaces.showModalPanel('modSeleccionarInfraccion');
                                        }#{rich:component('panProcesando')}.hide();"
                                     reRender="frmSeleccionarInfraccion"
                                     >
                                     <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
-                                    Seleccionar
+                                    Seleccionado por defecto
                                 </a4j:commandLink>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
@@ -1181,7 +1200,8 @@ xmlns:rich="http://richfaces.org/rich">
                                     oncomplete="#{rich:component('panProcesando')}.hide()"
                                     reRender="frmBusqueda" />
                                 </h:selectOneMenu>
-                                <h:outputText value=""/>
+                                <a target="_blank" 
+                                    href="https://indecopi-my.sharepoint.com/:x:/g/personal/vlanoire_indecopi_gob_pe1/EbQDGMLKkX9Ephc6WAVGAdIBNseQPcjgG333GnLIeELC3Q?e=7yAA22">#{msgs['ot.cal_mbase.vertamanoemp']}</a>
                                 <h:outputText value=""/>
                                 <h:outputText value=""/>
 
@@ -1540,7 +1560,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 <a4j:support event="onchange"
                                 action="#{clsCalculoMultaSrv.doSeleccionarOrgano1raInstanciaVentas()}" 
                                 onsubmit="#{rich:component('panProcesando')}.show();"
-                                oncomplete="#{rich:component('panProcesando')}.hide()"
+                                oncomplete="#{rich:component('panProcesando')}.hide(); javascript:fnCheckFactorAValido('frmBusqueda:it_cal_mbase_umbralfactorapventas','frmBusqueda:it_cal_mbase_factorapventas','frmBusqueda:lblot_cal_mbase_factorapventas','frmBusqueda:it_cal_mbase_org');"
                                 reRender="frmBusqueda"/>
                             </h:selectOneMenu>
                             <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraOrgano1raInstanciaVentas}"/>
@@ -1590,11 +1610,11 @@ xmlns:rich="http://richfaces.org/rich">
                                         ></a4j:support>
                             </a4j:commandButton>
 
-                            <h:outputText id="ot_cal_mbase_factupventas" style="font-size:12px; display:block; width:200px;"
+                            <h:outputText id="ot_cal_mbase_factupventas" style="font-size:12px; display:none; width:200px;"
                                           value="#{msgs['ot.cal_mbase.facturacionpventas']}"
                                           escape="false"/> 
                             <h:inputText 
-                                style="display:block;width:300px"
+                                style="display:none;width:300px"
                                 id="it_cal_mbase_facturacionpventas"
                                 maxlength="13"
                                 converter="javax.faces.Double"
@@ -1624,11 +1644,11 @@ xmlns:rich="http://richfaces.org/rich">
                                 </span>
                             </rich:toolTip>
 
-                            <h:outputText id="ot_cal_mbase_aniofpventas" style="font-size:12px;"
+                            <h:outputText id="ot_cal_mbase_aniofpventas" style="font-size:12px;display:none;"
                                             value="#{msgs['ot.cal_mbase.aniofacturacion']}"/>
                             <h:selectOneMenu id="cb_cal_mbase_anioUitpventas" 
                                             required="true" 
-                                            style="display:block;width:300px"
+                                            style="display:none;width:300px"
                                             value="#{clsCalculoMultaSrv.objFiltroBean.vcAnioResolucionVentas}">
                                 <f:selectItem itemValue="-1" itemLabel="Seleccionar"/>
                                 <f:selectItems value="#{clsCalculoMultaSrv.objFiltroBean.lstAniosUIT}"/>
@@ -1638,31 +1658,31 @@ xmlns:rich="http://richfaces.org/rich">
                                 oncomplete="#{rich:component('panProcesando')}.hide()"
                                 reRender="ot_cal_mbase_valoruitpventas, ot_cal_mbase_aniouitpventas, it_cal_mbase_facturacionprodpventas, it_cal_mbase_facturacionpventas" />
                             </h:selectOneMenu>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
 
-                            <h:outputText id="ot_cal_mbase_valuitpventas" style="font-size:12px;"
+                            <h:outputText id="ot_cal_mbase_valuitpventas" style="font-size:12px;display:none;"
                                           value="#{msgs['ot.cal_mbase.uitfacturacion']}"/> 
                             <h:inputText 
-                                style="display:block;width:300px"
+                                style="display:none;width:300px"
                                 id="ot_cal_mbase_aniouitpventas"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuAnioUIT}" columnClasses="input-width-50"/>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
 
-                            <h:outputText id="ot_cal_mbase_valfactuitpventas" style="font-size:12px;"
+                            <h:outputText id="ot_cal_mbase_valfactuitpventas" style="font-size:12px;display:none;"
                                           value="#{msgs['ot.cal_mbase.facturacionuitfirma']}"/> 
                             <h:inputText 
-                                style="display:block;width:300px"
+                                style="display:none;width:300px"
                                 id="ot_cal_mbase_valoruitpventas"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuValorUIT}" columnClasses="input-width-50"/>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
-                            <h:outputText value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
+                            <h:outputText style="font-size:12px;display:none;" value=""/>
 
                             <h:outputText id="ot_cal_mbase_factuprodpventas" style="font-size:12px; display:block; width:200px;"
                                           value="#{msgs['ot.cal_mbase.facturacionprodpventas']}"/> 
@@ -1693,7 +1713,11 @@ xmlns:rich="http://richfaces.org/rich">
                                 id="it_cal_mbase_umbralfactorapventas"
                                 converter="javax.faces.Double"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorAVentas}" columnClasses="input-width-50"/>
-                            <h:outputText value=""/>
+                            <rich:toolTip for="lblot_cal_mbase_factorapventas" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipFactora']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
                             
 
                             <h:outputText id="ot_cal_mbase_afectacionpventas" style="font-size:12px;"
@@ -1707,6 +1731,20 @@ xmlns:rich="http://richfaces.org/rich">
                                 >
                                 <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
                                 Seleccionar
+                            </a4j:commandLink>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+                            <h:outputText value=""/>
+                            <a4j:commandLink id="button_ver_infraccionespventas2" 
+                                action="#{clsCalculoMultaSrv.doCargarModalInfraccionesPersonalizado()}"
+                                oncomplete="Richfaces.showModalPanel('modSeleccionarInfraccionVentasPers');
+                                            #{rich:component('panProcesando')}.hide();"
+                                reRender="frmSeleccionarInfraccionVentasPers"
+                                >
+                                <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                Ingresar personalizado
                             </a4j:commandLink>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
@@ -1753,7 +1791,11 @@ xmlns:rich="http://richfaces.org/rich">
                                 <f:selectItem itemValue="sumar" itemLabel="+" />
                                 <f:selectItem itemValue="restar" itemLabel="-" />
                             </h:selectOneRadio>
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
+                            <rich:toolTip for="ot_cal_mbase_factorgSignopventas" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipFactorgOp']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
                             <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
                             <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
 
@@ -1772,8 +1814,25 @@ xmlns:rich="http://richfaces.org/rich">
                                 id="it_cal_mbase_umbralfactorgdifpventas"
                                 converter="javax.faces.Double"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorGDifVentas}" columnClasses="input-width-50"/>
+                            <rich:toolTip for="ot_cal_mbase_factorgdifpventas" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipFactorgVar']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
                             <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"/>
+
+                            <h:outputText id="ot_cal_mbase_factorpdiffinpventas"
+                                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraFactorGVariacion}"
+                                        value="#{msgs['ot.cal_mbase.factorgdifpventasfinal']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px"
+                                id="it_cal_mbase_factorpfinpventas"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorGFinalVentas}" columnClasses="input-width-50">
+                                </h:inputText>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
 
                             <h:outputText value=""/>
                             <a4j:commandButton id="bt_cal_mbase_calcularMbasepventas"
@@ -1969,7 +2028,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 style="display:block;width:300px"
                                 id="it_cal_mbase_factorbadhoc"
                                 onkeypress="return fnCheckNumerosDecimal(event)"
-                                maxlength="13"
+                                maxlength="10"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorBAdhoc}" columnClasses="input-width-50"/>
                             <rich:toolTip for="ot_cal_mbase_factorbadhoc" styleClass="tooltip">
                                 <span style="white-space:nowrap">
@@ -1990,6 +2049,21 @@ xmlns:rich="http://richfaces.org/rich">
                                 >
                                 <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
                                 Seleccionar
+                            </a4j:commandLink>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+
+
+                            <h:outputText value=""/>
+                            <a4j:commandLink id="button_ver_infraccionesadhoc2" 
+                                action="#{clsCalculoMultaSrv.doCargarModalInfraccionesPersonalizado()}"
+                                oncomplete="Richfaces.showModalPanel('modSeleccionarInfraccionAdhocPers');
+                                            #{rich:component('panProcesando')}.hide();"
+                                reRender="frmSeleccionarInfraccionAdhocPers"
+                                >
+                                <a4j:support event="onclick" onsubmit="#{rich:component('panProcesando')}.show();"></a4j:support>
+                                Ingresar personalizado
                             </a4j:commandLink>
                             <h:outputText value=""/>
                             <h:outputText value=""/>
@@ -2025,7 +2099,7 @@ xmlns:rich="http://richfaces.org/rich">
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.vcFactorPAdhoc}" columnClasses="input-width-50">
                                 </h:inputText>
-                            <h:outputText value=""/>
+                            <h:outputText value="%" style="font-size:12px; float:left;" />
                             <h:outputText value=""/>
                             <h:outputText value=""/>
 
@@ -2037,7 +2111,11 @@ xmlns:rich="http://richfaces.org/rich">
                                 <f:selectItem itemValue="sumar" itemLabel="+" />
                                 <f:selectItem itemValue="restar" itemLabel="-" />
                             </h:selectOneRadio>
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"/>
+                            <rich:toolTip for="ot_cal_mbase_factorpSignoadhoc" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipFactorpOp']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
                             <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"/>
                             <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"/>
 
@@ -2058,7 +2136,24 @@ xmlns:rich="http://richfaces.org/rich">
                                 id="it_cal_mbase_umbralfactorpdifadhoc"
                                 converter="javax.faces.Double"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuUmbralFactorPDifAdhoc}" columnClasses="input-width-50"/>
-                            <h:outputText value="" style="display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}" />
+                            <rich:toolTip for="ot_cal_mbase_factorpdifadhoc" styleClass="tooltip">
+                                <span style="white-space:nowrap">
+                                <h:outputText value="#{msgs['ot.cal_mbase.tooltipFactorpVar']}" styleClass="label" escape="false"/>
+                                </span>
+                            </rich:toolTip>
+
+                            <h:outputText id="ot_cal_mbase_factorpdiffinadhoc"
+                                        style="font-size:12px; display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"
+                                        value="#{msgs['ot.cal_mbase.factorpdifadhocfinal']}"/>
+                            <h:inputText 
+                                style="display:block;width:300px; display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}"
+                                id="it_cal_mbase_factorpfinadhoc"
+                                readonly="true"
+                                value="#{clsCalculoMultaSrv.objFiltroBean.nuFactorPFinalAdhoc}" columnClasses="input-width-50">
+                                </h:inputText>
+                            <h:outputText value="%" style="font-size:12px; float:left; display:#{clsCalculoMultaSrv.vcMuestraFactorPVariacion}" />
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
 
                             <h:outputText value=""/>
                             <a4j:commandButton id="bt_cal_mbase_calcularMbaseadhoc"
@@ -2068,7 +2163,7 @@ xmlns:rich="http://richfaces.org/rich">
                                         action="#{clsCalculoMultaSrv.doCalcularMbaseAdhoc}"
                                         onsubmit="#{rich:component('panProcesando')}.show();"
                                         oncomplete="#{rich:component('panProcesando')}.hide();javaScript:fnValidaAdhoc();"
-                                        reRender="frmBusqueda, ot_cal_mbase_multabase2adhoc, ot_cal_mbase_multabase1adhoc"
+                                        reRender="frmBusqueda, ot_cal_mbase_multabase2adhoc, ot_cal_mbase_multabase1adhoc, it_cal_mbase_factorpfinadhoc"
                                         ></a4j:support>
                             </a4j:commandButton>
                             <h:outputText value=""/>
@@ -2359,10 +2454,10 @@ xmlns:rich="http://richfaces.org/rich">
                                 </h:inputText>
                             <h:outputText value=""/>
                         
-                            <h:outputText id="ot_cal_mbase_mbase2pventas" style="font-size:12px;"
+                            <h:outputText id="ot_cal_mbase_mbase2pventas" style="font-size:12px;display:none;"
                                           value="#{msgs['ot.cal_mbase.multabase2pventas']}"/>        
                             <h:inputText 
-                                style="display:block;width:300px"
+                                style="display:none;width:300px"
                                 id="ot_cal_mbase_multabase2pventas"
                                 readonly="true"
                                 value="#{clsCalculoMultaSrv.objFiltroBean.nuMultaBaseUITVentas}" columnClasses="input-width-50"/>
@@ -2438,6 +2533,8 @@ xmlns:rich="http://richfaces.org/rich">
     <ui:include src="../procesos/modal/pgw_modalMPreliminar.xhtml"/>  
     <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccion.xhtml"/>  
     <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccionAdhoc.xhtml"/>  
+    <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccionAdhocPers.xhtml"/>  
     <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccionVentas.xhtml"/>  
+    <ui:include src="../procesos/modal/pgw_modalSeleccionarInfraccionVentasPers.xhtml"/>  
     </body>
 </ui:composition>
